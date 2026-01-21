@@ -5,7 +5,7 @@ export const projects: Project[] = [
     id: "pos-store",
     title: "Punto de Venta — E-commerce y Panel Administrativo (Next.js/NestJS)",
     shortDescription:
-      "Solución de e-commerce **Full Stack de alto rendimiento**. El frontend con **Next.js** maneja la tienda y la selección de productos/cupones. El backend, construido con **NestJS y PostgreSQL**, proporciona un **Panel Administrativo completo** para la gestión de inventario, productos y ventas. Diseñado para escalabilidad empresarial.",
+      "Solución de e-commerce Full Stack de alto rendimiento. El frontend con Next.js maneja la tienda y la selección de productos/cupones. El backend, construido con NestJS y PostgreSQL, proporciona un Panel Administrativo completo para la gestión de inventario, productos y ventas. Diseñado para escalabilidad empresarial.",
     techStack: [
       "Next.js",
       "NestJS",
@@ -23,7 +23,7 @@ export const projects: Project[] = [
     id: "cash-tracker",
     title: "Cash Tracker — Gestión de Presupuestos y Gastos (PostgreSQL)",
     shortDescription:
-      "Herramienta financiera para el control de presupuestos. Implementa **autenticación segura y gestión de roles**. Desarrollado con **React y PostgreSQL/Prisma** para monitorear el estado presupuestario en tiempo real, asegurando la integridad de los datos financieros mediante una arquitectura de base de datos relacional.",
+      "Demo user: user@user.com, password:12345678 | Herramienta financiera para el control de presupuestos. Implementa autenticación segura y gestión de roles. Desarrollado con React y PostgreSQL/Prisma para monitorear el estado presupuestario en tiempo real, asegurando la integridad de los datos financieros mediante una arquitectura de base de datos relacional.",
     techStack: [
       "React",
       "PostgreSQL",
@@ -41,7 +41,7 @@ export const projects: Project[] = [
     id: "food-kiosk",
     title: "Kiosko de Comida — Sistema TPV Multicapa",
     shortDescription:
-      "Sistema de Punto de Venta diseñado para flujos de trabajo en tiempo real. La arquitectura maneja terminales para **clientes, cocina y visualización pública**. Utiliza **Prisma y Node.js** para garantizar una comunicación rápida y persistencia de datos en entornos de alta demanda gastronómica.",
+      "Sistema de Punto de Venta diseñado para flujos de trabajo en tiempo real. La arquitectura maneja terminales para clientes, cocina y visualización pública. Utiliza Prisma y Node.js para garantizar una comunicación rápida y persistencia de datos en entornos de alta demanda gastronómica.",
     techStack: [
       "React",
       "Prisma",
@@ -59,13 +59,13 @@ export const projects: Project[] = [
     id: "uptask-kanban",
     title: "Uptask — Gestor de Tareas Full Stack (MERN)",
     shortDescription:
-      "Aplicación de gestión de proyectos basada en la metodología **Kanban**. Desarrollada con el **Stack MERN** para administrar el flujo de trabajo de tareas entre múltiples estados. Incluye un sistema robusto de autenticación y gestión de permisos por proyecto.",
+      "Demo user: user@user.com, password:12345678 | Aplicación de gestión de proyectos basada en la metodología Kanban. Desarrollada con el Stack MERN para administrar el flujo de trabajo de tareas entre múltiples estados. Incluye un sistema robusto de autenticación y gestión de permisos por proyecto.",
     techStack: [
       "React",
       "Node.js",
       "Express",
       "MongoDB",
-      "Tailwind CSS",
+      "TailwindCSS",
       "JavaScript",
     ],
     demoUrl: "https://uptask-frontend-w4hc.vercel.app/",
@@ -76,7 +76,7 @@ export const projects: Project[] = [
     id: "devtree",
     title: "DevTree — Ecosistema de Enlaces Personalizado",
     shortDescription:
-      "Plataforma Full Stack que permite diseñar un perfil de enlaces público personalizable. Construido con **React y MongoDB**, se enfoca en la persistencia de datos y en ofrecer una interfaz dinámica para que los creadores centralicen su presencia digital con un solo link.",
+      "Demo user: user@user.com, password:12345678 | Plataforma Full Stack que permite diseñar un perfil de enlaces público personalizable. Construido con React y MongoDB, se enfoca en la persistencia de datos y en ofrecer una interfaz dinámica para que los creadores centralicen su presencia digital con un solo link.",
     techStack: [
       "React",
       "Node.js",
@@ -94,7 +94,7 @@ export const projects: Project[] = [
     id: "dea-simulator",
     title: "Simulador de DEA — Clínica Adventista Belgrano",
     shortDescription:
-      "Simulador interactivo de Desfibrilador Externo Automático (DEA). Desarrollado con **JavaScript vanilla** para entrenamiento médico de alta fidelidad, simulando comportamiento del dispositivo, secuencias guiadas y respuesta de audio en tiempo real.",
+      "Simulador interactivo de Desfibrilador Externo Automático (DEA). Desarrollado con JavaScript vanilla para entrenamiento médico de alta fidelidad, simulando comportamiento del dispositivo, secuencias guiadas y respuesta de audio en tiempo real.",
     techStack: ["JavaScript", "HTML", "CSS"],
     demoUrl: "https://magenta-macaron-905e92.netlify.app/",
     repoUrl: "https://magenta-macaron-905e92.netlify.app/",
