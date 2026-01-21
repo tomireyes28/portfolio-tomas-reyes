@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react"; // Importamos useState
 import { Mail, Github, Linkedin, Send } from "lucide-react"; 
 import { motion } from "framer-motion"; 
+import Swal from "sweetalert2"; // Importamos SweetAlert2
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -19,6 +21,36 @@ const itemVariants = {
 };
 
 export default function ContactSection() {
+  // Estado para simular la carga
+  const [isSending, setIsSending] = useState(false);
+
+  // Función para simular el envío
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSending(true);
+
+    // Simulamos un retraso de red de 1.5 segundos
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    setIsSending(false);
+
+    // Mostramos la alerta de éxito
+    Swal.fire({
+      title: "¡Mensaje enviado!",
+      text: "Gracias por contactarme. Te responderé a la brevedad.",
+      icon: "success",
+      background: "#020617", // bg-slate-950
+      color: "#f8fafc", // text-slate-50
+      confirmButtonColor: "#0ea5e9", // bg-sky-500
+      customClass: {
+        popup: "rounded-3xl border border-slate-800",
+      },
+    });
+
+    // Reseteamos el formulario
+    (e.target as HTMLFormElement).reset();
+  };
+
   return (
     <section
       id="contact"
@@ -48,7 +80,6 @@ export default function ContactSection() {
           </p>
 
           <div className="space-y-4 pt-4">
-            {/* EMAIL */}
             <a
               href="mailto:tomireyes.tr@gmail.com"
               className="inline-flex items-center gap-4 text-lg text-slate-300 hover:text-sky-400 transition group"
@@ -59,7 +90,6 @@ export default function ContactSection() {
               <span>tomireyes.tr@gmail.com</span>
             </a>
 
-            {/* REDES SOCIALES */}
             <div className="flex items-center gap-4 pt-2">
               <a
                 href="https://github.com/tomireyes28"
@@ -93,12 +123,13 @@ export default function ContactSection() {
 
           <form
             className="space-y-5"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSubmit} // Conectamos la función aquí
           >
             <div className="text-left">
               <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2 ml-1">Nombre completo</label>
               <input
                 id="name"
+                name="name"
                 type="text"
                 className="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 transition-all"
                 placeholder="Tu nombre"
@@ -110,6 +141,7 @@ export default function ContactSection() {
               <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2 ml-1">Correo electrónico</label>
               <input
                 id="email"
+                name="email"
                 type="email"
                 className="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 transition-all"
                 placeholder="tu@mail.com"
@@ -121,6 +153,7 @@ export default function ContactSection() {
               <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2 ml-1">Mensaje</label>
               <textarea
                 id="message"
+                name="message"
                 rows={4}
                 className="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 transition-all resize-none"
                 placeholder="Contame un poco sobre la idea o el proyecto..."
@@ -131,11 +164,14 @@ export default function ContactSection() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              disabled={isSending} // Deshabilitar mientras envía
               type="submit"
-              className="mt-4 w-full rounded-full bg-sky-500 py-4 text-base font-bold text-slate-950 shadow-lg shadow-sky-500/20 hover:bg-sky-400 transition-all flex items-center justify-center gap-3 group"
+              className={`mt-4 w-full rounded-full py-4 text-base font-bold text-slate-950 shadow-lg transition-all flex items-center justify-center gap-3 group ${
+                isSending ? "bg-sky-700 cursor-not-allowed" : "bg-sky-500 hover:bg-sky-400 shadow-sky-500/20"
+              }`}
             >
-              Enviar Mensaje 
-              <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              {isSending ? "Enviando..." : "Enviar Mensaje"}
+              {!isSending && <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
             </motion.button>
           </form>
         </motion.div>
