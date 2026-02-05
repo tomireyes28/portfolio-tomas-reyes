@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react"; // Importamos useState
+import { useState, useRef } from "react"; // Agregamos useRef
 import { Mail, Github, Linkedin, Send } from "lucide-react"; 
 import { motion } from "framer-motion"; 
-import Swal from "sweetalert2"; // Importamos SweetAlert2
+import Swal from "sweetalert2"; 
+import emailjs from "@emailjs/browser"; // Importamos EmailJS
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -21,34 +22,63 @@ const itemVariants = {
 };
 
 export default function ContactSection() {
-  // Estado para simular la carga
   const [isSending, setIsSending] = useState(false);
+  const form = useRef<HTMLFormElement>(null); // Referencia al formulario para EmailJS
 
-  // Función para simular el envío
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Validación extra por seguridad
+    if (!form.current) return;
+
     setIsSending(true);
 
-    // Simulamos un retraso de red de 1.5 segundos
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    setIsSending(false);
-
-    // Mostramos la alerta de éxito
-    Swal.fire({
-      title: "¡Mensaje enviado!",
-      text: "Gracias por contactarme. Te responderé a la brevedad.",
-      icon: "success",
-      background: "#020617", // bg-slate-950
-      color: "#f8fafc", // text-slate-50
-      confirmButtonColor: "#0ea5e9", // bg-sky-500
-      customClass: {
-        popup: "rounded-3xl border border-slate-800",
-      },
-    });
-
-    // Reseteamos el formulario
-    (e.target as HTMLFormElement).reset();
+    // ENVIAR MAIL REAL CON TUS CREDENCIALES
+    emailjs
+      .sendForm(
+        "service_qph1s2d",   // Tu Service ID
+        "template_n1yn4sw",  // Tu Template ID
+        form.current,
+        {
+          publicKey: "SdG0xE3GxYiYdOXRm", // Tu Public Key
+        }
+      )
+      .then(
+        () => {
+          // ÉXITO
+          Swal.fire({
+            title: "¡Mensaje enviado!",
+            text: "Gracias por contactarme. Te responderé a la brevedad.",
+            icon: "success",
+            background: "#020617",
+            color: "#f8fafc",
+            confirmButtonColor: "#0ea5e9",
+            customClass: {
+              popup: "rounded-3xl border border-slate-800",
+            },
+          });
+          // Limpiamos el formulario usando la referencia
+          form.current?.reset();
+        },
+        (error) => {
+          // ERROR
+          console.error("FAILED...", error.text);
+          Swal.fire({
+            title: "Error",
+            text: "Hubo un problema al enviar el mensaje. Por favor, intenta de nuevo o contáctame por LinkedIn.",
+            icon: "error",
+            background: "#020617",
+            color: "#f8fafc",
+            confirmButtonColor: "#ef4444", // Rojo para error
+            customClass: {
+              popup: "rounded-3xl border border-slate-800",
+            },
+          });
+        }
+      )
+      .finally(() => {
+        setIsSending(false);
+      });
   };
 
   return (
@@ -122,14 +152,15 @@ export default function ContactSection() {
           </h3>
 
           <form
+            ref={form} // IMPORTANTE: Conectamos la referencia aquí
             className="space-y-5"
-            onSubmit={handleSubmit} // Conectamos la función aquí
+            onSubmit={handleSubmit}
           >
             <div className="text-left">
               <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2 ml-1">Nombre completo</label>
               <input
                 id="name"
-                name="name"
+                name="name" // Esto debe coincidir con {{name}} en tu template de EmailJS
                 type="text"
                 className="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 transition-all"
                 placeholder="Tu nombre"
@@ -141,7 +172,7 @@ export default function ContactSection() {
               <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2 ml-1">Correo electrónico</label>
               <input
                 id="email"
-                name="email"
+                name="email" // Esto debe coincidir con {{email}} en tu template
                 type="email"
                 className="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 transition-all"
                 placeholder="tu@mail.com"
@@ -153,7 +184,7 @@ export default function ContactSection() {
               <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2 ml-1">Mensaje</label>
               <textarea
                 id="message"
-                name="message"
+                name="message" // Esto debe coincidir con {{message}} en tu template
                 rows={4}
                 className="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 transition-all resize-none"
                 placeholder="Contame un poco sobre la idea o el proyecto..."
@@ -164,7 +195,7 @@ export default function ContactSection() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              disabled={isSending} // Deshabilitar mientras envía
+              disabled={isSending}
               type="submit"
               className={`mt-4 w-full rounded-full py-4 text-base font-bold text-slate-950 shadow-lg transition-all flex items-center justify-center gap-3 group ${
                 isSending ? "bg-sky-700 cursor-not-allowed" : "bg-sky-500 hover:bg-sky-400 shadow-sky-500/20"

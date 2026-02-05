@@ -96,8 +96,8 @@ export const projects: Project[] = [
     shortDescription:
       "Simulador interactivo de Desfibrilador Externo Automático (DEA). Desarrollado con JavaScript vanilla para entrenamiento médico de alta fidelidad, simulando comportamiento del dispositivo, secuencias guiadas y respuesta de audio en tiempo real.",
     techStack: ["JavaScript", "HTML", "CSS"],
-    demoUrl: "https://magenta-macaron-905e92.netlify.app/",
-    repoUrl: "https://magenta-macaron-905e92.netlify.app/",
+    demoUrl: "https://dea-beta.vercel.app/",
+    repoUrl: "https://github.com/tomireyes28/dea",
     image: "/projects/dea-simulador.png",
   },
 ];
