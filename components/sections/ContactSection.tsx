@@ -28,19 +28,19 @@ export default function ContactSection() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    // Validación extra por seguridad
+    
     if (!form.current) return;
 
     setIsSending(true);
 
-    // ENVIAR MAIL REAL CON TUS CREDENCIALES
+    
     emailjs
       .sendForm(
-        "service_qph1s2d",   // Tu Service ID
-        "template_n1yn4sw",  // Tu Template ID
+        "service_qph1s2d",   
+        "template_n1yn4sw", 
         form.current,
         {
-          publicKey: "SdG0xE3GxYiYdOXRm", // Tu Public Key
+          publicKey: "SdG0xE3GxYiYdOXRm",
         }
       )
       .then(
@@ -57,7 +57,7 @@ export default function ContactSection() {
               popup: "rounded-3xl border border-slate-800",
             },
           });
-          // Limpiamos el formulario usando la referencia
+          
           form.current?.reset();
         },
         (error) => {
@@ -69,7 +69,7 @@ export default function ContactSection() {
             icon: "error",
             background: "#020617",
             color: "#f8fafc",
-            confirmButtonColor: "#ef4444", // Rojo para error
+            confirmButtonColor: "#ef4444",
             customClass: {
               popup: "rounded-3xl border border-slate-800",
             },
@@ -152,7 +152,7 @@ export default function ContactSection() {
           </h3>
 
           <form
-            ref={form} // IMPORTANTE: Conectamos la referencia aquí
+            ref={form} 
             className="space-y-5"
             onSubmit={handleSubmit}
           >
@@ -160,7 +160,7 @@ export default function ContactSection() {
               <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2 ml-1">Nombre completo</label>
               <input
                 id="name"
-                name="name" // Esto debe coincidir con {{name}} en tu template de EmailJS
+                name="name" 
                 type="text"
                 className="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 transition-all"
                 placeholder="Tu nombre"
@@ -172,7 +172,7 @@ export default function ContactSection() {
               <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2 ml-1">Correo electrónico</label>
               <input
                 id="email"
-                name="email" // Esto debe coincidir con {{email}} en tu template
+                name="email" 
                 type="email"
                 className="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 transition-all"
                 placeholder="tu@mail.com"
@@ -184,7 +184,7 @@ export default function ContactSection() {
               <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2 ml-1">Mensaje</label>
               <textarea
                 id="message"
-                name="message" // Esto debe coincidir con {{message}} en tu template
+                name="message" 
                 rows={4}
                 className="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 transition-all resize-none"
                 placeholder="Contame un poco sobre la idea o el proyecto..."
