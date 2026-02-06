@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react"; // Agregamos useRef
+import { useState, useRef } from "react"; 
 import { Mail, Github, Linkedin, Send } from "lucide-react"; 
 import { motion } from "framer-motion"; 
 import Swal from "sweetalert2"; 
-import emailjs from "@emailjs/browser"; // Importamos EmailJS
+import emailjs from "@emailjs/browser"; 
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -23,8 +23,7 @@ const itemVariants = {
 
 export default function ContactSection() {
   const [isSending, setIsSending] = useState(false);
-  const form = useRef<HTMLFormElement>(null); // Referencia al formulario para EmailJS
-
+  const form = useRef<HTMLFormElement>(null); 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
