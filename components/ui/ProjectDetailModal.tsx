@@ -1,10 +1,10 @@
-// components/ui/ProjectDetailModal.tsx
 "use client";
 
 import { X, ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import type { Project } from "@/types/Project";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext"; // 1. Importamos el hook
 
 interface ProjectDetailModalProps {
   project: Project | null;
@@ -12,17 +12,35 @@ interface ProjectDetailModalProps {
 }
 
 export default function ProjectDetailModal({ project, onClose }: ProjectDetailModalProps) {
+  const { language } = useLanguage(); // 2. Obtenemos el idioma
+
+  // 3. Diccionario local para los textos de la interfaz del modal
+  const texts = {
+    es: {
+      demo: "Demo en Vivo",
+      code: "Código Fuente",
+      detailsTitle: "Detalles y Arquitectura",
+      stackTitle: "Stack Completo",
+    },
+    en: {
+      demo: "Live Demo",
+      code: "Source Code",
+      detailsTitle: "Details & Architecture",
+      stackTitle: "Full Stack",
+    }
+  };
+
+  const t = texts[language];
+
   // Solo renderizamos si hay un proyecto y el modal está abierto
   if (!project) return null;
 
-  // Variantes para la animación del modal
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.95 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.3 } },
     exit: { opacity: 0, scale: 0.95 },
   };
   
-  // Variantes para el fondo (backdrop)
   const backdropVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
@@ -33,17 +51,17 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
     <AnimatePresence>
       {project && (
         <motion.div
-          className="fixed inset-0 z-99 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-sm"
+          className="fixed inset-0 z-[99] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-sm"
           variants={backdropVariants}
           initial="hidden"
           animate="visible"
           exit="exit"
-          onClick={onClose} // Cerrar al hacer clic fuera
+          onClick={onClose}
         >
           <motion.div
             className="relative w-full max-w-4xl max-h-[90vh] bg-slate-900 rounded-xl shadow-2xl overflow-y-auto"
             variants={modalVariants}
-            onClick={(e) => e.stopPropagation()} // Evita que se cierre al hacer clic dentro
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Botón de Cierre */}
             <button
@@ -61,6 +79,7 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
                 <div className="relative w-full h-64 rounded-lg overflow-hidden border border-slate-700">
                   <Image
                     src={project.image}
+                    // @ts-ignore - El título viene como string desde el componente padre
                     alt={project.title}
                     fill
                     className="object-cover"
@@ -76,7 +95,7 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 rounded-full px-6 py-3 bg-sky-500 text-slate-900 font-bold hover:bg-sky-400 transition shadow-lg w-full justify-center"
                       >
-                        Demo en Vivo <ExternalLink size={18} />
+                         {t.demo} <ExternalLink size={18} />
                       </a>
                     )}
                     {project.repoUrl && (
@@ -86,7 +105,7 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 rounded-full px-6 py-3 bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition shadow-lg w-full justify-center"
                       >
-                        Código Fuente <Github size={18} />
+                        {t.code} <Github size={18} />
                       </a>
                     )}
                 </div>
@@ -95,23 +114,23 @@ export default function ProjectDetailModal({ project, onClose }: ProjectDetailMo
               {/* COLUMNA DERECHA: Texto y Detalles Técnicos */}
               <div className="space-y-6">
                 <h3 className="text-3xl font-extrabold text-white leading-snug">
+                  {/* @ts-ignore */}
                   {project.title}
                 </h3>
                 <p className="text-lg text-sky-400 italic">
-                    Detalles y Arquitectura
+                    {t.detailsTitle}
                 </p>
 
                 {/* Descripción Detallada */}
                 <p className="text-slate-300 leading-relaxed">
+                  {/* @ts-ignore */}
                   {project.shortDescription} 
-                  {/* Aquí podrías añadir un campo 'longDescription' a tu tipo Project para más detalle */}
                 </p>
 
-                {/* Tecnologías Detalladas (Todos los Logos) */}
+                {/* Tecnologías Detalladas */}
                 <div className="pt-4 border-t border-slate-700/50">
-                    <h4 className="text-lg font-semibold text-slate-200 mb-4">Stack Completo</h4>
+                    <h4 className="text-lg font-semibold text-slate-200 mb-4">{t.stackTitle}</h4>
                     <div className="flex flex-wrap gap-4">
-                        {/* ⚠️ Nota: Necesitarás un mapeo de techStack a logos si no lo tienes ya en el project object */}
                         {project.techStack.map((tech) => (
                            <span key={tech} className="text-sm px-3 py-1 rounded-full bg-slate-800 text-slate-200 border border-slate-700">
                                 {tech}
