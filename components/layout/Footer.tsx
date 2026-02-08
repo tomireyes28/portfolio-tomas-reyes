@@ -1,15 +1,20 @@
-import { Github, Linkedin, Code } from "lucide-react";
-import Link from "next/link"; // Usamos Link para navegación interna
+"use client"; // Importante para usar hooks
 
-const footerLinks = [
-  { name: 'Proyectos', href: '#projects' },
-  { name: 'Tecnologías', href: '#skills' },
-  { name: 'Sobre mí', href: '#about' },
-  { name: 'Contacto', href: '#contact' },
-];
+import { Github, Linkedin, Code } from "lucide-react";
+import Link from "next/link"; 
+import { useLanguage } from "@/context/LanguageContext"; // 1. Importar hook
 
 export default function Footer() {
+  const { t } = useLanguage(); // 2. Obtener textos
   const currentYear = new Date().getFullYear();
+
+  // 3. Movemos los links adentro para usar 't'
+  const footerLinks = [
+    { name: t.nav.projects, href: '#projects' }, // Reusamos las del Nav
+    { name: t.nav.tech, href: '#skills' },
+    { name: t.nav.about, href: '#about' },
+    { name: t.nav.contact, href: '#contact' },
+  ];
 
   return (
     <footer className="border-t border-slate-800 bg-slate-950 py-10 px-4">
@@ -23,18 +28,18 @@ export default function Footer() {
           </Link>
           
           <p className="text-xs">
-            &copy; {currentYear} Tomás Reyes. Todos los derechos reservados.
+            &copy; {currentYear} Tomás Reyes. {t.footer.rights}
           </p>
           
           <div className="flex items-center gap-1 text-xs pt-1">
             <Code size={12} className="text-slate-600" />
             <span className="text-slate-500">
-                Construido con Next.js, Tailwind CSS & TypeScript.
+                {t.footer.built}
             </span>
           </div>
         </div>
 
-        {/* CENTRO: NAVEGACIÓN RÁPIDA (Opcional) */}
+        {/* CENTRO: NAVEGACIÓN RÁPIDA */}
         <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             {footerLinks.map((link) => (
                 <Link 

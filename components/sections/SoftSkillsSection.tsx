@@ -1,17 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { softSkills } from "@/src/softSkills";
+// Borramos la importación de softSkills porque ahora viene desde las traducciones
+// import { softSkills } from "@/src/softSkills"; 
 import { CheckCircle, MessageSquare, Users, Zap, ShieldCheck, TrendingUp } from "lucide-react"; 
+import { useLanguage } from "@/context/LanguageContext"; // 1. Importar hook
 
-// Mapeo de íconos alineado a las habilidades del CV
+// 2. Mapeo de íconos usando los IDs que definimos en translations.ts
 const iconMap = {
-  'Trabajo en equipo': Users,
-  'Comunicación efectiva': MessageSquare,
-  'Resolución de problemas': Zap,
-  'Adaptabilidad': CheckCircle,
-  'Responsabilidad y ownership': ShieldCheck,
-  'Aprendizaje continuo': TrendingUp,
+  team: Users,
+  comms: MessageSquare,
+  problem: Zap,
+  adapt: CheckCircle,
+  owner: ShieldCheck,
+  learn: TrendingUp,
 };
 
 const itemVariants = {
@@ -20,6 +22,8 @@ const itemVariants = {
 };
 
 export default function SoftSkillsSection() {
+  const { t } = useLanguage(); // 3. Obtener textos
+
   return (
     <section
       id="soft-skills"
@@ -30,20 +34,20 @@ export default function SoftSkillsSection() {
         {/* COLUMNA IZQUIERDA — NARRATIVA DE VALOR */}
         <div className="md:col-span-2 space-y-6">
           <h2 className="text-4xl font-extrabold text-white tracking-tight">
-            Habilidades Blandas
+            {t.softSkills.title}
           </h2>
 
           <p className="text-lg text-slate-400 leading-relaxed">
-            Más allá del código, mi trayectoria liderando equipos y gestionando productos me permite enfocarme en la <span className="text-sky-400 font-semibold underline decoration-sky-400/30 underline-offset-4">entrega de valor constante</span>. 
+            {t.softSkills.desc1} <span className="text-sky-400 font-semibold underline decoration-sky-400/30 underline-offset-4">{t.softSkills.highlight}</span>. 
           </p>
           
           <p className="text-base text-slate-400 leading-relaxed">
-            He desarrollado una gran capacidad para integrarme rápidamente a equipos multidisciplinarios, actuando como un puente entre los requerimientos técnicos y los objetivos de negocio. Mi enfoque es pragmático: resolver problemas reales con soluciones eficientes.
+            {t.softSkills.desc2}
           </p>
           
           <div className="pt-2">
             <a href="#about" className="group inline-flex items-center text-sky-400 font-medium hover:text-sky-300 transition-colors">
-              Leer más sobre mi trayectoria 
+              {t.softSkills.link} 
               <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
             </a>
           </div>
@@ -57,12 +61,14 @@ export default function SoftSkillsSection() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ staggerChildren: 0.1 }}
         >
-          {softSkills.map((skill) => {
-            const IconComponent = iconMap[skill.name as keyof typeof iconMap] || CheckCircle;
+          {/* Mapeamos la lista desde t.softSkills.items */}
+          {t.softSkills.items.map((skill) => {
+            // Buscamos el ícono usando el ID (team, comms, etc)
+            const IconComponent = iconMap[skill.id as keyof typeof iconMap] || CheckCircle;
 
             return (
               <motion.div
-                key={skill.name}
+                key={skill.id}
                 variants={itemVariants}
                 whileHover={{ x: 8 }}
                 className="

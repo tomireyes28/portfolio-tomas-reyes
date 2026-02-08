@@ -5,6 +5,7 @@ import { Mail, Github, Linkedin, Send } from "lucide-react";
 import { motion } from "framer-motion"; 
 import Swal from "sweetalert2"; 
 import emailjs from "@emailjs/browser"; 
+import { useLanguage } from "@/context/LanguageContext"; // 1. Importar hook
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -22,17 +23,17 @@ const itemVariants = {
 };
 
 export default function ContactSection() {
+  const { t } = useLanguage(); // 2. Obtener textos
   const [isSending, setIsSending] = useState(false);
   const form = useRef<HTMLFormElement>(null); 
+  
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
     
     if (!form.current) return;
 
     setIsSending(true);
 
-    
     emailjs
       .sendForm(
         "service_qph1s2d",   
@@ -44,10 +45,10 @@ export default function ContactSection() {
       )
       .then(
         () => {
-          // ÉXITO
+          // ÉXITO (Textos traducidos)
           Swal.fire({
-            title: "¡Mensaje enviado!",
-            text: "Gracias por contactarme. Te responderé a la brevedad.",
+            title: t.contact.alerts.successTitle,
+            text: t.contact.alerts.successText,
             icon: "success",
             background: "#020617",
             color: "#f8fafc",
@@ -60,11 +61,11 @@ export default function ContactSection() {
           form.current?.reset();
         },
         (error) => {
-          // ERROR
+          // ERROR (Textos traducidos)
           console.error("FAILED...", error.text);
           Swal.fire({
-            title: "Error",
-            text: "Hubo un problema al enviar el mensaje. Por favor, intenta de nuevo o contáctame por LinkedIn.",
+            title: t.contact.alerts.errorTitle,
+            text: t.contact.alerts.errorText,
             icon: "error",
             background: "#020617",
             color: "#f8fafc",
@@ -97,15 +98,15 @@ export default function ContactSection() {
         <motion.div className="space-y-6 text-slate-50" variants={itemVariants}>
           <div>
             <h2 className="text-5xl font-extrabold leading-tight">
-                Listo para <span className="text-sky-400">crear</span> algo grande.
+                {t.contact.titlePart1} <span className="text-sky-400">{t.contact.titleHighlight}</span> {t.contact.titlePart2}
             </h2>
             <p className="mt-2 text-xl italic text-sky-400 font-medium">
-              ¡Trabajemos juntos!
+              {t.contact.subtitle}
             </p>
           </div>
 
           <p className="text-lg text-slate-400 max-w-md leading-relaxed">
-            Si te interesa mi perfil, tienes una propuesta de trabajo o quieres discutir un nuevo proyecto, no dudes en contactarme. Te responderé a la brevedad.
+            {t.contact.description}
           </p>
 
           <div className="space-y-4 pt-4">
@@ -147,7 +148,7 @@ export default function ContactSection() {
             variants={itemVariants}
         >
           <h3 className="text-2xl font-bold text-white text-center mb-8">
-            Envíame un mensaje
+            {t.contact.form.title}
           </h3>
 
           <form
@@ -156,37 +157,37 @@ export default function ContactSection() {
             onSubmit={handleSubmit}
           >
             <div className="text-left">
-              <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2 ml-1">Nombre completo</label>
+              <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2 ml-1">{t.contact.form.name}</label>
               <input
                 id="name"
                 name="name" 
                 type="text"
                 className="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 transition-all"
-                placeholder="Tu nombre"
+                placeholder={t.contact.form.namePlaceholder}
                 required
               />
             </div>
 
             <div className="text-left">
-              <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2 ml-1">Correo electrónico</label>
+              <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2 ml-1">{t.contact.form.email}</label>
               <input
                 id="email"
                 name="email" 
                 type="email"
                 className="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 transition-all"
-                placeholder="tu@mail.com"
+                placeholder={t.contact.form.emailPlaceholder}
                 required
               />
             </div>
 
             <div className="text-left">
-              <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2 ml-1">Mensaje</label>
+              <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2 ml-1">{t.contact.form.message}</label>
               <textarea
                 id="message"
                 name="message" 
                 rows={4}
                 className="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-3 text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 transition-all resize-none"
-                placeholder="Contame un poco sobre la idea o el proyecto..."
+                placeholder={t.contact.form.messagePlaceholder}
                 required
               />
             </div>
@@ -200,7 +201,7 @@ export default function ContactSection() {
                 isSending ? "bg-sky-700 cursor-not-allowed" : "bg-sky-500 hover:bg-sky-400 shadow-sky-500/20"
               }`}
             >
-              {isSending ? "Enviando..." : "Enviar Mensaje"}
+              {isSending ? t.contact.form.sending : t.contact.form.btn}
               {!isSending && <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
             </motion.button>
           </form>
