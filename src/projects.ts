@@ -2,6 +2,52 @@ import { Project } from "@/types/Project";
 
 export const projects: Project[] = [
   {
+    id: "mn-agency",
+    title: {
+      es: "MN Agency — Sistema de Gestión Deportiva (ERP/CRM)",
+      en: "MN Agency — Sports Management System (ERP/CRM)",
+    },
+    shortDescription: {
+      es: "Plataforma Full Stack para agencias de representación. Incluye gestión de contratos con cálculos financieros automáticos, generación de PDFs y firma digital. Cuenta con un módulo 'Matchmaker' inteligente para conectar jugadores con clubes mediante filtros avanzados. Backend robusto en NestJS con TypeORM.",
+      en: "Full Stack platform for representation agencies. Includes contract management with automatic financial calculations, PDF generation, and digital signing. Features an intelligent 'Matchmaker' module to connect players with clubs using advanced filters. Robust NestJS backend with TypeORM.",
+    },
+    techStack: ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "TypeORM", "TailwindCSS", "Supabase", "Docker"],
+    
+    demoUrl: "https://mnagency-app.vercel.app/login", 
+    repoUrl: "https://github.com/tomireyes28/mnagencyapp-backend", 
+    image: "/projects/mn-agency.png", 
+  },
+  {
+    id: "cinema-agenda",
+    title: {
+      es: "Cinema Agenda — Scraper Web y API RESTful",
+      en: "Cinema Agenda — Web Scraper & RESTful API",
+    },
+    shortDescription: {
+      es: "Agregador de carteleras de cine en tiempo real. El backend (NestJS + Puppeteer) realiza scraping automatizado de múltiples cadenas para unificar datos en PostgreSQL/Supabase. El frontend (Next.js) consume una API RESTful segura para visualizar horarios y estrenos.",
+      en: "Real-time cinema showtime aggregator. The backend (NestJS + Puppeteer) performs automated scraping of multiple chains to unify data in PostgreSQL/Supabase. The Next.js frontend consumes a secure RESTful API to visualize schedules and releases.",
+    },
+    techStack: ["NestJS", "Puppeteer", "Next.js", "Prisma", "PostgreSQL", "Supabase", "TypeScript", "TailwindCSS"],
+    demoUrl: "https://cinema-agenda-app.vercel.app/",
+    repoUrl: "https://github.com/tomireyes28/cinema-agenda-app",
+    image: "/projects/cinemaapp.png",
+  },
+  {
+    id: "psychomanager",
+    title: {
+      es: "PsychoManager — SaaS de Gestión Clínica y Pacientes",
+      en: "PsychoManager — Clinical & Patient Management SaaS",
+    },
+    shortDescription: {
+      es: "Plataforma SaaS Full Stack para profesionales de la salud mental. Implementa autenticación OAuth 2.0 con Google y manejo de sesiones cross-domain entre Vercel y Render. Incluye Dashboard interactivo, gestión de historias clínicas, agenda de turnos y módulo de finanzas.",
+      en: "Full Stack SaaS platform for mental health professionals. Implements Google OAuth 2.0 authentication and secure cross-domain session handling between Vercel and Render. Includes interactive Dashboard, medical record management, appointment scheduling, and finance module.",
+    },
+    techStack: ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "Prisma", "TailwindCSS", "ShadcnUI"],
+    demoUrl: "https://psycho-manager.vercel.app/",
+    repoUrl: "https://github.com/tomireyes28/psycho-manager", 
+    image: "/projects/psychomanager.png", // 
+  },
+  {
     id: "pos-store",
     title: {
       es: "Punto de Venta — E-commerce y Panel Administrativo",
@@ -15,6 +61,21 @@ export const projects: Project[] = [
     demoUrl: "https://nextjs-pos-gamma.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/nextjs_pos",
     image: "/projects/pos.png",
+  },
+  {
+    id: "dea-simulator",
+    title: {
+      es: "Simulador de DEA — Clínica Adventista Belgrano",
+      en: "AED Simulator — Clínica Adventista Belgrano",
+    },
+    shortDescription: {
+      es: "Simulador interactivo de Desfibrilador Externo Automático (DEA). Desarrollado con JavaScript vanilla para entrenamiento médico de alta fidelidad, simulando comportamiento del dispositivo, secuencias guiadas y respuesta de audio.",
+      en: "Interactive Automated External Defibrillator (AED) simulator. Developed with vanilla JavaScript for high-fidelity medical training, simulating device behavior, guided sequences, and real-time audio response.",
+    },
+    techStack: ["JavaScript", "HTML", "CSS"],
+    demoUrl: "https://dea-beta.vercel.app/",
+    repoUrl: "https://github.com/tomireyes28/dea",
+    image: "/projects/dea-simulador.png",
   },
   {
     id: "cash-tracker",
@@ -76,19 +137,5 @@ export const projects: Project[] = [
     repoUrl: "https://github.com/tomireyes28/devtree_frontend",
     image: "/projects/devtree.png",
   },
-  {
-    id: "dea-simulator",
-    title: {
-      es: "Simulador de DEA — Clínica Adventista Belgrano",
-      en: "AED Simulator — Clínica Adventista Belgrano",
-    },
-    shortDescription: {
-      es: "Simulador interactivo de Desfibrilador Externo Automático (DEA). Desarrollado con JavaScript vanilla para entrenamiento médico de alta fidelidad, simulando comportamiento del dispositivo, secuencias guiadas y respuesta de audio.",
-      en: "Interactive Automated External Defibrillator (AED) simulator. Developed with vanilla JavaScript for high-fidelity medical training, simulating device behavior, guided sequences, and real-time audio response.",
-    },
-    techStack: ["JavaScript", "HTML", "CSS"],
-    demoUrl: "https://dea-beta.vercel.app/",
-    repoUrl: "https://github.com/tomireyes28/dea",
-    image: "/projects/dea-simulador.png",
-  },
+  
 ];
