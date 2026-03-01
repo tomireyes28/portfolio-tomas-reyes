@@ -20,16 +20,16 @@ export const projects: Project[] = [
   {
     id: "cinema-agenda",
     title: {
-      es: "Cinema Agenda — Scraper Web y API RESTful",
-      en: "Cinema Agenda — Web Scraper & RESTful API",
+      es: "Cine Radar — Scraper Web y API RESTful",
+      en: "Cine Radar — Web Scraper & RESTful API",
     },
     shortDescription: {
       es: "Agregador de carteleras de cine en tiempo real. El backend (NestJS + Puppeteer) realiza scraping automatizado de múltiples cadenas para unificar datos en PostgreSQL/Supabase. El frontend (Next.js) consume una API RESTful segura para visualizar horarios y estrenos.",
       en: "Real-time cinema showtime aggregator. The backend (NestJS + Puppeteer) performs automated scraping of multiple chains to unify data in PostgreSQL/Supabase. The Next.js frontend consumes a secure RESTful API to visualize schedules and releases.",
     },
     techStack: ["NestJS", "Puppeteer", "Next.js", "Prisma", "PostgreSQL", "Supabase", "TypeScript", "TailwindCSS"],
-    demoUrl: "https://cinema-agenda-app.vercel.app/",
-    repoUrl: "https://github.com/tomireyes28/cinema-agenda-app",
+    demoUrl: "https://cine-radar-app.vercel.app/",
+    repoUrl: "https://github.com/tomireyes28/cine-radar",
     image: "/projects/cinemaapp.png",
   },
   {
