@@ -2,6 +2,44 @@ import { Project } from "@/types/Project";
 
 export const projects: Project[] = [
   {
+  "id": "aberturas-nyl",
+  "title": {
+    "es": "Aberturas N&L — Landing Page Comercial",
+    "en": "Aberturas N&L — Commercial Landing Page"
+  },
+  "shortDescription": {
+    "es": "Sitio web corporativo de alto rendimiento para una empresa de carpintería de aluminio. Destaca por su diseño boutique interactivo para exhibir líneas de productos, galería de obras optimizada en formato estático y un formulario de contacto serverless integrado con Web3Forms. Desarrollada con un enfoque SEO y exportación estática nativa para despliegue en Hostinger.",
+    "en": "High-performance corporate website for an aluminum carpentry business. Features an interactive boutique design for product showcases, an optimized static project gallery, and a serverless contact form integrated with Web3Forms. Developed with an SEO focus and native static export for Hostinger deployment."
+  },
+  "techStack": [
+    "Next.js",
+    "TypeScript",
+    "Tailwind CSS",
+    "Framer Motion",
+    "Web3Forms",
+    "Hostinger"
+  ],
+  "demoUrl": "https://aberturasnyl.com/",
+  "repoUrl": "https://github.com/tomireyes28/aberturas-nyl",
+  "image": "/projects/aberturas-nyl.png"
+},
+  {
+  "id": "lumi",
+  "title": {
+    "es": "Lumi — Finanzas Claras (Gestión de Finanzas Personales)",
+    "en": "Lumi — Clear Finances (Personal Finance Management)",
+  },
+  "shortDescription": {
+    "es": "Aplicación Full Stack para el control exhaustivo de finanzas personales. Permite la gestión de ingresos, gastos y tarjetas de crédito con visualización de cuotas. Incluye un simulador de reintegros bancarios para optimizar promociones, autenticación con Google y un dashboard dinámico con analíticas. Backend en NestJS con Prisma y despliegue automatizado.",
+    "en": "Full Stack application for comprehensive personal finance tracking. Manage income, expenses, and credit cards with installment visualization. Features a bank refund simulator to optimize promotions, Google authentication, and a dynamic dashboard with analytics. NestJS backend with Prisma and automated deployment.",
+  },
+  "techStack": ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "Prisma", "TailwindCSS", "Supabase", "Railway", "Vercel"],
+  
+  "demoUrl": "https://lumi-beta-one.vercel.app/", 
+  "repoUrl": "https://github.com/tomireyes28/lumi", 
+  "image": "/projects/lumi.png", 
+},
+  {
     id: "mn-agency",
     title: {
       es: "MN Agency — Sistema de Gestión Deportiva (ERP/CRM)",
@@ -18,6 +56,22 @@ export const projects: Project[] = [
     image: "/projects/mn-agency.png", 
   },
   {
+  id: "mn-igx-sync",
+  title: {
+    es: "MN Sync — Automatización de Cross-Posting IG ➡️ X",
+    en: "MN Sync — Automated IG ➡️ X Cross-Posting Bot",
+  },
+  shortDescription: {
+    es: "Automatización serverless de marketing digital para agencia. Sincroniza contenido orgánico de Instagram a X (Twitter). Soluciona problemas complejos de autenticación como tokens de larga duración de Meta, subida de medios binarios a X con OAuth 1.0a, y ejecución programada en la nube usando GitHub Actions como Cron Job.",
+    en: "Serverless digital marketing automation for an agency. Synchronizes organic content from Instagram to X (Twitter). Solves complex authentication issues such as Meta long-lived tokens, binary media upload to X using OAuth 1.0a, and scheduled cloud execution using GitHub Actions as a Cron Job.",
+  },
+  techStack: ["Node.js", "TypeScript", "Meta Graph API", "Twitter API v2", "GitHub Actions", "Axios"],
+  // Como no hay demo web, la URL del repositorio es la protagonista
+  demoUrl: "https://github.com/tomireyes28/ig-x-sync", // Poné la URL real de tu repo
+  repoUrl: "https://github.com/tomireyes28/ig-x-sync", 
+  image: "/projects/ig-x-sync.jpg", // Nombre sugerido para la imagen que vamos a crear
+},
+  {
     id: "cinema-agenda",
     title: {
       es: "Cine Radar — Scraper Web y API RESTful",
@@ -33,10 +87,10 @@ export const projects: Project[] = [
     image: "/projects/cinemaapp.png",
   },
   {
-    id: "psychomanager",
+    id: "therapio",
     title: {
-      es: "PsychoManager — SaaS de Gestión Clínica y Pacientes",
-      en: "PsychoManager — Clinical & Patient Management SaaS",
+      es: "Therapio — SaaS de Gestión Clínica y Pacientes",
+      en: "Therapio — Clinical & Patient Management SaaS",
     },
     shortDescription: {
       es: "Plataforma SaaS Full Stack para profesionales de la salud mental. Implementa autenticación OAuth 2.0 con Google y manejo de sesiones cross-domain entre Vercel y Render. Incluye Dashboard interactivo, gestión de historias clínicas, agenda de turnos y módulo de finanzas.",
