@@ -1,5 +1,7 @@
 export interface Skill {
-  name: string;                        // "React"
-  icon: string;                        // "/icons/react.svg"
-  category: "frontend" | "backend" | "tools";
+  name: string;
+  icon: string;
+  category: "frontend" | "backend" | "databases" | "tools";
+  level?: string;
+  highlight?: boolean;
 }

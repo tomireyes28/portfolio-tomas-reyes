@@ -6,4 +6,6 @@ export interface Project {
   demoUrl: string;
   repoUrl: string;
   image: string;
+  category?: "fullstack" | "frontend" | "tools";
+  featured?: boolean;
 }

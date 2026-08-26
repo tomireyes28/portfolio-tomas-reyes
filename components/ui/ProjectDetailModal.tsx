@@ -1,10 +1,11 @@
 "use client";
 
-import { X, ExternalLink, Github } from "lucide-react";
+import { useEffect } from "react";
+import { X, ExternalLink, Github, Layers, Code, CheckCircle } from "lucide-react";
 import Image from "next/image";
 import type { Project } from "@/types/Project";
 import { motion, AnimatePresence } from "framer-motion";
-import { useLanguage } from "@/context/LanguageContext"; // 1. Importamos el hook
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ProjectDetailModalProps {
   project: Project | null;
@@ -12,136 +13,159 @@ interface ProjectDetailModalProps {
 }
 
 export default function ProjectDetailModal({ project, onClose }: ProjectDetailModalProps) {
-  const { language } = useLanguage(); // 2. Obtenemos el idioma
+  const { t, language } = useLanguage();
 
-  // 3. Diccionario local para los textos de la interfaz del modal
-  const texts = {
-    es: {
-      demo: "Demo en Vivo",
-      code: "Código Fuente",
-      detailsTitle: "Detalles y Arquitectura",
-      stackTitle: "Stack Completo",
-    },
-    en: {
-      demo: "Live Demo",
-      code: "Source Code",
-      detailsTitle: "Details & Architecture",
-      stackTitle: "Full Stack",
+  // Close on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    if (project) {
+      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
     }
-  };
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "auto";
+    };
+  }, [project, onClose]);
 
-  const t = texts[language];
-
-  // Solo renderizamos si hay un proyecto y el modal está abierto
   if (!project) return null;
 
-  const modalVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.3 } },
-    exit: { opacity: 0, scale: 0.95 },
-  };
-  
-  const backdropVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-    exit: { opacity: 0 },
-  };
+  const title = typeof project.title === "string" ? project.title : project.title[language];
+  const description =
+    typeof project.shortDescription === "string"
+      ? project.shortDescription
+      : project.shortDescription[language];
 
   return (
     <AnimatePresence>
       {project && (
-        <motion.div
-          className="fixed inset-0 z-[99] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-sm"
-          variants={backdropVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          onClick={onClose}
-        >
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10">
+          {/* Backdrop */}
           <motion.div
-            className="relative w-full max-w-4xl max-h-[90vh] bg-slate-900 rounded-xl shadow-2xl overflow-y-auto"
-            variants={modalVariants}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Botón de Cierre */}
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-slate-800/70 text-slate-300 hover:bg-slate-700 transition"
-            >
-              <X size={24} />
-            </button>
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-slate-950/80 backdrop-blur-md"
+          />
 
-            {/* Contenido del Modal */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
-              
-              {/* COLUMNA IZQUIERDA: Imagen y Enlaces */}
-              <div className="space-y-6">
-                <div className="relative w-full h-64 rounded-lg overflow-hidden border border-slate-700">
-                  <Image
-                    src={project.image}
-                    // @ts-ignore - El título viene como string desde el componente padre
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                  />
+          {/* Modal Container */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ type: "spring", duration: 0.4, bounce: 0.1 }}
+            className="relative z-10 flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-slate-800/90 bg-slate-900/95 shadow-2xl shadow-black/80 backdrop-blur-2xl"
+          >
+            {/* Header bar */}
+            <div className="flex items-center justify-between border-b border-slate-800/80 px-6 py-4">
+              <div className="flex items-center gap-2">
+                <span className="flex h-3 w-3 rounded-full bg-red-500/80" />
+                <span className="flex h-3 w-3 rounded-full bg-yellow-500/80" />
+                <span className="flex h-3 w-3 rounded-full bg-emerald-500/80" />
+                <span className="ml-2 font-mono text-xs text-slate-400">
+                  {project.id}.tsx
+                </span>
+              </div>
+
+              <button
+                onClick={onClose}
+                aria-label="Cerrar modal"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-800 bg-slate-950 text-slate-400 hover:border-slate-700 hover:text-white transition cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Scrollable Content Body */}
+            <div className="overflow-y-auto p-6 md:p-8 space-y-8">
+              {/* Media Preview */}
+              <div className="relative h-64 sm:h-80 md:h-96 w-full overflow-hidden rounded-2xl border border-slate-800 bg-slate-950">
+                <Image
+                  src={project.image}
+                  alt={title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 896px"
+                  className="object-cover object-top"
+                />
+              </div>
+
+              {/* Title & Description */}
+              <div className="space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+                    {title}
+                  </h2>
+
+                  {project.category && (
+                    <span className="rounded-full border border-sky-500/30 bg-sky-500/10 px-3 py-1 font-mono text-xs font-semibold text-sky-400 uppercase">
+                      {project.category}
+                    </span>
+                  )}
                 </div>
-                
-                {/* Botones de Acción */}
-                <div className="flex gap-4 pt-2">
-                    {project.demoUrl && (
-                      <a
-                        href={project.demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 rounded-full px-6 py-3 bg-sky-500 text-slate-900 font-bold hover:bg-sky-400 transition shadow-lg w-full justify-center"
-                      >
-                         {t.demo} <ExternalLink size={18} />
-                      </a>
-                    )}
-                    {project.repoUrl && (
-                      <a
-                        href={project.repoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 rounded-full px-6 py-3 bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition shadow-lg w-full justify-center"
-                      >
-                        {t.code} <Github size={18} />
-                      </a>
-                    )}
+
+                <div className="rounded-xl border border-slate-800/80 bg-slate-950/60 p-5">
+                  <h3 className="text-sm font-semibold text-sky-400 mb-2 flex items-center gap-2">
+                    <Layers size={16} />
+                    <span>{t.projects.modal.detailsTitle}</span>
+                  </h3>
+                  <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+                    {description}
+                  </p>
                 </div>
               </div>
 
-              {/* COLUMNA DERECHA: Texto y Detalles Técnicos */}
-              <div className="space-y-6">
-                <h3 className="text-3xl font-extrabold text-white leading-snug">
-                  {/* @ts-ignore */}
-                  {project.title}
-                </h3>
-                <p className="text-lg text-sky-400 italic">
-                    {t.detailsTitle}
-                </p>
-
-                {/* Descripción Detallada */}
-                <p className="text-slate-300 leading-relaxed">
-                  {/* @ts-ignore */}
-                  {project.shortDescription} 
-                </p>
-
-                {/* Tecnologías Detalladas */}
-                <div className="pt-4 border-t border-slate-700/50">
-                    <h4 className="text-lg font-semibold text-slate-200 mb-4">{t.stackTitle}</h4>
-                    <div className="flex flex-wrap gap-4">
-                        {project.techStack.map((tech) => (
-                           <span key={tech} className="text-sm px-3 py-1 rounded-full bg-slate-800 text-slate-200 border border-slate-700">
-                                {tech}
-                           </span>
-                        ))}
-                    </div>
+              {/* Tech Stack Breakdown */}
+              <div className="space-y-3">
+                <h4 className="text-sm font-semibold text-slate-200 flex items-center gap-2">
+                  <Code size={16} className="text-sky-400" />
+                  <span>{t.projects.modal.stackTitle}</span>
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {project.techStack.map((tech) => (
+                    <span
+                      key={tech}
+                      className="rounded-lg border border-slate-800 bg-slate-950 px-3 py-1.5 font-mono text-xs text-slate-200 shadow-sm"
+                    >
+                      {tech}
+                    </span>
+                  ))}
                 </div>
+              </div>
+
+              {/* Footer Actions */}
+              <div className="flex flex-wrap items-center justify-end gap-3 pt-4 border-t border-slate-800/80">
+                {project.repoUrl && (
+                  <a
+                    href={project.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-5 py-2.5 text-xs font-semibold text-slate-200 hover:bg-slate-700 hover:text-white transition shadow-sm cursor-pointer"
+                  >
+                    <Github size={16} />
+                    <span>{t.projects.modal.code}</span>
+                  </a>
+                )}
+
+                {project.demoUrl && (
+                  <a
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 px-6 py-2.5 text-xs font-bold text-slate-950 shadow-lg shadow-sky-500/25 hover:opacity-95 hover:scale-[1.02] transition cursor-pointer"
+                  >
+                    <span>{t.projects.modal.demo}</span>
+                    <ExternalLink size={16} />
+                  </a>
+                )}
               </div>
             </div>
           </motion.div>
-        </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );

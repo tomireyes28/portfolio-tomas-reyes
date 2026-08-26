@@ -2,43 +2,46 @@ import { Project } from "@/types/Project";
 
 export const projects: Project[] = [
   {
-  "id": "aberturas-nyl",
-  "title": {
-    "es": "Aberturas N&L — Landing Page Comercial",
-    "en": "Aberturas N&L — Commercial Landing Page"
+    id: "aberturas-nyl",
+    title: {
+      es: "Aberturas N&L — Landing Page Comercial",
+      en: "Aberturas N&L — Commercial Landing Page"
+    },
+    shortDescription: {
+      es: "Sitio web corporativo de alto rendimiento para una empresa de carpintería de aluminio. Destaca por su diseño boutique interactivo para exhibir líneas de productos, galería de obras optimizada en formato estático y un formulario de contacto serverless integrado con Web3Forms. Desarrollada con un enfoque SEO y exportación estática nativa para despliegue en Hostinger.",
+      en: "High-performance corporate website for an aluminum carpentry business. Features an interactive boutique design for product showcases, an optimized static project gallery, and a serverless contact form integrated with Web3Forms. Developed with an SEO focus and native static export for Hostinger deployment."
+    },
+    techStack: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Framer Motion",
+      "Web3Forms",
+      "Hostinger"
+    ],
+    category: "frontend",
+    featured: true,
+    demoUrl: "https://aberturasnyl.com/",
+    repoUrl: "https://github.com/tomireyes28/aberturas-nyl",
+    image: "/projects/aberturas-nyl.png"
   },
-  "shortDescription": {
-    "es": "Sitio web corporativo de alto rendimiento para una empresa de carpintería de aluminio. Destaca por su diseño boutique interactivo para exhibir líneas de productos, galería de obras optimizada en formato estático y un formulario de contacto serverless integrado con Web3Forms. Desarrollada con un enfoque SEO y exportación estática nativa para despliegue en Hostinger.",
-    "en": "High-performance corporate website for an aluminum carpentry business. Features an interactive boutique design for product showcases, an optimized static project gallery, and a serverless contact form integrated with Web3Forms. Developed with an SEO focus and native static export for Hostinger deployment."
-  },
-  "techStack": [
-    "Next.js",
-    "TypeScript",
-    "Tailwind CSS",
-    "Framer Motion",
-    "Web3Forms",
-    "Hostinger"
-  ],
-  "demoUrl": "https://aberturasnyl.com/",
-  "repoUrl": "https://github.com/tomireyes28/aberturas-nyl",
-  "image": "/projects/aberturas-nyl.png"
-},
   {
-  "id": "lumi",
-  "title": {
-    "es": "Lumi — Finanzas Claras (Gestión de Finanzas Personales)",
-    "en": "Lumi — Clear Finances (Personal Finance Management)",
+    id: "lumi",
+    title: {
+      es: "Lumi — Finanzas Claras (Gestión de Finanzas Personales)",
+      en: "Lumi — Clear Finances (Personal Finance Management)",
+    },
+    shortDescription: {
+      es: "Aplicación Full Stack para el control exhaustivo de finanzas personales. Permite la gestión de ingresos, gastos y tarjetas de crédito con visualización de cuotas. Incluye un simulador de reintegros bancarios para optimizar promociones, autenticación con Google y un dashboard dinámico con analíticas. Backend en NestJS con Prisma y despliegue automatizado.",
+      en: "Full Stack application for comprehensive personal finance tracking. Manage income, expenses, and credit cards with installment visualization. Features a bank refund simulator to optimize promotions, Google authentication, and a dynamic dashboard with analytics. NestJS backend with Prisma and automated deployment.",
+    },
+    techStack: ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "Prisma", "TailwindCSS", "Supabase", "Railway", "Vercel"],
+    category: "fullstack",
+    featured: true,
+    demoUrl: "https://lumi-beta-one.vercel.app/", 
+    repoUrl: "https://github.com/tomireyes28/lumi", 
+    image: "/projects/lumi.png", 
   },
-  "shortDescription": {
-    "es": "Aplicación Full Stack para el control exhaustivo de finanzas personales. Permite la gestión de ingresos, gastos y tarjetas de crédito con visualización de cuotas. Incluye un simulador de reintegros bancarios para optimizar promociones, autenticación con Google y un dashboard dinámico con analíticas. Backend en NestJS con Prisma y despliegue automatizado.",
-    "en": "Full Stack application for comprehensive personal finance tracking. Manage income, expenses, and credit cards with installment visualization. Features a bank refund simulator to optimize promotions, Google authentication, and a dynamic dashboard with analytics. NestJS backend with Prisma and automated deployment.",
-  },
-  "techStack": ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "Prisma", "TailwindCSS", "Supabase", "Railway", "Vercel"],
-  
-  "demoUrl": "https://lumi-beta-one.vercel.app/", 
-  "repoUrl": "https://github.com/tomireyes28/lumi", 
-  "image": "/projects/lumi.png", 
-},
   {
     id: "mn-agency",
     title: {
@@ -50,27 +53,29 @@ export const projects: Project[] = [
       en: "Full Stack platform for representation agencies. Includes contract management with automatic financial calculations, PDF generation, and digital signing. Features an intelligent 'Matchmaker' module to connect players with clubs using advanced filters. Robust NestJS backend with TypeORM.",
     },
     techStack: ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "TypeORM", "TailwindCSS", "Supabase", "Docker"],
-    
+    category: "fullstack",
+    featured: true,
     demoUrl: "https://mnagency-app.vercel.app/login", 
     repoUrl: "https://github.com/tomireyes28/mnagencyapp-backend", 
     image: "/projects/mn-agency.png", 
   },
   {
-  id: "mn-igx-sync",
-  title: {
-    es: "MN Sync — Automatización de Cross-Posting IG ➡️ X",
-    en: "MN Sync — Automated IG ➡️ X Cross-Posting Bot",
+    id: "mn-igx-sync",
+    title: {
+      es: "MN Sync — Automatización de Cross-Posting IG ➡️ X",
+      en: "MN Sync — Automated IG ➡️ X Cross-Posting Bot",
+    },
+    shortDescription: {
+      es: "Automatización serverless de marketing digital para agencia. Sincroniza contenido orgánico de Instagram a X (Twitter). Soluciona problemas complejos de autenticación como tokens de larga duración de Meta, subida de medios binarios a X con OAuth 1.0a, y ejecución programada en la nube usando GitHub Actions como Cron Job.",
+      en: "Serverless digital marketing automation for an agency. Synchronizes organic content from Instagram to X (Twitter). Solves complex authentication issues such as Meta long-lived tokens, binary media upload to X using OAuth 1.0a, and scheduled cloud execution using GitHub Actions as a Cron Job.",
+    },
+    techStack: ["Node.js", "TypeScript", "Meta Graph API", "Twitter API v2", "GitHub Actions", "Axios"],
+    category: "tools",
+    featured: true,
+    demoUrl: "https://github.com/tomireyes28/ig-x-sync",
+    repoUrl: "https://github.com/tomireyes28/ig-x-sync", 
+    image: "/projects/ig-x-sync.jpg", 
   },
-  shortDescription: {
-    es: "Automatización serverless de marketing digital para agencia. Sincroniza contenido orgánico de Instagram a X (Twitter). Soluciona problemas complejos de autenticación como tokens de larga duración de Meta, subida de medios binarios a X con OAuth 1.0a, y ejecución programada en la nube usando GitHub Actions como Cron Job.",
-    en: "Serverless digital marketing automation for an agency. Synchronizes organic content from Instagram to X (Twitter). Solves complex authentication issues such as Meta long-lived tokens, binary media upload to X using OAuth 1.0a, and scheduled cloud execution using GitHub Actions as a Cron Job.",
-  },
-  techStack: ["Node.js", "TypeScript", "Meta Graph API", "Twitter API v2", "GitHub Actions", "Axios"],
-  // Como no hay demo web, la URL del repositorio es la protagonista
-  demoUrl: "https://github.com/tomireyes28/ig-x-sync", // Poné la URL real de tu repo
-  repoUrl: "https://github.com/tomireyes28/ig-x-sync", 
-  image: "/projects/ig-x-sync.jpg", // Nombre sugerido para la imagen que vamos a crear
-},
   {
     id: "cinema-agenda",
     title: {
@@ -82,6 +87,8 @@ export const projects: Project[] = [
       en: "Real-time cinema showtime aggregator. The backend (NestJS + Puppeteer) performs automated scraping of multiple chains to unify data in PostgreSQL/Supabase. The Next.js frontend consumes a secure RESTful API to visualize schedules and releases.",
     },
     techStack: ["NestJS", "Puppeteer", "Next.js", "Prisma", "PostgreSQL", "Supabase", "TypeScript", "TailwindCSS"],
+    category: "fullstack",
+    featured: true,
     demoUrl: "https://cine-radar-app.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/cine-radar",
     image: "/projects/cinemaapp.png",
@@ -97,9 +104,11 @@ export const projects: Project[] = [
       en: "Full Stack SaaS platform for mental health professionals. Implements Google OAuth 2.0 authentication and secure cross-domain session handling between Vercel and Render. Includes interactive Dashboard, medical record management, appointment scheduling, and finance module.",
     },
     techStack: ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "Prisma", "TailwindCSS", "ShadcnUI"],
+    category: "fullstack",
+    featured: true,
     demoUrl: "https://psycho-manager.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/psycho-manager", 
-    image: "/projects/psychomanager.png", // 
+    image: "/projects/psychomanager.png",
   },
   {
     id: "pos-store",
@@ -112,6 +121,8 @@ export const projects: Project[] = [
       en: "High-performance Full Stack e-commerce solution. The Next.js frontend handles the store and product/coupon selection. The NestJS & PostgreSQL backend provides a complete Admin Dashboard for inventory, product, and sales management.",
     },
     techStack: ["Next.js", "NestJS", "PostgreSQL", "Prisma", "React", "Node.js", "TailwindCSS"],
+    category: "fullstack",
+    featured: false,
     demoUrl: "https://nextjs-pos-gamma.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/nextjs_pos",
     image: "/projects/pos.png",
@@ -127,6 +138,8 @@ export const projects: Project[] = [
       en: "Interactive Automated External Defibrillator (AED) simulator. Developed with vanilla JavaScript for high-fidelity medical training, simulating device behavior, guided sequences, and real-time audio response.",
     },
     techStack: ["JavaScript", "HTML", "CSS"],
+    category: "frontend",
+    featured: false,
     demoUrl: "https://dea-beta.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/dea",
     image: "/projects/dea-simulador.png",
@@ -142,6 +155,8 @@ export const projects: Project[] = [
       en: "Demo user: user@user.com, password:12345678 | Financial tool for budget control. Implements secure authentication and role management. Developed with React and PostgreSQL/Prisma to monitor budget status in real-time.",
     },
     techStack: ["React", "PostgreSQL", "Prisma", "Node.js", "Express", "TailwindCSS", "JavaScript"],
+    category: "fullstack",
+    featured: false,
     demoUrl: "https://cashtracker-frontend-snowy.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/cashtracker_frontend",
     image: "/projects/cashtracker.png",
@@ -157,6 +172,8 @@ export const projects: Project[] = [
       en: "Point of Sale system designed for real-time workflows. The architecture handles terminals for customers, kitchen, and public display. Uses Prisma and Node.js to ensure fast communication and data persistence.",
     },
     techStack: ["React", "Prisma", "Node.js", "Express", "MongoDB", "TailwindCSS", "JavaScript"],
+    category: "fullstack",
+    featured: false,
     demoUrl: "https://quiosco-next-red.vercel.app/order/cafe",
     repoUrl: "https://github.com/tomireyes28/quiosco_next",
     image: "/projects/quiosco.png",
@@ -172,6 +189,8 @@ export const projects: Project[] = [
       en: "Demo user: user@user.com, password:12345678 | Project management app based on Kanban methodology. Developed with the MERN Stack to manage task workflow across multiple states. Includes authentication and permission management.",
     },
     techStack: ["React", "Node.js", "Express", "MongoDB", "TailwindCSS", "JavaScript"],
+    category: "fullstack",
+    featured: false,
     demoUrl: "https://uptask-frontend-w4hc.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/uptask_frontend",
     image: "/projects/uptask.png",
@@ -187,9 +206,10 @@ export const projects: Project[] = [
       en: "Demo user: user@user.com, password:12345678 | Full Stack platform that allows designing a customizable public link profile. Built with React and MongoDB, focusing on data persistence and offering a dynamic interface.",
     },
     techStack: ["React", "Node.js", "Express", "MongoDB", "JavaScript", "HTML", "CSS"],
+    category: "fullstack",
+    featured: false,
     demoUrl: "https://devtree-frontend-phi.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/devtree_frontend",
     image: "/projects/devtree.png",
   },
-  
 ];
