@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+:root {
+  --accent: #d4ff00;
+  --accent-hover: #bcf000;
+  --accent-muted: rgba(212, 255, 0, 0.12);
+  --accent-glow: rgba(212, 255, 0, 0.25);
+  --bg-deep: #080808;
+  --bg-surface: #121214;
+  --border-subtle: #222226;
+  --border-strong: #333338;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -7,95 +18,102 @@
   }
 
   body {
-    background-color: #030712;
-    color: #f8fafc;
+    background-color: var(--bg-deep);
+    color: #f4f4f5;
     overflow-x: hidden;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
   ::selection {
-    background-color: rgba(56, 189, 248, 0.25);
-    color: #38bdf8;
+    background-color: var(--accent);
+    color: #000000;
   }
 
-  /* Custom scrollbar */
+  /* Custom sharp scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #030712;
+    background: #080808;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #1e293b;
-    border-radius: 4px;
+    background: #27272a;
+    border-radius: 0px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #38bdf8;
+    background: var(--accent);
   }
 }
 
-/* Glassmorphism and Background effects */
-.glass-panel {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.glass-panel-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.glass-panel-hover:hover {
-  background: rgba(30, 41, 59, 0.65);
-  border-color: rgba(56, 189, 248, 0.3);
-  box-shadow: 0 0 25px rgba(56, 189, 248, 0.08);
-}
-
+/* Precision Architectural Grid Pattern */
 .tech-grid-pattern {
-  background-size: 32px 32px;
+  background-size: 40px 40px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
 }
 
 .tech-dots-pattern {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: radial-gradient(rgba(212, 255, 0, 0.15) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
-/* Glowing text gradients */
+/* Hard Neo-Industrial Shadows */
+.hard-shadow-accent {
+  box-shadow: 4px 4px 0px 0px var(--accent);
+}
+
+.hard-shadow-zinc {
+  box-shadow: 4px 4px 0px 0px #27272a;
+}
+
+.hard-shadow-accent-sm {
+  box-shadow: 2px 2px 0px 0px var(--accent);
+}
+
+/* Industrial Card / Surface */
+.industrial-card {
+  background: rgba(18, 18, 20, 0.85);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.industrial-card:hover {
+  border-color: rgba(212, 255, 0, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+}
+
+/* Distinctive typography accents */
+.text-accent {
+  color: var(--accent);
+}
+
+.bg-accent {
+  background-color: var(--accent);
+}
+
+.border-accent {
+  border-color: var(--accent);
+}
+
+.gradient-text-accent {
+  background: linear-gradient(135deg, #ffffff 10%, #d4ff00 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .gradient-text-sky {
-  background: linear-gradient(135deg, #ffffff 0%, #38bdf8 60%, #0284c7 100%);
+  background: linear-gradient(135deg, #ffffff 20%, #d4ff00 90%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-text-purple {
-  background: linear-gradient(135deg, #ffffff 0%, #a855f7 50%, #6366f1 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #e4e4e7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-.glow-pill {
-  position: relative;
-}
-
-.glow-pill::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
-  border-radius: inherit;
-  z-index: -1;
-  opacity: 0.4;
-  filter: blur(8px);
-  transition: opacity 0.3s ease;
-}
-
-.glow-pill:hover::before {
-  opacity: 0.8;
 }

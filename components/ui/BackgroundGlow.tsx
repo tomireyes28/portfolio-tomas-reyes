@@ -1,44 +1,24 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 export default function BackgroundGlow() {
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-      {/* Subtle Grid Overlay */}
-      <div className="absolute inset-0 tech-grid-pattern opacity-40" />
+      {/* Precision Architectural Grid */}
+      <div className="absolute inset-0 tech-grid-pattern opacity-60" />
 
-      {/* Top Ambient Glow - Soft Sky */}
-      <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.15, 0.25, 0.15],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute -top-40 left-1/2 h-[550px] w-[550px] -translate-x-1/2 rounded-full bg-sky-500/15 blur-[140px] md:h-[750px] md:w-[750px]"
-      />
+      {/* Radial vignette to fade out grid towards edges */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(212,255,0,0.06),rgba(8,8,8,0.95)_70%)]" />
 
-      {/* Center Subtle Indigo Ambient Glow */}
-      <motion.div
-        animate={{
-          scale: [1, 1.15, 1],
-          opacity: [0.08, 0.16, 0.08],
-        }}
-        transition={{
-          duration: 16,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1,
-        }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-indigo-500/10 blur-[160px]"
-      />
+      {/* Subtle top horizontal rule / line of light */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#d4ff00]/25 to-transparent" />
 
-      {/* Bottom Ambient Glow */}
-      <div className="absolute -bottom-40 left-1/2 -translate-x-1/2 h-[500px] w-[600px] rounded-full bg-blue-600/10 blur-[150px]" />
+      {/* Industrial corner crosshair markers */}
+      <div className="absolute top-6 left-6 font-mono text-[10px] text-zinc-700 select-none hidden lg:block">
+        + 00.1 / LAT.DEV
+      </div>
+      <div className="absolute top-6 right-6 font-mono text-[10px] text-zinc-700 select-none hidden lg:block">
+        SYS.ONLINE / 2026 +
+      </div>
     </div>
   );
 }

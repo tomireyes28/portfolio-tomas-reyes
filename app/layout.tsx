@@ -42,7 +42,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${inter.variable} dark scroll-smooth`}>
-      <body className="relative min-h-screen bg-slate-950 font-sans text-slate-100 antialiased selection:bg-sky-500/30 selection:text-sky-300">
+      <body className="relative min-h-screen bg-[#080808] font-sans text-zinc-100 antialiased selection:bg-[#d4ff00] selection:text-black">
         <LanguageProvider>
           <BackgroundGlow />
           <div className="relative z-10">{children}</div>
