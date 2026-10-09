@@ -12,28 +12,28 @@ export default function LanguageSwitch() {
       onClick={toggleLanguage}
       type="button"
       aria-label="Cambiar idioma / Toggle Language"
-      className="group relative flex h-9 w-20 items-center justify-between rounded-full border border-slate-700/80 bg-slate-900/90 p-1 text-xs font-semibold shadow-inner transition-all hover:border-sky-500/50 hover:shadow-[0_0_12px_rgba(56,189,248,0.2)] cursor-pointer"
+      className="group relative flex h-8 w-18 items-center justify-between rounded-lg border border-[#27272a] bg-[#111113] p-1 text-xs font-semibold transition-all hover:border-[#d4ff00]/60 cursor-pointer"
     >
-      {/* Sliding pill active indicator */}
+      {/* Sliding block active indicator */}
       <motion.div
         layout
-        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-        className={`absolute top-1 bottom-1 w-[34px] rounded-full bg-gradient-to-r from-sky-500 to-blue-600 shadow-md ${
-          isEs ? "left-1" : "right-1"
+        transition={{ type: "spring", stiffness: 500, damping: 32 }}
+        className={`absolute top-0.5 bottom-0.5 w-[30px] rounded-md bg-[#d4ff00] shadow-sm ${
+          isEs ? "left-0.5" : "right-0.5"
         }`}
       />
 
       <span
-        className={`relative z-10 flex-1 text-center font-mono text-[11px] transition-colors duration-200 ${
-          isEs ? "text-slate-950 font-bold" : "text-slate-400 group-hover:text-slate-200"
+        className={`relative z-10 flex-1 text-center font-mono text-[10px] tracking-wider transition-colors duration-150 ${
+          isEs ? "text-black font-extrabold" : "text-zinc-400 group-hover:text-zinc-200"
         }`}
       >
         ES
       </span>
 
       <span
-        className={`relative z-10 flex-1 text-center font-mono text-[11px] transition-colors duration-200 ${
-          !isEs ? "text-slate-950 font-bold" : "text-slate-400 group-hover:text-slate-200"
+        className={`relative z-10 flex-1 text-center font-mono text-[10px] tracking-wider transition-colors duration-150 ${
+          !isEs ? "text-black font-extrabold" : "text-zinc-400 group-hover:text-zinc-200"
         }`}
       >
         EN

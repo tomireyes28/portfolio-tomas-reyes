@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageSwitch from "@/components/ui/LanguageSwitch";
-import { FileDown, Menu, X, Sparkles } from "lucide-react";
+import { FileDown, Menu, X, Terminal } from "lucide-react";
 
 export default function Navbar() {
   const { t } = useLanguage();
@@ -56,27 +56,31 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-3 transition-all duration-300">
       <nav
-        className={`flex w-full max-w-6xl items-center justify-between rounded-full border px-4 py-2.5 transition-all duration-300 md:px-6 ${
+        className={`flex w-full max-w-6xl items-center justify-between rounded-xl border px-4 py-2.5 transition-all duration-300 md:px-5 ${
           isScrolled
-            ? "border-slate-800/90 bg-slate-950/80 shadow-[0_8px_32px_rgba(0,0,0,0.6)] backdrop-blur-xl"
-            : "border-slate-800/40 bg-slate-950/40 backdrop-blur-md"
+            ? "border-[#27272a] bg-[#0c0c0e]/90 shadow-[0_10px_30px_rgba(0,0,0,0.8)] backdrop-blur-xl"
+            : "border-[#1e1e22] bg-[#0c0c0e]/60 backdrop-blur-md"
         }`}
       >
         {/* Brand / Logo */}
         <a
           href="#top"
-          className="group flex items-center gap-2 text-sm font-bold tracking-tight text-white transition hover:opacity-90 md:text-base"
+          className="group flex items-center gap-2.5 text-sm font-semibold tracking-tight text-white transition hover:opacity-90"
         >
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-tr from-sky-500 to-indigo-600 text-xs font-black text-slate-950 shadow-md shadow-sky-500/20 group-hover:scale-105 transition-transform">
+          <span className="flex h-6 items-center justify-center rounded bg-[#d4ff00] px-1.5 font-mono text-[11px] font-black text-black shadow-sm group-hover:scale-105 transition-transform">
             TR
           </span>
-          <span className="font-mono text-slate-200">
-            tomas<span className="text-sky-400">.reyes</span>
+          <span className="font-mono text-xs tracking-tight text-zinc-200">
+            tomas<span className="text-[#d4ff00]">.reyes</span>
+          </span>
+          <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-zinc-900/60 px-2 py-0.5 font-mono text-[10px] text-zinc-400">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#d4ff00] animate-pulse" />
+            v2.6
           </span>
         </a>
 
         {/* Desktop Navigation Links */}
-        <ul className="hidden items-center gap-1 rounded-full border border-slate-800/60 bg-slate-900/40 px-3 py-1 text-sm md:flex">
+        <ul className="hidden items-center gap-1 rounded-lg border border-[#222226] bg-[#121215]/80 p-1 text-sm md:flex">
           {links.map((link) => {
             const linkId = link.href.substring(1);
             const isActive = linkId === activeSection;
@@ -85,18 +89,18 @@ export default function Navbar() {
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className={`relative rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-200 ${
+                  className={`relative rounded-md px-3.5 py-1.5 font-mono text-xs font-medium transition-all duration-150 ${
                     isActive
-                      ? "text-sky-300"
-                      : "text-slate-400 hover:text-slate-100 hover:bg-slate-800/40"
+                      ? "text-[#d4ff00]"
+                      : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/40"
                   }`}
                 >
                   {link.label}
                   {isActive && (
                     <motion.div
                       layoutId="navbar-active-pill"
-                      className="absolute inset-0 -z-10 rounded-full bg-sky-500/10 border border-sky-500/30"
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      className="absolute inset-0 -z-10 rounded-md border border-[#d4ff00]/30 bg-[#d4ff00]/10"
+                      transition={{ type: "spring", stiffness: 450, damping: 32 }}
                     />
                   )}
                 </a>
@@ -106,15 +110,15 @@ export default function Navbar() {
         </ul>
 
         {/* Right Actions: CV + Language Switch + Mobile Toggle */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           {/* CV Button */}
           <a
             href="/projects/Tomas%20Reyes%20CV.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden items-center gap-1.5 rounded-full border border-sky-500/30 bg-sky-500/10 px-3.5 py-1.5 text-xs font-semibold text-sky-300 transition-all duration-300 hover:border-sky-400 hover:bg-sky-500/20 hover:shadow-[0_0_15px_rgba(56,189,248,0.25)] md:flex"
+            className="hidden items-center gap-1.5 rounded-lg border border-[#27272a] bg-[#121215] px-3.5 py-1.5 font-mono text-xs font-semibold text-zinc-200 transition-all duration-200 hover:border-[#d4ff00] hover:text-[#d4ff00] md:flex"
           >
-            <FileDown size={14} />
+            <FileDown size={13} className="text-[#d4ff00]" />
             <span>CV</span>
           </a>
 
@@ -125,9 +129,9 @@ export default function Navbar() {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Abrir menú"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-800 bg-slate-900 text-slate-300 hover:text-white md:hidden cursor-pointer"
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#27272a] bg-[#121215] text-zinc-300 hover:text-white md:hidden cursor-pointer"
           >
-            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
           </button>
         </div>
       </nav>
@@ -136,13 +140,13 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            initial={{ opacity: 0, y: -15, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-16 left-4 right-4 z-50 rounded-2xl border border-slate-800 bg-slate-950/95 p-5 shadow-2xl backdrop-blur-2xl md:hidden"
+            exit={{ opacity: 0, y: -15, scale: 0.98 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-16 left-4 right-4 z-50 rounded-xl border border-[#27272a] bg-[#0c0c0e]/95 p-4 shadow-2xl backdrop-blur-2xl md:hidden"
           >
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col gap-1.5">
               {links.map((link) => {
                 const linkId = link.href.substring(1);
                 const isActive = linkId === activeSection;
@@ -152,10 +156,10 @@ export default function Navbar() {
                     <a
                       href={link.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`block rounded-xl px-4 py-2.5 text-sm font-medium transition ${
+                      className={`block rounded-lg px-3.5 py-2 font-mono text-xs transition ${
                         isActive
-                          ? "bg-sky-500/15 font-semibold text-sky-400 border border-sky-500/30"
-                          : "text-slate-300 hover:bg-slate-900"
+                          ? "bg-[#d4ff00]/15 font-semibold text-[#d4ff00] border border-[#d4ff00]/30"
+                          : "text-zinc-300 hover:bg-zinc-900"
                       }`}
                     >
                       {link.label}
@@ -163,15 +167,15 @@ export default function Navbar() {
                   </li>
                 );
               })}
-              <li className="pt-2 border-t border-slate-800/80">
+              <li className="pt-2 border-t border-[#222226]">
                 <a
                   href="/projects/Tomas%20Reyes%20CV.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center gap-2 rounded-xl bg-sky-500/20 py-2.5 text-sm font-semibold text-sky-300 border border-sky-500/30"
+                  className="flex items-center justify-center gap-2 rounded-lg bg-[#151518] border border-[#27272a] py-2 font-mono text-xs font-semibold text-[#d4ff00]"
                 >
-                  <FileDown size={16} />
+                  <FileDown size={14} />
                   <span>{t.nav.cv}</span>
                 </a>
               </li>
