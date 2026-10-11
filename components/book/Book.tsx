@@ -141,8 +141,8 @@ export default function Book() {
 
       case "skills":
         return {
-          leftTitle: isEs ? "Tecnologías & APIs" : "Technologies & APIs",
-          rightTitle: isEs ? "Datos & Herramientas" : "Data & Tools",
+          leftTitle: isEs ? "Tecnologías" : "Technologies",
+          rightTitle: isEs ? "Herramientas & Cloud" : "Tools & Cloud",
           leftContent: <SkillsLeftPage />,
           rightContent: <SkillsRightPage />,
         };

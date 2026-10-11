@@ -5,98 +5,107 @@ import { motion, AnimatePresence } from "framer-motion";
 import { skills } from "@/src/skills";
 import { Skill } from "@/types/Skill";
 import { useLanguage } from "@/context/LanguageContext";
-import { Layers, Sparkles } from "lucide-react";
 
-interface BigInkStampProps {
+// Clean vector logos for skills without SVG files in /icons
+function FallbackLogo({ name, className = "" }: { name: string; className?: string }) {
+  if (name.includes("Framer")) {
+    return (
+      <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+        <path d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z" />
+      </svg>
+    );
+  }
+  if (name.includes("Prisma")) {
+    return (
+      <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+        <path d="M12.784 1.258a1.5 1.5 0 0 0-1.745.093l-8.5 6.5A1.5 1.5 0 0 0 2 9.043v10.457a1.5 1.5 0 0 0 1.5 1.5h17a1.5 1.5 0 0 0 1.5-1.5V9.043a1.5 1.5 0 0 0-.539-1.192l-8.677-6.593zm-1.077 2.45L19 9.387V19H5V9.387l7.293-5.58a.5.5 0 0 1 .414-.099z" />
+        <path d="M8 11l4-5 4 5-4 6z" />
+      </svg>
+    );
+  }
+  if (name.includes("Supabase")) {
+    return (
+      <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+        <path d="M21.362 9.354H12V.3a.3.3 0 0 0-.517-.207L.638 12.046a.3.3 0 0 0 .207.518H12v9.054a.3.3 0 0 0 .517.207l10.845-11.953a.3.3 0 0 0-.207-.518z" />
+      </svg>
+    );
+  }
+  if (name.includes("Docker")) {
+    return (
+      <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+        <path d="M13.983 11.078h2.119a.186.186 0 0 0 .186-.185V9.006a.186.186 0 0 0-.186-.186h-2.119a.185.185 0 0 0-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 0 0 .186-.186V3.574a.186.186 0 0 0-.186-.185h-2.118a.185.185 0 0 0-.185.185v1.888c0 .102.082.186.185.186m0 2.716h2.118a.187.187 0 0 0 .186-.186V6.29a.186.186 0 0 0-.186-.185h-2.118a.185.185 0 0 0-.185.185v1.887c0 .102.082.186.185.186m-2.954 0h2.119a.186.186 0 0 0 .185-.186V6.29a.185.185 0 0 0-.185-.185H8.075a.185.185 0 0 0-.185.185v1.887c0 .102.083.186.185.186m-2.955 0h2.119a.186.186 0 0 0 .185-.186V6.29a.185.185 0 0 0-.185-.185H5.12a.185.185 0 0 0-.185.185v1.887c0 .102.083.186.185.186m5.91 2.714h2.118a.186.186 0 0 0 .186-.185V9.006a.186.186 0 0 0-.186-.186h-2.118a.185.185 0 0 0-.185.185v1.888c0 .102.082.185.185.185m-2.956 0h2.119a.186.186 0 0 0 .185-.185V9.006a.185.185 0 0 0-.185-.186H8.075a.185.185 0 0 0-.185.185v1.888c0 .102.083.185.185.185m-2.954 0h2.119a.186.186 0 0 0 .185-.185V9.006a.185.185 0 0 0-.185-.186H5.12a.185.185 0 0 0-.185.185v1.888c0 .102.083.185.185.185m-2.955 0h2.119a.185.185 0 0 0 .185-.185V9.006a.185.185 0 0 0-.185-.186H2.165a.185.185 0 0 0-.185.185v1.888c0 .102.083.185.185.185m21.808 1.482c-.397-.265-1.428-.403-2.316-.098-.18.062-.358.143-.532.24-.266-.867-.887-1.378-1.597-1.378-.458 0-.911.206-1.282.593l-.326.34-.143-.453A3.6 3.6 0 0 0 13.9 8.01H1.979a.98.98 0 0 0-.98.98v4.22c0 2.21 1.05 4.31 2.88 5.76C5.92 20.61 8.87 21.6 12 21.6c6.26 0 11.2-4.14 11.97-10.02.06-.48.06-.97 0-1.46z" />
+      </svg>
+    );
+  }
+  // Shadcn
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={className}>
+      <path d="M4 4l16 16M4 20L20 4" />
+    </svg>
+  );
+}
+
+interface BigLogoProps {
   skill: Skill;
-  inkColor: string;
   rotation: number;
 }
 
-function BigInkStamp({ skill, inkColor, rotation }: BigInkStampProps) {
+function BigLogo({ skill, rotation }: BigLogoProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const { language } = useLanguage();
-  const isEs = language === "es";
 
   return (
-    <div className="relative flex items-center justify-center">
-      <motion.button
-        type="button"
+    <div className="relative flex items-center justify-center p-2">
+      <motion.div
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onFocus={() => setIsHovered(true)}
         onBlur={() => setIsHovered(false)}
-        whileHover={{ scale: 1.16, rotate: 0 }}
-        whileTap={{ scale: 0.94 }}
+        whileHover={{ scale: 1.25, rotate: 0 }}
+        whileTap={{ scale: 0.95 }}
         style={{
           transform: `rotate(${rotation}deg)`,
-          borderColor: inkColor,
-          color: inkColor,
         }}
-        className={`relative w-13 h-13 sm:w-14 sm:h-14 rounded-full flex flex-col items-center justify-center transition-all cursor-pointer select-none ${
-          skill.highlight
-            ? "border-2 border-dashed shadow-xs bg-[#ebdcc3]/60"
-            : "border-1.5 border-dotted bg-[#ebdcc3]/30 hover:bg-[#ebdcc3]/75"
-        }`}
+        className="relative cursor-pointer select-none transition-transform duration-200"
       >
-        {/* Decorative Inner Ring for authentic passport stamp look */}
+        {/* LOGO GIGANTE Y PROTAGONISTA (Hasta 80px en pantallas grandes) */}
         <div
-          className="pointer-events-none absolute inset-1 rounded-full border border-dashed opacity-40"
-          style={{ borderColor: inkColor }}
-        />
+          className="w-16 h-16 sm:w-19 sm:h-19 lg:w-20 lg:h-20 flex items-center justify-center"
+          style={{
+            filter: isHovered
+              ? "drop-shadow(0 10px 20px rgba(35, 20, 10, 0.55)) contrast(1.15)"
+              : "drop-shadow(0 4px 8px rgba(35, 20, 10, 0.28)) contrast(1.05)",
+          }}
+        >
+          {skill.icon ? (
+            <img
+              src={skill.icon}
+              alt={skill.name}
+              className="w-full h-full object-contain"
+            />
+          ) : (
+            <FallbackLogo
+              name={skill.name}
+              className="w-14 h-14 sm:w-16 sm:h-16 text-[#22140c]"
+            />
+          )}
+        </div>
+      </motion.div>
 
-        {/* Big Technology Logo */}
-        {skill.icon ? (
-          <img
-            src={skill.icon}
-            alt={skill.name}
-            className="w-7 h-7 object-contain transition-transform duration-300 filter drop-shadow-2xs"
-            style={{
-              filter: isHovered
-                ? "drop-shadow(0 0 6px currentColor) contrast(1.15)"
-                : "contrast(1.05) opacity(0.9)",
-            }}
-          />
-        ) : (
-          <Layers className="w-6 h-6" style={{ color: inkColor }} />
-        )}
-
-        {/* Small Core Star Pin if highlighted */}
-        {skill.highlight && (
-          <span
-            className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold text-white shadow-xs"
-            style={{ backgroundColor: inkColor }}
-            title={isEs ? "Tecnología principal" : "Core tech"}
-          >
-            ★
-          </span>
-        )}
-      </motion.button>
-
-      {/* Floating Tooltip Label revealed ONLY on Hover */}
+      {/* Cartelito flotante con el nombre exacto al señalar */}
       <AnimatePresence>
         {isHovered && (
           <motion.div
             initial={{ opacity: 0, y: 8, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 4, scale: 0.9 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
-            className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center"
+            transition={{ duration: 0.15, ease: "easeOut" }}
+            className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center"
           >
-            {/* Tooltip Arrow */}
-            <div
-              className="w-2 h-2 rotate-45 -mb-1 bg-[#22140c] border-t border-l border-[#8c6d46]"
-            />
-            {/* Tooltip Card */}
-            <div className="bg-[#22140c] text-[#f5ebd6] px-2.5 py-1 rounded-xs shadow-md border border-[#8c6d46]/70 flex items-center gap-1.5 whitespace-nowrap">
-              <span className="font-typewriter text-xs font-bold tracking-wide">
+            <div className="w-2.5 h-2.5 rotate-45 -mb-1.5 bg-[#22140c]" />
+            <div className="bg-[#22140c] text-[#f5ebd6] px-3.5 py-1.5 rounded-xs shadow-xl border border-[#8c6d46]/70 whitespace-nowrap">
+              <span className="font-typewriter text-xs sm:text-sm font-bold tracking-wide">
                 {skill.name}
               </span>
-              {skill.highlight && (
-                <span className="font-typewriter text-[9px] uppercase px-1 py-0.2 bg-[#882b2b] text-white rounded-2xs font-bold">
-                  {isEs ? "Core" : "Main"}
-                </span>
-              )}
             </div>
           </motion.div>
         )}
@@ -106,11 +115,13 @@ function BigInkStamp({ skill, inkColor, rotation }: BigInkStampProps) {
 }
 
 export function SkillsLeftPage() {
-  const { language, t } = useLanguage();
-  const isEs = language === "es";
+  const { t } = useLanguage();
 
   const frontendSkills = skills.filter((s) => s.category === "frontend");
   const backendSkills = skills.filter((s) => s.category === "backend");
+
+  const frontendRotations = [-6, 5, -4, 7, -5, 6, -3];
+  const backendRotations = [5, -6, 4];
 
   return (
     <div className="flex flex-col justify-between h-full space-y-4 py-1">
@@ -120,65 +131,53 @@ export function SkillsLeftPage() {
           {t.skills.title}
         </h2>
         <p className="font-serif-book text-xs text-[#5a4232] mt-0.5 leading-relaxed">
-          {isEs
-            ? "Posá el cursor sobre cada sello para revelar la tecnología."
-            : "Hover over each stamp to reveal the technology."}
+          {t.skills.description}
         </p>
       </div>
 
-      {/* Category 1: Frontend & UI as Stamp Collection */}
-      <div className="space-y-2 border-b border-[#8c6d46]/20 pb-3">
+      {/* Section 1: Frontend */}
+      <div className="space-y-3 border-b border-[#8c6d46]/20 pb-4">
         <div className="flex items-center gap-2">
-          <h3 className="font-serif-book text-sm font-bold italic text-[#265538]">
-            {t.skills.frontend}
+          <h3 className="font-serif-book text-base font-bold italic text-[#265538]">
+            Frontend
           </h3>
           <div className="h-px flex-1 bg-gradient-to-r from-[#265538]/30 to-transparent" />
         </div>
 
-        {/* Big Stamps Grid (No text pills, just big stamps!) */}
-        <div className="flex flex-wrap items-center gap-3 pt-1">
-          {frontendSkills.map((sk, idx) => {
-            const rot = [-2, 1.5, -1, 2, -1.8, 1.2, -0.8][idx % 7];
-            return (
-              <BigInkStamp
-                key={sk.name}
-                skill={sk}
-                inkColor="#265538"
-                rotation={rot}
-              />
-            );
-          })}
+        <div className="flex flex-wrap items-center gap-5 sm:gap-7 pt-1 pl-2">
+          {frontendSkills.map((sk, idx) => (
+            <BigLogo
+              key={sk.name}
+              skill={sk}
+              rotation={frontendRotations[idx % frontendRotations.length]}
+            />
+          ))}
         </div>
       </div>
 
-      {/* Category 2: Backend & APIs */}
-      <div className="space-y-2">
+      {/* Section 2: Backend (Sin la palabra "APIs") */}
+      <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <h3 className="font-serif-book text-sm font-bold italic text-[#882b2b]">
-            {t.skills.backend}
+          <h3 className="font-serif-book text-base font-bold italic text-[#882b2b]">
+            Backend
           </h3>
           <div className="h-px flex-1 bg-gradient-to-r from-[#882b2b]/30 to-transparent" />
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 pt-1">
-          {backendSkills.map((sk, idx) => {
-            const rot = [1.5, -2, 1][idx % 3];
-            return (
-              <BigInkStamp
-                key={sk.name}
-                skill={sk}
-                inkColor="#882b2b"
-                rotation={rot}
-              />
-            );
-          })}
+        <div className="flex flex-wrap items-center gap-6 sm:gap-9 pt-1 pl-2">
+          {backendSkills.map((sk, idx) => (
+            <BigLogo
+              key={sk.name}
+              skill={sk}
+              rotation={backendRotations[idx % backendRotations.length]}
+            />
+          ))}
         </div>
       </div>
 
-      {/* Subtle Bottom Note */}
-      <div className="pt-1 text-right">
+      <div className="pt-2 text-right">
         <span className="font-handwriting text-base text-[#6a4f3b] italic">
-          {isEs ? "★ = Tecnologías de uso diario en producción" : "★ = Technologies used daily in production"}
+          — Ecosistema Full Stack en producción —
         </span>
       </div>
     </div>
@@ -186,72 +185,59 @@ export function SkillsLeftPage() {
 }
 
 export function SkillsRightPage() {
-  const { language, t } = useLanguage();
-  const isEs = language === "es";
-
   const dbSkills = skills.filter((s) => s.category === "databases");
   const toolSkills = skills.filter((s) => s.category === "tools");
 
+  const dbRotations = [-6, 7, -4, 5];
+  const toolRotations = [6, -5, 5, -4, 4];
+
   return (
     <div className="flex flex-col justify-between h-full space-y-4 py-1">
-      {/* Category 3: Databases & ORM */}
-      <div className="space-y-2 border-b border-[#8c6d46]/20 pb-3">
+      {/* Section 3: Bases de Datos (Sin la palabra "ORM") */}
+      <div className="space-y-3 border-b border-[#8c6d46]/20 pb-4">
         <div className="flex items-center gap-2">
-          <h3 className="font-serif-book text-sm font-bold italic text-[#2d4558]">
-            {t.skills.databases}
+          <h3 className="font-serif-book text-base font-bold italic text-[#2d4558]">
+            Bases de Datos
           </h3>
           <div className="h-px flex-1 bg-gradient-to-r from-[#2d4558]/30 to-transparent" />
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 pt-1">
-          {dbSkills.map((sk, idx) => {
-            const rot = [-1.5, 1.8, -0.8, 1.5, -2, 1][idx % 6];
-            return (
-              <BigInkStamp
-                key={sk.name}
-                skill={sk}
-                inkColor="#2d4558"
-                rotation={rot}
-              />
-            );
-          })}
+        <div className="flex flex-wrap items-center gap-6 sm:gap-8 pt-1 pl-2">
+          {dbSkills.map((sk, idx) => (
+            <BigLogo
+              key={sk.name}
+              skill={sk}
+              rotation={dbRotations[idx % dbRotations.length]}
+            />
+          ))}
         </div>
       </div>
 
-      {/* Category 4: DevOps & Tools */}
-      <div className="space-y-2">
+      {/* Section 4: Herramientas & Cloud (Sin la palabra "DevOps") */}
+      <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <h3 className="font-serif-book text-sm font-bold italic text-[#94631d]">
-            {t.skills.tools}
+          <h3 className="font-serif-book text-base font-bold italic text-[#94631d]">
+            Herramientas & Cloud
           </h3>
           <div className="h-px flex-1 bg-gradient-to-r from-[#94631d]/30 to-transparent" />
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 pt-1">
-          {toolSkills.map((sk, idx) => {
-            const rot = [1.8, -1.5, 1.2, -1.8, 1.5, -1, 1.4][idx % 7];
-            return (
-              <BigInkStamp
-                key={sk.name}
-                skill={sk}
-                inkColor="#94631d"
-                rotation={rot}
-              />
-            );
-          })}
+        <div className="flex flex-wrap items-center gap-6 sm:gap-8 pt-1 pl-2">
+          {toolSkills.map((sk, idx) => (
+            <BigLogo
+              key={sk.name}
+              skill={sk}
+              rotation={toolRotations[idx % toolRotations.length]}
+            />
+          ))}
         </div>
       </div>
 
-      {/* Handwritten Notebook Note */}
+      {/* Note on bottom right */}
       <div className="pt-2 border-t border-dashed border-[#8c6d46]/30">
         <p className="font-handwriting text-xl text-[#22140c] leading-snug">
-          {isEs
-            ? "“Enfoque en código tipado estricto, arquitecturas limpias y entrega ágil de valor.”"
-            : "“Focused on strict typed code, clean architectures, and agile value delivery.”"}
+          “Enfoque en código tipado estricto, arquitecturas limpias y entrega ágil de valor.”
         </p>
-        <span className="font-typewriter text-[10px] text-[#8c6e54] uppercase tracking-wider block mt-1">
-          {isEs ? "Constante evolución con estándares modernos" : "Continuous evolution with modern web standards"}
-        </span>
       </div>
     </div>
   );
