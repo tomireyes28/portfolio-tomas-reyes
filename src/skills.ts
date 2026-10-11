@@ -7,6 +7,7 @@ export const skills: Skill[] = [
   { name: "TypeScript", icon: "/icons/typescript.svg", category: "frontend", highlight: true },
   { name: "JavaScript (ES6+)", icon: "/icons/javascript.svg", category: "frontend" },
   { name: "Tailwind CSS", icon: "/icons/tailwindcss.svg", category: "frontend", highlight: true },
+  { name: "Shadcn/UI", icon: "", category: "frontend" },
   { name: "Vite", icon: "/icons/vitejs.svg", category: "frontend" },
 
   // BACKEND & APIS
@@ -16,6 +17,8 @@ export const skills: Skill[] = [
 
   // BASES DE DATOS & ORM
   { name: "PostgreSQL", icon: "/icons/postgressql.svg", category: "databases", highlight: true },
+  { name: "Prisma ORM", icon: "", category: "databases", highlight: true },
+  { name: "Supabase", icon: "", category: "databases", highlight: true },
   { name: "MongoDB", icon: "/icons/mongodb.svg", category: "databases" },
   { name: "Mongoose", icon: "/icons/mongoose.svg", category: "databases" },
   { name: "MySQL", icon: "/icons/mysql.svg", category: "databases" },
@@ -23,8 +26,9 @@ export const skills: Skill[] = [
   // HERRAMIENTAS & CLOUD
   { name: "Git", icon: "/icons/git.svg", category: "tools" },
   { name: "GitHub", icon: "/icons/github.svg", category: "tools" },
-  { name: "Postman", icon: "/icons/postman.svg", category: "tools" },
+  { name: "Docker", icon: "", category: "tools", highlight: true },
   { name: "Vercel", icon: "/icons/vercel.svg", category: "tools" },
+  { name: "Postman", icon: "/icons/postman.svg", category: "tools" },
   { name: "Slack", icon: "/icons/slack.svg", category: "tools" },
   { name: "Trello", icon: "/icons/trello.svg", category: "tools" },
 ];

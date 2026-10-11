@@ -35,8 +35,8 @@ const TABS: TabItem[] = [
   {
     id: "skills",
     num: "03",
-    labelEs: "Skills & IA",
-    labelEn: "Skills & AI",
+    labelEs: "Skills",
+    labelEn: "Skills",
     icon: Wrench,
     accentColor: "#9c6b27", // Brass Gold
   },

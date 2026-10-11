@@ -112,14 +112,14 @@ export default function BookCover() {
           {/* Role Plate */}
           <div className="mt-2 px-4 py-2 rounded-sm bg-[#e8dcc4] text-[#25160e] border-2 border-[#8c6d46] shadow-md transform -rotate-1">
             <p className="font-handwriting text-xl md:text-2xl font-bold leading-none">
-              Full Stack Developer & AI Builder
+              Full Stack & Product Developer
             </p>
           </div>
 
           <p className="mt-4 font-serif-book text-xs md:text-sm text-[#d9c8a9]/80 max-w-xs leading-relaxed italic">
             {isEs
-              ? "“Notas de campo, arquitecturas escalables, experimentos con agentes de IA y productos digitales.”"
-              : "“Field notes, scalable architectures, AI agent experiments, and digital products.”"}
+              ? "“Notas de campo, arquitecturas escalables, diseño de interfaces y productos digitales de alto impacto.”"
+              : "“Field notes, scalable architectures, interface design, and high-impact digital products.”"}
           </p>
         </div>
 
