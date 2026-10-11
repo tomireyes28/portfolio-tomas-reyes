@@ -1,79 +1,107 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { skills } from "@/src/skills";
 import { Skill } from "@/types/Skill";
 import { useLanguage } from "@/context/LanguageContext";
-import { Layers } from "lucide-react";
+import { Layers, Sparkles } from "lucide-react";
 
-interface InkStampProps {
+interface BigInkStampProps {
   skill: Skill;
   inkColor: string;
   rotation: number;
 }
 
-function InkStamp({ skill, inkColor, rotation }: InkStampProps) {
+function BigInkStamp({ skill, inkColor, rotation }: BigInkStampProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const { language } = useLanguage();
+  const isEs = language === "es";
 
   return (
-    <motion.div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      whileHover={{ scale: 1.08, rotate: 0 }}
-      whileTap={{ scale: 0.96 }}
-      style={{
-        transform: `rotate(${rotation}deg)`,
-        borderColor: inkColor,
-        color: inkColor,
-      }}
-      className={`group relative ink-stamp flex items-center gap-2 px-3 py-1.5 cursor-default transition-all ${
-        skill.highlight
-          ? "border-dashed shadow-2xs"
-          : "border-dotted opacity-90 hover:opacity-100"
-      }`}
-    >
-      {/* Skill Icon */}
-      {skill.icon ? (
-        <img
-          src={skill.icon}
-          alt={skill.name}
-          className="w-4 h-4 object-contain shrink-0 filter contrast-125"
-          style={{
-            filter: isHovered
-              ? "drop-shadow(0 0 4px currentColor)"
-              : "opacity(0.85)",
-          }}
+    <div className="relative flex items-center justify-center">
+      <motion.button
+        type="button"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onFocus={() => setIsHovered(true)}
+        onBlur={() => setIsHovered(false)}
+        whileHover={{ scale: 1.16, rotate: 0 }}
+        whileTap={{ scale: 0.94 }}
+        style={{
+          transform: `rotate(${rotation}deg)`,
+          borderColor: inkColor,
+          color: inkColor,
+        }}
+        className={`relative w-13 h-13 sm:w-14 sm:h-14 rounded-full flex flex-col items-center justify-center transition-all cursor-pointer select-none ${
+          skill.highlight
+            ? "border-2 border-dashed shadow-xs bg-[#ebdcc3]/60"
+            : "border-1.5 border-dotted bg-[#ebdcc3]/30 hover:bg-[#ebdcc3]/75"
+        }`}
+      >
+        {/* Decorative Inner Ring for authentic passport stamp look */}
+        <div
+          className="pointer-events-none absolute inset-1 rounded-full border border-dashed opacity-40"
+          style={{ borderColor: inkColor }}
         />
-      ) : (
-        <Layers className="w-3.5 h-3.5 shrink-0" />
-      )}
 
-      {/* Technology Name */}
-      <span className="font-typewriter text-xs font-bold tracking-wide">
-        {skill.name}
-      </span>
+        {/* Big Technology Logo */}
+        {skill.icon ? (
+          <img
+            src={skill.icon}
+            alt={skill.name}
+            className="w-7 h-7 object-contain transition-transform duration-300 filter drop-shadow-2xs"
+            style={{
+              filter: isHovered
+                ? "drop-shadow(0 0 6px currentColor) contrast(1.15)"
+                : "contrast(1.05) opacity(0.9)",
+            }}
+          />
+        ) : (
+          <Layers className="w-6 h-6" style={{ color: inkColor }} />
+        )}
 
-      {/* Core Technology Stamp Mark */}
-      {skill.highlight && (
-        <span
-          className="w-1.5 h-1.5 rounded-full shrink-0"
-          style={{ backgroundColor: inkColor }}
-          title="Tecnología principal"
-        />
-      )}
+        {/* Small Core Star Pin if highlighted */}
+        {skill.highlight && (
+          <span
+            className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold text-white shadow-xs"
+            style={{ backgroundColor: inkColor }}
+            title={isEs ? "Tecnología principal" : "Core tech"}
+          >
+            ★
+          </span>
+        )}
+      </motion.button>
 
-      {/* Subtle Hover Impression Tag */}
-      {isHovered && skill.highlight && (
-        <motion.span
-          initial={{ opacity: 0, y: 4 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap font-handwriting text-sm font-bold text-[#22140c] bg-[#ebdcc3] px-2 py-0.5 rounded-xs border border-[#8c6d46]/40 shadow-xs pointer-events-none z-30"
-        >
-          ★ Core
-        </motion.span>
-      )}
-    </motion.div>
+      {/* Floating Tooltip Label revealed ONLY on Hover */}
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.9 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center"
+          >
+            {/* Tooltip Arrow */}
+            <div
+              className="w-2 h-2 rotate-45 -mb-1 bg-[#22140c] border-t border-l border-[#8c6d46]"
+            />
+            {/* Tooltip Card */}
+            <div className="bg-[#22140c] text-[#f5ebd6] px-2.5 py-1 rounded-xs shadow-md border border-[#8c6d46]/70 flex items-center gap-1.5 whitespace-nowrap">
+              <span className="font-typewriter text-xs font-bold tracking-wide">
+                {skill.name}
+              </span>
+              {skill.highlight && (
+                <span className="font-typewriter text-[9px] uppercase px-1 py-0.2 bg-[#882b2b] text-white rounded-2xs font-bold">
+                  {isEs ? "Core" : "Main"}
+                </span>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -86,18 +114,20 @@ export function SkillsLeftPage() {
 
   return (
     <div className="flex flex-col justify-between h-full space-y-4 py-1">
-      {/* Clean Handwritten Header */}
+      {/* Page Title */}
       <div>
         <h2 className="font-serif-book text-2xl font-bold text-[#22140c]">
           {t.skills.title}
         </h2>
         <p className="font-serif-book text-xs text-[#5a4232] mt-0.5 leading-relaxed">
-          {t.skills.description}
+          {isEs
+            ? "Posá el cursor sobre cada sello para revelar la tecnología."
+            : "Hover over each stamp to reveal the technology."}
         </p>
       </div>
 
-      {/* Section 1: Frontend & UI (Directly on paper, no nested boxes) */}
-      <div className="space-y-2 border-b border-[#8c6d46]/20 pb-4">
+      {/* Category 1: Frontend & UI as Stamp Collection */}
+      <div className="space-y-2 border-b border-[#8c6d46]/20 pb-3">
         <div className="flex items-center gap-2">
           <h3 className="font-serif-book text-sm font-bold italic text-[#265538]">
             {t.skills.frontend}
@@ -105,11 +135,12 @@ export function SkillsLeftPage() {
           <div className="h-px flex-1 bg-gradient-to-r from-[#265538]/30 to-transparent" />
         </div>
 
-        <div className="flex flex-wrap gap-2.5 pt-1">
+        {/* Big Stamps Grid (No text pills, just big stamps!) */}
+        <div className="flex flex-wrap items-center gap-3 pt-1">
           {frontendSkills.map((sk, idx) => {
-            const rot = [-1.5, 1, -0.8, 1.8, -1.2, 0.9, -0.5][idx % 7];
+            const rot = [-2, 1.5, -1, 2, -1.8, 1.2, -0.8][idx % 7];
             return (
-              <InkStamp
+              <BigInkStamp
                 key={sk.name}
                 skill={sk}
                 inkColor="#265538"
@@ -120,7 +151,7 @@ export function SkillsLeftPage() {
         </div>
       </div>
 
-      {/* Section 2: Backend & APIs (Directly on paper) */}
+      {/* Category 2: Backend & APIs */}
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <h3 className="font-serif-book text-sm font-bold italic text-[#882b2b]">
@@ -129,11 +160,11 @@ export function SkillsLeftPage() {
           <div className="h-px flex-1 bg-gradient-to-r from-[#882b2b]/30 to-transparent" />
         </div>
 
-        <div className="flex flex-wrap gap-2.5 pt-1">
+        <div className="flex flex-wrap items-center gap-3 pt-1">
           {backendSkills.map((sk, idx) => {
-            const rot = [1.2, -1.5, 0.8][idx % 3];
+            const rot = [1.5, -2, 1][idx % 3];
             return (
-              <InkStamp
+              <BigInkStamp
                 key={sk.name}
                 skill={sk}
                 inkColor="#882b2b"
@@ -144,10 +175,10 @@ export function SkillsLeftPage() {
         </div>
       </div>
 
-      {/* Subtle Ink Legend */}
-      <div className="pt-2 text-right">
+      {/* Subtle Bottom Note */}
+      <div className="pt-1 text-right">
         <span className="font-handwriting text-base text-[#6a4f3b] italic">
-          {isEs ? "— Sellos de uso continuo en producción —" : "— Continuously applied production stamps —"}
+          {isEs ? "★ = Tecnologías de uso diario en producción" : "★ = Technologies used daily in production"}
         </span>
       </div>
     </div>
@@ -163,8 +194,8 @@ export function SkillsRightPage() {
 
   return (
     <div className="flex flex-col justify-between h-full space-y-4 py-1">
-      {/* Section 3: Databases & ORM */}
-      <div className="space-y-2 border-b border-[#8c6d46]/20 pb-4">
+      {/* Category 3: Databases & ORM */}
+      <div className="space-y-2 border-b border-[#8c6d46]/20 pb-3">
         <div className="flex items-center gap-2">
           <h3 className="font-serif-book text-sm font-bold italic text-[#2d4558]">
             {t.skills.databases}
@@ -172,11 +203,11 @@ export function SkillsRightPage() {
           <div className="h-px flex-1 bg-gradient-to-r from-[#2d4558]/30 to-transparent" />
         </div>
 
-        <div className="flex flex-wrap gap-2.5 pt-1">
+        <div className="flex flex-wrap items-center gap-3 pt-1">
           {dbSkills.map((sk, idx) => {
-            const rot = [-1.2, 1.4, -0.6, 1.1, -1.5, 0.7][idx % 6];
+            const rot = [-1.5, 1.8, -0.8, 1.5, -2, 1][idx % 6];
             return (
-              <InkStamp
+              <BigInkStamp
                 key={sk.name}
                 skill={sk}
                 inkColor="#2d4558"
@@ -187,7 +218,7 @@ export function SkillsRightPage() {
         </div>
       </div>
 
-      {/* Section 4: DevOps, Cloud & Tools */}
+      {/* Category 4: DevOps & Tools */}
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <h3 className="font-serif-book text-sm font-bold italic text-[#94631d]">
@@ -196,11 +227,11 @@ export function SkillsRightPage() {
           <div className="h-px flex-1 bg-gradient-to-r from-[#94631d]/30 to-transparent" />
         </div>
 
-        <div className="flex flex-wrap gap-2.5 pt-1">
+        <div className="flex flex-wrap items-center gap-3 pt-1">
           {toolSkills.map((sk, idx) => {
-            const rot = [1.5, -1.2, 0.9, -1.4, 1.1, -0.8, 1.3][idx % 7];
+            const rot = [1.8, -1.5, 1.2, -1.8, 1.5, -1, 1.4][idx % 7];
             return (
-              <InkStamp
+              <BigInkStamp
                 key={sk.name}
                 skill={sk}
                 inkColor="#94631d"
@@ -211,7 +242,7 @@ export function SkillsRightPage() {
         </div>
       </div>
 
-      {/* Handwritten Notebook Note (Directly on paper, no container box) */}
+      {/* Handwritten Notebook Note */}
       <div className="pt-2 border-t border-dashed border-[#8c6d46]/30">
         <p className="font-handwriting text-xl text-[#22140c] leading-snug">
           {isEs
