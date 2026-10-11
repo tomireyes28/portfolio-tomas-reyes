@@ -5,7 +5,6 @@ import {
   Target,
   Users,
   Award,
-  Compass,
   Lightbulb,
   Puzzle,
   RefreshCw,
@@ -29,80 +28,91 @@ export function JourneyLeftPage() {
 
   const milestones = [
     {
-      step: "I",
+      roman: "I",
       icon: Target,
       title: isEs
-        ? "Liderazgo de Producto & Fundador"
-        : "Product Leadership & Founder",
-      text: t.story.narrative1,
-      accent: "#8c2d2d",
+        ? "Fundador & Liderazgo de Producto"
+        : "Founder & Product Leadership",
+      narrative: t.story.narrative1,
+      inkColor: "#882b2b",
     },
     {
-      step: "II",
+      roman: "II",
       icon: Users,
       title: isEs
-        ? "Comunicación & UX Estratégica"
-        : "Strategic Communication & UX",
-      text: t.story.narrative2,
-      accent: "#2b583c",
+        ? "Comunicación & Visión de Usuario"
+        : "Communication & User Mindset",
+      narrative: t.story.narrative2,
+      inkColor: "#265538",
     },
     {
-      step: "III",
+      roman: "III",
       icon: Award,
       title: isEs
-        ? "Ingeniería Full Stack Robusta"
-        : "Robust Full Stack Engineering",
-      text: t.story.narrative3,
-      accent: "#3d5a6c",
+        ? "Ingeniería de Software Full Stack"
+        : "Full Stack Software Engineering",
+      narrative: t.story.narrative3,
+      inkColor: "#2d4558",
     },
   ];
 
   return (
     <div className="flex flex-col justify-between h-full space-y-3 py-1">
-      {/* Header */}
+      {/* Page Title */}
       <div>
-        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xs bg-[#3d5a6c]/15 border border-[#3d5a6c]/40 text-[#2b4251] font-typewriter text-[10px] uppercase tracking-wider mb-1">
-          <Compass className="w-3 h-3" />
-          <span>{t.story.badge}</span>
-        </div>
-        <h2 className="font-serif-book text-xl lg:text-2xl font-bold text-[#25160e] leading-snug">
+        <h2 className="font-serif-book text-2xl font-bold text-[#22140c]">
           {t.story.title}
         </h2>
-        <p className="font-handwriting text-lg text-[#6e523e] leading-tight mt-0.5">
+        <p className="font-handwriting text-xl text-[#6a4f3b] leading-tight">
           {t.story.subtitle}
         </p>
       </div>
 
-      {/* Expedition Route Timeline */}
-      <div className="relative pl-4 border-l-2 border-dashed border-[#8c6d46] space-y-3 my-auto">
+      {/* Hand-drawn Route Timeline (Directly on paper, no nested card containers) */}
+      <div className="relative pl-6 space-y-4 my-auto">
+        {/* Continuous ink trail line */}
+        <div className="absolute left-2.5 top-2 bottom-3 w-px border-l-2 border-dashed border-[#8c6d46]/45" />
+
         {milestones.map((m) => {
           const Icon = m.icon;
           return (
-            <div
-              key={m.step}
-              className="relative bg-[#f4ebd9]/85 border border-[#8c6d46]/50 p-3 rounded-xs shadow-2xs"
-            >
-              {/* Route Waypoint Pin on the dashed line */}
-              <span
-                className="absolute -left-[25px] top-3.5 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-typewriter font-bold text-[#f5e8c7] shadow-xs"
-                style={{ backgroundColor: m.accent }}
+            <div key={m.roman} className="relative group">
+              {/* Waypoint circle stamped on line */}
+              <div
+                className="absolute -left-[27px] top-0.5 w-6 h-6 rounded-full border-2 border-dashed flex items-center justify-center bg-[#ebdcc3] shadow-2xs group-hover:scale-110 transition-transform"
+                style={{ borderColor: m.inkColor, color: m.inkColor }}
               >
-                {m.step}
-              </span>
-
-              <div className="flex items-center gap-2 mb-1">
-                <Icon className="w-4 h-4 text-[#4a3325] shrink-0" />
-                <h3 className="font-serif-book text-xs sm:text-sm font-bold text-[#25160e]">
-                  {m.title}
-                </h3>
+                <span className="font-typewriter text-[10px] font-bold">
+                  {m.roman}
+                </span>
               </div>
 
-              <p className="font-serif-book text-xs text-[#3a2418] leading-relaxed">
-                {m.text}
-              </p>
+              {/* Title & Narrative */}
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <Icon
+                    className="w-3.5 h-3.5 shrink-0"
+                    style={{ color: m.inkColor }}
+                  />
+                  <h3 className="font-serif-book text-sm font-bold text-[#22140c]">
+                    {m.title}
+                  </h3>
+                </div>
+
+                <p className="font-serif-book text-xs text-[#452f20] leading-relaxed mt-1 pl-5 border-l border-[#8c6d46]/25">
+                  {m.narrative}
+                </p>
+              </div>
             </div>
           );
         })}
+      </div>
+
+      {/* Marginal Signature */}
+      <div className="pt-1 text-right">
+        <span className="font-handwriting text-lg text-[#8c6e54] italic">
+          — Tomás Reyes
+        </span>
       </div>
     </div>
   );
@@ -114,46 +124,62 @@ export function JourneyRightPage() {
 
   return (
     <div className="flex flex-col justify-between h-full space-y-3 py-1">
-      <div className="flex items-center justify-between border-b border-[#8c6d46]/35 pb-1.5">
-        <h3 className="font-typewriter text-xs font-bold uppercase tracking-wider text-[#25160e]">
-          🎖️ {t.story.softSkillsTitle}
+      {/* Clean Heading */}
+      <div className="border-b border-[#8c6d46]/25 pb-2">
+        <h3 className="font-serif-book text-lg font-bold text-[#22140c]">
+          {t.story.softSkillsTitle}
         </h3>
-        <span className="font-typewriter text-[10px] text-[#6e523e]">
-          {isEs ? "6 INSIGNIAS" : "6 BADGES"}
+        <span className="font-handwriting text-base text-[#6a4f3b]">
+          {isEs
+            ? "Insignias de criterio profesional y trabajo en equipo"
+            : "Professional badges and collaborative mindset"}
         </span>
       </div>
 
-      {/* 6 Scout / Explorer Merit Badges Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-auto">
+      {/* 6 Circular Stamped Insignias (Directly on paper, no boxes inside boxes) */}
+      <div className="grid grid-cols-2 gap-x-4 gap-y-3 my-auto">
         {t.story.items.map((item, idx) => {
-          const Icon = softSkillIcons[item.id] || Compass;
-          return (
-            <div
-              key={item.id}
-              className="group relative bg-[#f4ebd9]/85 hover:bg-[#f9f3e6] border border-[#8c6d46]/55 p-3 rounded-xs shadow-2xs transition-all flex flex-col justify-between"
-            >
-              <div className="flex items-start gap-2.5">
-                {/* Merit Badge Emblem */}
-                <div className="w-8 h-8 rounded-full bg-[#d9c8a9] border-2 border-dashed border-[#6e523e] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                  <Icon className="w-4 h-4 text-[#25160e]" />
-                </div>
+          const Icon = softSkillIcons[item.id] || Award;
+          const inkColors = [
+            "#265538",
+            "#882b2b",
+            "#2d4558",
+            "#94631d",
+            "#563148",
+            "#334e68",
+          ];
+          const color = inkColors[idx % inkColors.length];
 
-                <div>
-                  <span className="font-typewriter text-[9px] uppercase tracking-widest text-[#8c2d2d] block">
-                    {isEs ? `Insignia 0${idx + 1}` : `Badge 0${idx + 1}`}
-                  </span>
-                  <h4 className="font-serif-book text-xs sm:text-sm font-bold text-[#25160e] leading-snug">
-                    {item.name}
-                  </h4>
-                </div>
+          return (
+            <div key={item.id} className="group flex items-start gap-2.5">
+              {/* Circular Stamp Emblem */}
+              <div
+                className="w-9 h-9 rounded-full border-1.5 border-dashed flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 group-hover:rotate-6"
+                style={{ borderColor: color, color: color }}
+              >
+                <Icon className="w-4 h-4" />
               </div>
 
-              <p className="font-serif-book text-[11px] text-[#4a3325] mt-2 leading-relaxed">
-                {item.desc}
-              </p>
+              {/* Text directly on parchment */}
+              <div className="space-y-0.5">
+                <h4 className="font-serif-book text-xs font-bold text-[#22140c] leading-tight group-hover:text-[#882b2b] transition-colors">
+                  {item.name}
+                </h4>
+                <p className="font-serif-book text-[11px] text-[#5a4232] leading-snug">
+                  {item.desc}
+                </p>
+              </div>
             </div>
           );
         })}
+      </div>
+
+      <div className="pt-2 border-t border-dashed border-[#8c6d46]/25 text-center">
+        <span className="font-handwriting text-base text-[#6a4f3b]">
+          {isEs
+            ? "“El buen software nace de la empatía con quien lo usa y quien lo mantiene.”"
+            : "“Great software comes from empathy for both who uses it and who maintains it.”"}
+        </span>
       </div>
     </div>
   );

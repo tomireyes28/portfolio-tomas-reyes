@@ -124,7 +124,7 @@ export default function BookCover() {
         </div>
 
         {/* BOTTOM CTA: Wax Seal / Brass Clasp to Open Book */}
-        <div className="relative z-10 pl-5 md:pl-6 flex flex-col items-center gap-2">
+        <div className="relative z-10 pl-5 md:pl-6 flex flex-col items-center">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.96 }}
@@ -132,19 +132,13 @@ export default function BookCover() {
               e.stopPropagation();
               openBook();
             }}
-            className="flex items-center gap-2.5 px-6 py-3 rounded-full bg-gradient-to-b from-[#9c2b2b] to-[#6b181e] text-[#f7ecd5] border-2 border-[#e2be6b]/70 shadow-[0_6px_20px_rgba(0,0,0,0.7),inset_0_1px_2px_rgba(255,255,255,0.3)] cursor-pointer group-hover:border-[#e2be6b]"
+            className="wax-seal-btn flex items-center gap-2.5 px-7 py-3 rounded-full text-[#f7ecd5] border-2 border-[#e2be6b]/70 cursor-pointer group-hover:border-[#e2be6b]"
           >
             <BookOpen className="w-4 h-4 text-[#e2be6b]" />
             <span className="font-typewriter text-xs md:text-sm font-bold uppercase tracking-widest">
-              {isEs ? "Abrir Bitácora" : "Open Logbook"}
+              {isEs ? "Abrir Libro" : "Open Book"}
             </span>
           </motion.button>
-
-          <span className="font-typewriter text-[10px] tracking-widest text-[#c89d45]/60 uppercase">
-            {isEs
-              ? "Click o presioná [Enter / →] para explorar"
-              : "Click or press [Enter / →] to explore"}
-          </span>
         </div>
       </motion.div>
     </div>

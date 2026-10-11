@@ -2,29 +2,29 @@
 
 :root {
   /* Explorer / Adventure Book Palette */
-  --book-bg: #16100b;
-  --desk-wood: #1f1610;
-  --page-kraft: #e8dcc4;
-  --page-aged: #d9c8a9;
-  --page-edge: #bba57f;
-  --spine-leather: #3a2418;
-  --cover-leather: #2d1b11;
-  --cover-leather-light: #442a1c;
+  --book-bg: #140e09;
+  --desk-wood: #1c130c;
+  --page-kraft: #ebdcc3;
+  --page-aged: #dfcdad;
+  --page-edge: #bda67f;
+  --spine-leather: #382215;
+  --cover-leather: #29180f;
+  --cover-leather-light: #422718;
 
-  /* Inks & Accents */
-  --ink-dark: #25160e;
-  --ink-medium: #4a3325;
-  --ink-light: #6e523e;
-  --stamp-red: #8c2d2d;
-  --stamp-green: #2b583c;
-  --tape-green: #4c7056;
+  /* Inks & Natural Pigments */
+  --ink-dark: #22140c;
+  --ink-medium: #452f20;
+  --ink-light: #6a4f3b;
+  --ink-faded: #8c6e54;
+  --stamp-red: #882b2b;
+  --stamp-green: #265538;
+  --stamp-navy: #2d4558;
+  --stamp-amber: #94631d;
   --compass-gold: #c89d45;
-  --brass-light: #e2be6b;
-  --wax-seal: #7a2028;
+  --wax-seal: #7e1e25;
 
-  /* Legacy variables in case old components are referenced */
   --accent: #c89d45;
-  --bg-deep: #16100b;
+  --bg-deep: #140e09;
 }
 
 @layer base {
@@ -58,7 +58,7 @@
 
 /* 3D Book Perspective Utilities */
 .perspective-book {
-  perspective: 2200px;
+  perspective: 2400px;
 }
 
 .preserve-3d {
@@ -72,24 +72,24 @@
 
 /* Expedition Desk Surface */
 .expedition-desk {
-  background-color: #140e09;
+  background-color: #120c07;
   background-image: 
-    radial-gradient(circle at 50% 45%, rgba(65, 42, 25, 0.45) 0%, rgba(15, 10, 6, 0.95) 85%),
+    radial-gradient(circle at 50% 40%, rgba(65, 42, 25, 0.45) 0%, rgba(12, 8, 4, 0.98) 85%),
     repeating-linear-gradient(
       90deg,
       rgba(255, 235, 200, 0.012) 0px,
       rgba(255, 235, 200, 0.012) 2px,
       transparent 2px,
-      transparent 14px
+      transparent 16px
     );
 }
 
 /* Leather Cover Texture */
 .leather-cover {
-  background-color: #2f1b10;
+  background-color: #2b180d;
   background-image: 
-    radial-gradient(ellipse at 35% 25%, rgba(92, 56, 34, 0.5) 0%, transparent 65%),
-    radial-gradient(ellipse at 80% 80%, rgba(20, 10, 5, 0.7) 0%, transparent 60%),
+    radial-gradient(ellipse at 35% 25%, rgba(95, 57, 33, 0.5) 0%, transparent 65%),
+    radial-gradient(ellipse at 80% 80%, rgba(18, 9, 4, 0.75) 0%, transparent 60%),
     repeating-radial-gradient(
       circle at 50% 50%,
       rgba(0, 0, 0, 0.08) 0px,
@@ -97,40 +97,32 @@
       rgba(0, 0, 0, 0.06) 2px
     );
   box-shadow: 
-    0 30px 60px -12px rgba(0, 0, 0, 0.85),
-    0 0 0 1px rgba(200, 157, 69, 0.2),
-    inset 0 2px 6px rgba(255, 225, 180, 0.12),
-    inset 0 -8px 20px rgba(0, 0, 0, 0.65);
+    0 35px 70px -15px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(200, 157, 69, 0.22),
+    inset 0 2px 6px rgba(255, 225, 180, 0.14),
+    inset 0 -8px 20px rgba(0, 0, 0, 0.7);
 }
 
 /* Aged Parchment / Kraft Page Texture */
 .parchment-page-left {
   background-color: var(--page-kraft);
   background-image: 
-    /* Center spine crease shadow on right edge of left page */
-    linear-gradient(to right, rgba(139, 105, 65, 0.22) 0%, transparent 6%, transparent 86%, rgba(45, 26, 12, 0.26) 98%, rgba(28, 16, 8, 0.45) 100%),
-    /* Aged vignette edges */
-    radial-gradient(ellipse at center, rgba(255, 250, 238, 0.35) 35%, rgba(185, 156, 114, 0.35) 90%, rgba(142, 112, 74, 0.55) 100%),
-    /* Subtle coffee/water stain top left */
+    linear-gradient(to right, rgba(139, 105, 65, 0.22) 0%, transparent 6%, transparent 88%, rgba(45, 26, 12, 0.25) 98%, rgba(28, 16, 8, 0.42) 100%),
+    radial-gradient(ellipse at center, rgba(255, 250, 238, 0.4) 35%, rgba(185, 156, 114, 0.35) 90%, rgba(142, 112, 74, 0.55) 100%),
     radial-gradient(circle at 14% 18%, rgba(145, 102, 55, 0.08) 0%, rgba(145, 102, 55, 0.12) 8%, transparent 11%),
-    /* Subtle paper grain grid */
-    repeating-linear-gradient(0deg, rgba(90, 65, 40, 0.018) 0px, rgba(90, 65, 40, 0.018) 1px, transparent 1px, transparent 3px);
+    repeating-linear-gradient(0deg, rgba(90, 65, 40, 0.016) 0px, rgba(90, 65, 40, 0.016) 1px, transparent 1px, transparent 3px);
 }
 
 .parchment-page-right {
   background-color: var(--page-kraft);
   background-image: 
-    /* Center spine crease shadow on left edge of right page */
-    linear-gradient(to left, rgba(139, 105, 65, 0.22) 0%, transparent 6%, transparent 86%, rgba(45, 26, 12, 0.24) 98%, rgba(28, 16, 8, 0.42) 100%),
-    /* Aged vignette edges */
-    radial-gradient(ellipse at center, rgba(255, 250, 238, 0.35) 35%, rgba(185, 156, 114, 0.35) 90%, rgba(142, 112, 74, 0.55) 100%),
-    /* Subtle coffee ring bottom right */
+    linear-gradient(to left, rgba(139, 105, 65, 0.22) 0%, transparent 6%, transparent 88%, rgba(45, 26, 12, 0.23) 98%, rgba(28, 16, 8, 0.4) 100%),
+    radial-gradient(ellipse at center, rgba(255, 250, 238, 0.4) 35%, rgba(185, 156, 114, 0.35) 90%, rgba(142, 112, 74, 0.55) 100%),
     radial-gradient(circle at 84% 78%, transparent 5%, rgba(138, 94, 48, 0.09) 6.5%, transparent 7.8%),
-    /* Subtle paper grain */
-    repeating-linear-gradient(0deg, rgba(90, 65, 40, 0.018) 0px, rgba(90, 65, 40, 0.018) 1px, transparent 1px, transparent 3px);
+    repeating-linear-gradient(0deg, rgba(90, 65, 40, 0.016) 0px, rgba(90, 65, 40, 0.016) 1px, transparent 1px, transparent 3px);
 }
 
-/* Stacked paper pages effect on book sides */
+/* Stacked paper pages thickness effect */
 .book-pages-stack-left {
   background: repeating-linear-gradient(
     to right,
@@ -153,36 +145,127 @@
 
 /* Custom subtle vintage scrollbar inside book pages */
 .book-scroll::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
 }
 
 .book-scroll::-webkit-scrollbar-track {
-  background: rgba(139, 105, 65, 0.1);
-  border-radius: 4px;
+  background: transparent;
 }
 
 .book-scroll::-webkit-scrollbar-thumb {
-  background: rgba(92, 61, 38, 0.35);
+  background: rgba(92, 61, 38, 0.25);
   border-radius: 4px;
 }
 
 .book-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(92, 61, 38, 0.6);
+  background: rgba(92, 61, 38, 0.5);
 }
 
-/* Polaroid & Stamp Effects */
+/* Page Curl / Doblez de Esquina */
+.page-curl-corner-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, transparent 50%, rgba(139, 105, 65, 0.3) 50%, rgba(245, 235, 215, 0.95) 55%, #dfcdad 100%);
+  border-top-left-radius: 4px;
+  box-shadow: -3px -3px 7px rgba(0, 0, 0, 0.22);
+  transition: all 0.25s ease-out;
+  cursor: pointer;
+  z-index: 25;
+}
+
+.page-curl-corner-right:hover {
+  width: 46px;
+  height: 46px;
+  box-shadow: -5px -5px 12px rgba(0, 0, 0, 0.35);
+  background: linear-gradient(135deg, transparent 50%, rgba(139, 105, 65, 0.4) 50%, rgba(255, 248, 235, 1) 54%, #ebdcc3 100%);
+}
+
+.page-curl-corner-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(225deg, transparent 50%, rgba(139, 105, 65, 0.3) 50%, rgba(245, 235, 215, 0.95) 55%, #dfcdad 100%);
+  border-top-right-radius: 4px;
+  box-shadow: 3px -3px 7px rgba(0, 0, 0, 0.22);
+  transition: all 0.25s ease-out;
+  cursor: pointer;
+  z-index: 25;
+}
+
+.page-curl-corner-left:hover {
+  width: 46px;
+  height: 46px;
+  box-shadow: 5px -5px 12px rgba(0, 0, 0, 0.35);
+  background: linear-gradient(225deg, transparent 50%, rgba(139, 105, 65, 0.4) 50%, rgba(255, 248, 235, 1) 54%, #ebdcc3 100%);
+}
+
+/* Stamped Ink Seal on Paper (Sin cajas) */
+.ink-stamp {
+  border: 1.5px dashed currentColor;
+  border-radius: 3px;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: transparent;
+}
+
+.ink-stamp:hover {
+  transform: translateY(-2px) scale(1.04);
+  background-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 10px rgba(45, 25, 12, 0.15);
+}
+
+.ink-stamp-circle {
+  border: 1.5px dashed currentColor;
+  border-radius: 9999px;
+  position: relative;
+  transition: all 0.25s ease-out;
+}
+
+.ink-stamp-circle:hover {
+  transform: scale(1.05) rotate(2deg);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Ruled Stationery Lines (Papel de carta con renglones) */
+.stationery-line {
+  border-bottom: 1px dashed rgba(140, 109, 70, 0.4);
+}
+
+/* Wax Seal Button Effect */
+.wax-seal-btn {
+  background: radial-gradient(circle at 35% 35%, #9c2d33 0%, #7e1e25 65%, #561117 100%);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.6);
+  border: 2px solid #561117;
+  transition: all 0.2s ease-out;
+}
+
+.wax-seal-btn:hover {
+  transform: scale(1.04);
+  box-shadow: 
+    0 6px 16px rgba(0, 0, 0, 0.6),
+    inset 0 1px 3px rgba(255, 255, 255, 0.4);
+}
+
+.wax-seal-btn:active {
+  transform: scale(0.97);
+}
+
+/* Polaroid & Washi Tape */
 .polaroid-card {
-  background: #f9f5eb;
+  background: #fbf7ee;
   box-shadow: 
     0 6px 16px rgba(32, 18, 8, 0.22),
     0 1px 3px rgba(32, 18, 8, 0.15),
-    inset 0 0 12px rgba(175, 148, 105, 0.15);
-}
-
-.passport-stamp {
-  border: 2px dashed currentColor;
-  mask-image: radial-gradient(circle at 30% 40%, black 80%, rgba(0, 0, 0, 0.75) 100%);
+    inset 0 0 10px rgba(175, 148, 105, 0.15);
 }
 
 .washi-tape {

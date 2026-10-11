@@ -5,10 +5,9 @@ import {
   Mail,
   Github,
   Linkedin,
-  Send,
   Copy,
   Check,
-  Sparkles,
+  Send,
   Stamp,
 } from "lucide-react";
 import Swal from "sweetalert2";
@@ -28,37 +27,32 @@ export function ContactLeftPage() {
 
   return (
     <div className="flex flex-col justify-between h-full space-y-4 py-1">
-      {/* Header */}
+      {/* Page Title */}
       <div>
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs bg-[#8c2d2d]/15 border border-[#8c2d2d]/40 text-[#8c2d2d] font-typewriter text-[10px] uppercase tracking-wider mb-1.5">
-          <Stamp className="w-3.5 h-3.5" />
-          <span>{t.contact.badge}</span>
-        </div>
-
-        <h2 className="font-serif-book text-2xl lg:text-3xl font-bold text-[#25160e] leading-tight">
+        <h2 className="font-serif-book text-2xl lg:text-3xl font-bold text-[#22140c] leading-tight">
           {t.contact.titlePart1}{" "}
-          <span className="underline decoration-[#8c2d2d] decoration-2 underline-offset-4">
+          <span className="italic underline decoration-[#882b2b] decoration-1 underline-offset-4">
             {t.contact.titleHighlight}
           </span>{" "}
           {t.contact.titlePart2}
         </h2>
-
-        <p className="font-serif-book text-xs sm:text-sm text-[#3a2418] mt-2 leading-relaxed">
+        <p className="font-serif-book text-xs sm:text-sm text-[#452f20] mt-2 leading-relaxed">
           {t.contact.description}
         </p>
       </div>
 
-      {/* Direct Postal Address / Email Copy Box */}
-      <div className="bg-[#f4ebd9] border-2 border-[#8c6d46]/65 p-3.5 rounded-xs shadow-2xs space-y-2">
-        <span className="font-typewriter text-[10px] uppercase tracking-widest text-[#6e523e] block">
-          {isEs
-            ? "📮 Dirección de Correo Oficial"
-            : "📮 Official Postal Email"}
-        </span>
+      {/* Postal Address Slip (Direct on paper, no black boxes) */}
+      <div className="border border-[#8c6d46]/40 rounded-xs p-3.5 bg-[#f5ebd6]/60 space-y-2 relative">
+        <div className="flex items-center justify-between border-b border-[#8c6d46]/25 pb-1.5">
+          <span className="font-typewriter text-[10px] uppercase tracking-wider text-[#6a4f3b]">
+            {isEs ? "Dirección de Correo Directo" : "Direct Dispatch Address"}
+          </span>
+          <Stamp className="w-3.5 h-3.5 text-[#882b2b]" />
+        </div>
 
-        <div className="flex items-center justify-between gap-2 bg-[#e8dcc4] border border-[#8c6d46]/45 px-3 py-2 rounded-xs">
-          <div className="flex items-center gap-2 text-[#25160e] overflow-hidden">
-            <Mail className="w-4 h-4 text-[#8c2d2d] shrink-0" />
+        <div className="flex items-center justify-between gap-2 pt-1">
+          <div className="flex items-center gap-2 text-[#22140c] overflow-hidden">
+            <Mail className="w-4 h-4 text-[#882b2b] shrink-0" />
             <span className="font-typewriter text-xs sm:text-sm font-bold truncate">
               tomireyes.tr@gmail.com
             </span>
@@ -68,11 +62,11 @@ export function ContactLeftPage() {
             onClick={copyEmail}
             type="button"
             title={t.contact.emailCopy}
-            className="flex items-center gap-1 px-2 py-1 rounded-xs bg-[#25160e] hover:bg-[#3d2516] text-[#f5e8c7] font-typewriter text-[10px] uppercase tracking-wider transition-colors cursor-pointer shrink-0"
+            className="flex items-center gap-1 px-2.5 py-1 rounded-xs bg-[#22140c] hover:bg-[#3d2416] text-[#f5ebd6] font-typewriter text-[10px] uppercase tracking-wider transition-colors cursor-pointer shrink-0"
           >
             {copied ? (
               <>
-                <Check className="w-3 h-3 text-[#65c483]" />
+                <Check className="w-3 h-3 text-[#72cf91]" />
                 <span>{isEs ? "Copiado" : "Copied"}</span>
               </>
             ) : (
@@ -85,24 +79,24 @@ export function ContactLeftPage() {
         </div>
       </div>
 
-      {/* Social Links as Postal Stamps */}
+      {/* Postal Cancellation Stamps for GitHub & LinkedIn */}
       <div className="space-y-2">
-        <p className="font-typewriter text-[11px] font-bold uppercase tracking-wider text-[#4a3325]">
-          {isEs ? "Redes & Perfiles Oficiales" : "Official Networks & Profiles"}
-        </p>
+        <span className="font-serif-book text-xs font-bold italic text-[#6a4f3b]">
+          {isEs ? "Sellos de correspondencia & redes:" : "Correspondence stamps & links:"}
+        </span>
         <div className="grid grid-cols-2 gap-3">
           <a
             href="https://github.com/tomireyes28"
             target="_blank"
             rel="noopener noreferrer"
-            className="passport-stamp flex items-center gap-2.5 p-2.5 bg-[#f4ebd9]/80 hover:bg-[#f4ebd9] text-[#25160e] rounded-xs transition-transform hover:-translate-y-0.5"
+            className="ink-stamp flex items-center gap-2.5 p-2.5 text-[#22140c] border-[#22140c]/40 rounded-xs transition-transform hover:-translate-y-0.5"
           >
-            <Github className="w-5 h-5 text-[#25160e] shrink-0" />
+            <Github className="w-4 h-4 shrink-0" />
             <div>
               <span className="font-typewriter text-xs font-bold block">
                 GitHub
               </span>
-              <span className="font-typewriter text-[10px] text-[#6e523e]">
+              <span className="font-typewriter text-[10px] text-[#8c6e54]">
                 @tomireyes28
               </span>
             </div>
@@ -112,14 +106,14 @@ export function ContactLeftPage() {
             href="https://www.linkedin.com/in/tomasreyes1/"
             target="_blank"
             rel="noopener noreferrer"
-            className="passport-stamp flex items-center gap-2.5 p-2.5 bg-[#f4ebd9]/80 hover:bg-[#f4ebd9] text-[#2b583c] rounded-xs transition-transform hover:-translate-y-0.5"
+            className="ink-stamp flex items-center gap-2.5 p-2.5 text-[#265538] border-[#265538]/50 rounded-xs transition-transform hover:-translate-y-0.5"
           >
-            <Linkedin className="w-5 h-5 text-[#2b583c] shrink-0" />
+            <Linkedin className="w-4 h-4 shrink-0" />
             <div>
-              <span className="font-typewriter text-xs font-bold block text-[#25160e]">
+              <span className="font-typewriter text-xs font-bold block text-[#22140c]">
                 LinkedIn
               </span>
-              <span className="font-typewriter text-[10px] text-[#6e523e]">
+              <span className="font-typewriter text-[10px] text-[#8c6e54]">
                 /in/tomasreyes1
               </span>
             </div>
@@ -127,13 +121,12 @@ export function ContactLeftPage() {
         </div>
       </div>
 
-      {/* 24h Response Guarantee Note */}
-      <div className="p-2.5 bg-[#2b583c]/12 border border-[#2b583c]/40 rounded-xs flex items-center gap-2 text-xs font-serif-book text-[#25160e]">
-        <Sparkles className="w-4 h-4 text-[#2b583c] shrink-0" />
-        <span>
+      {/* Postscript Handwritten Note */}
+      <div className="pt-2 text-right">
+        <span className="font-handwriting text-lg text-[#6a4f3b] italic">
           {isEs
-            ? "Respondo habitualmente en menos de 24 horas."
-            : "I usually respond within 24 hours."}
+            ? "P.D.: Suelo responder en menos de 24 horas."
+            : "P.S.: I usually reply within 24 hours."}
         </span>
       </div>
     </div>
@@ -162,9 +155,9 @@ export function ContactRightPage() {
             title: t.contact.alerts.successTitle,
             text: t.contact.alerts.successText,
             icon: "success",
-            background: "#2a190f",
-            color: "#f5e8c7",
-            confirmButtonColor: "#2b583c",
+            background: "#29180f",
+            color: "#f5ebd6",
+            confirmButtonColor: "#265538",
           });
           form.current?.reset();
         },
@@ -174,9 +167,9 @@ export function ContactRightPage() {
             title: t.contact.alerts.errorTitle,
             text: t.contact.alerts.errorText,
             icon: "error",
-            background: "#2a190f",
-            color: "#f5e8c7",
-            confirmButtonColor: "#8c2d2d",
+            background: "#29180f",
+            color: "#f5ebd6",
+            confirmButtonColor: "#882b2b",
           });
         }
       )
@@ -187,109 +180,105 @@ export function ContactRightPage() {
 
   return (
     <div className="flex flex-col justify-between h-full py-1">
-      {/* Vintage Telegram / Postal Card Container */}
-      <div className="relative bg-[#f7efde] border-2 border-[#8c6d46] p-4 sm:p-5 rounded-xs shadow-sm h-full flex flex-col justify-between">
-        {/* Top Telegram Header */}
-        <div className="flex items-center justify-between border-b-2 border-double border-[#8c6d46]/50 pb-2 mb-3">
-          <div>
-            <span className="font-typewriter text-[10px] uppercase tracking-widest text-[#8c2d2d] font-bold block">
-              {isEs ? "SERVICIO TELEGRÁFICO DIRECTO" : "DIRECT TELEGRAM DISPATCH"}
-            </span>
-            <h3 className="font-serif-book text-lg font-bold text-[#25160e]">
-              {t.contact.form.title}
-            </h3>
+      {/* Letter Header */}
+      <div className="border-b border-[#8c6d46]/30 pb-2 mb-2 flex items-center justify-between">
+        <h3 className="font-serif-book text-lg font-bold text-[#22140c]">
+          {isEs ? "Carta de Correspondencia" : "Letter of Correspondence"}
+        </h3>
+        <span className="font-handwriting text-base text-[#8c6e54]">
+          {isEs ? "Buenos Aires, 2026" : "Buenos Aires, 2026"}
+        </span>
+      </div>
+
+      {/* Lined Stationery Paper Form (Inputs as natural lines, no gray boxes!) */}
+      <form
+        ref={form}
+        onSubmit={handleSubmit}
+        className="flex-1 flex flex-col justify-between space-y-3"
+      >
+        <div className="space-y-3">
+          {/* Line 1: Sender Name */}
+          <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
+            <label
+              htmlFor="name"
+              className="font-handwriting text-lg text-[#5a4232] shrink-0"
+            >
+              {isEs ? "De parte de:" : "From:"}
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              placeholder={isEs ? "Tu nombre o empresa..." : "Your name or company..."}
+              className="w-full bg-transparent border-b border-dashed border-[#8c6d46]/60 px-1 py-0.5 font-serif-book text-xs sm:text-sm text-[#22140c] placeholder:text-[#8c6e54]/50 focus:border-[#22140c] focus:outline-none transition"
+            />
           </div>
 
-          {/* Decorative Stamp Box */}
-          <div className="w-11 h-12 border-2 border-dashed border-[#8c6d46] bg-[#e8dcc4] flex flex-col items-center justify-center text-center p-1 shrink-0">
-            <span className="font-typewriter text-[8px] uppercase text-[#6e523e] leading-none">
-              CORREO
-            </span>
-            <span className="font-serif-book text-xs font-bold text-[#8c2d2d]">
-              2026
-            </span>
+          {/* Line 2: Sender Email */}
+          <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
+            <label
+              htmlFor="email"
+              className="font-handwriting text-lg text-[#5a4232] shrink-0"
+            >
+              {isEs ? "Correo:" : "Email:"}
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              placeholder={isEs ? "tu@correo.com" : "you@email.com"}
+              className="w-full bg-transparent border-b border-dashed border-[#8c6d46]/60 px-1 py-0.5 font-serif-book text-xs sm:text-sm text-[#22140c] placeholder:text-[#8c6e54]/50 focus:border-[#22140c] focus:outline-none transition"
+            />
+          </div>
+
+          {/* Lines 3: Message on ruled paper lines */}
+          <div className="space-y-1">
+            <label
+              htmlFor="message"
+              className="font-handwriting text-lg text-[#5a4232] block"
+            >
+              {isEs ? "Mensaje:" : "Message:"}
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows={4}
+              required
+              placeholder={isEs ? "Contame sobre tu proyecto, objetivos o propuesta..." : "Tell me about your project, goals, or role..."}
+              className="w-full bg-transparent border-b border-dashed border-[#8c6d46]/60 px-1 py-1 font-serif-book text-xs sm:text-sm text-[#22140c] placeholder:text-[#8c6e54]/50 focus:border-[#22140c] focus:outline-none resize-none transition leading-relaxed"
+              style={{
+                backgroundImage:
+                  "repeating-linear-gradient(transparent, transparent 27px, rgba(140, 109, 70, 0.25) 28px)",
+                lineHeight: "28px",
+              }}
+            />
           </div>
         </div>
 
-        {/* Form Fields */}
-        <form
-          ref={form}
-          onSubmit={handleSubmit}
-          className="space-y-3 flex-1 flex flex-col justify-between"
-        >
-          <div className="space-y-2.5">
-            <div>
-              <label
-                htmlFor="name"
-                className="block font-typewriter text-[11px] font-bold uppercase tracking-wider text-[#4a3325] mb-1"
-              >
-                {t.contact.form.name}
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                placeholder={t.contact.form.namePlaceholder}
-                className="w-full rounded-xs border border-[#8c6d46]/60 bg-[#e8dcc4]/65 px-3 py-2 font-serif-book text-xs sm:text-sm text-[#25160e] placeholder:text-[#6e523e]/60 focus:border-[#25160e] focus:bg-[#fffdf9] focus:outline-none transition"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="email"
-                className="block font-typewriter text-[11px] font-bold uppercase tracking-wider text-[#4a3325] mb-1"
-              >
-                {t.contact.form.email}
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                placeholder={t.contact.form.emailPlaceholder}
-                className="w-full rounded-xs border border-[#8c6d46]/60 bg-[#e8dcc4]/65 px-3 py-2 font-serif-book text-xs sm:text-sm text-[#25160e] placeholder:text-[#6e523e]/60 focus:border-[#25160e] focus:bg-[#fffdf9] focus:outline-none transition"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="message"
-                className="block font-typewriter text-[11px] font-bold uppercase tracking-wider text-[#4a3325] mb-1"
-              >
-                {t.contact.form.message}
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={3}
-                required
-                placeholder={t.contact.form.messagePlaceholder}
-                className="w-full resize-none rounded-xs border border-[#8c6d46]/60 bg-[#e8dcc4]/65 px-3 py-2 font-serif-book text-xs sm:text-sm text-[#25160e] placeholder:text-[#6e523e]/60 focus:border-[#25160e] focus:bg-[#fffdf9] focus:outline-none transition"
-              />
-            </div>
-          </div>
+        {/* Tactile Wax Seal Send Button */}
+        <div className="pt-2 flex items-center justify-between">
+          <span className="font-handwriting text-base text-[#8c6e54] italic">
+            {isEs ? "Sellar y despachar ➔" : "Seal and dispatch ➔"}
+          </span>
 
           <button
             type="submit"
             disabled={isSending}
-            className={`w-full inline-flex items-center justify-center gap-2 rounded-xs py-2.5 font-typewriter text-xs font-bold uppercase tracking-widest border transition-all cursor-pointer shadow-xs ${
-              isSending
-                ? "bg-[#8c6d46]/50 text-[#4a3325] border-[#8c6d46] cursor-not-allowed"
-                : "bg-[#8c2d2d] hover:bg-[#6e2020] text-[#f5e8c7] border-[#4a1515]"
-            }`}
+            className="wax-seal-btn flex items-center gap-2 px-6 py-2.5 rounded-full text-[#f5ebd6] font-typewriter text-xs font-bold uppercase tracking-wider cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSending ? (
               <span>{t.contact.form.sending}</span>
             ) : (
               <>
-                <span>{t.contact.form.btn}</span>
                 <Send className="w-3.5 h-3.5" />
+                <span>{isEs ? "Enviar Carta" : "Send Letter"}</span>
               </>
             )}
           </button>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 }

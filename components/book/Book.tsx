@@ -39,12 +39,10 @@ export default function Book() {
   } = useBook();
   const { language, toggleLanguage, t } = useLanguage();
 
-  // State for Projects filter & sub-pagination
   const [projectFilter, setProjectFilter] =
     useState<ProjectCategoryFilter>("all");
   const [projectSubPage, setProjectSubPage] = useState<number>(0);
 
-  // Mobile single-page state ("left" or "right" page of the active spread)
   const [mobileSubPage, setMobileSubPage] = useState<"left" | "right">("left");
   const touchStartX = useRef<number | null>(null);
 
@@ -53,12 +51,10 @@ export default function Book() {
   const leftPageNum = String(sectionIndex * 2 + 1).padStart(2, "0");
   const rightPageNum = String(sectionIndex * 2 + 2).padStart(2, "0");
 
-  // Reset mobile subpage to left when changing section
   React.useEffect(() => {
     setMobileSubPage("left");
   }, [activeSection]);
 
-  // Mobile Touch Swipe Handlers
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -71,14 +67,12 @@ export default function Book() {
     if (Math.abs(deltaX) < 50) return;
 
     if (deltaX < 0) {
-      // Swipe Left -> Next
       if (mobileSubPage === "left") {
         setMobileSubPage("right");
       } else {
         nextPage();
       }
     } else {
-      // Swipe Right -> Prev
       if (mobileSubPage === "right") {
         setMobileSubPage("left");
       } else {
@@ -87,7 +81,6 @@ export default function Book() {
     }
   };
 
-  // 3D Page Turn Variants for the Spread
   const spreadVariants = {
     initial: (dir: "next" | "prev") => ({
       rotateY: dir === "next" ? 18 : -18,
@@ -114,25 +107,20 @@ export default function Book() {
     }),
   };
 
-  // Map active section to Left & Right page content
   const renderSpreadContent = (section: BookSectionId) => {
     switch (section) {
       case "about":
         return {
-          leftCode: "CAP. I",
-          leftTitle: isEs ? "Perfil del Explorador" : "Explorer Profile",
-          rightCode: "NOTAS DE CAMPO",
-          rightTitle: isEs ? "Biografía & Enfoque" : "Biography & Focus",
+          leftTitle: isEs ? "Sobre Mí" : "About Me",
+          rightTitle: isEs ? "Enfoque & Stack" : "Focus & Stack",
           leftContent: <AboutLeftPage />,
           rightContent: <AboutRightPage />,
         };
 
       case "projects":
         return {
-          leftCode: "CAP. II",
-          leftTitle: isEs ? "Catálogo de Obras" : "Works Catalog",
-          rightCode: "REGISTRO VISUAL",
-          rightTitle: isEs ? "Proyectos & Demos" : "Projects & Demos",
+          leftTitle: isEs ? "Proyectos" : "Projects",
+          rightTitle: isEs ? "Catálogo Visual" : "Visual Catalog",
           leftContent: (
             <ProjectsLeftPage
               filter={projectFilter}
@@ -153,19 +141,15 @@ export default function Book() {
 
       case "skills":
         return {
-          leftCode: "CAP. III",
-          leftTitle: isEs ? "Inventario Técnico" : "Technical Inventory",
-          rightCode: "ESPECIFICACIONES",
-          rightTitle: isEs ? "Datos, Cloud & DevOps" : "Data, Cloud & DevOps",
+          leftTitle: isEs ? "Tecnologías & APIs" : "Technologies & APIs",
+          rightTitle: isEs ? "Datos & Herramientas" : "Data & Tools",
           leftContent: <SkillsLeftPage />,
           rightContent: <SkillsRightPage />,
         };
 
       case "story":
         return {
-          leftCode: "CAP. IV",
-          leftTitle: isEs ? "Crónicas de Ruta" : "Route Chronicles",
-          rightCode: "INSIGNIAS",
+          leftTitle: isEs ? "Trayectoria" : "Journey",
           rightTitle: isEs ? "Habilidades Blandas" : "Soft Skills",
           leftContent: <JourneyLeftPage />,
           rightContent: <JourneyRightPage />,
@@ -173,10 +157,8 @@ export default function Book() {
 
       case "contact":
         return {
-          leftCode: "CAP. V",
-          leftTitle: isEs ? "Correo de Expedición" : "Expedition Post",
-          rightCode: "TELEGRAMA",
-          rightTitle: isEs ? "Mensaje Directo" : "Direct Message",
+          leftTitle: isEs ? "Contacto Directo" : "Direct Contact",
+          rightTitle: isEs ? "Correspondencia" : "Correspondence",
           leftContent: <ContactLeftPage />,
           rightContent: <ContactRightPage />,
         };
@@ -187,51 +169,38 @@ export default function Book() {
 
   return (
     <div className="relative w-screen h-screen overflow-hidden expedition-desk flex flex-col justify-between select-none">
-      {/* TOP EXPEDITION DESK BAR */}
-      <header className="relative z-40 flex items-center justify-between px-4 md:px-8 py-2.5 bg-[#120b07]/85 border-b border-[#c89d45]/20 backdrop-blur-xs shrink-0">
-        {/* Left: Brand & Close Book Button */}
+      {/* EXPEDITION DESK TOP BAR */}
+      <header className="relative z-40 flex items-center justify-between px-4 md:px-8 py-2 bg-[#100a06]/80 border-b border-[#c89d45]/15 backdrop-blur-xs shrink-0">
+        {/* Left: Brand Identity & Book Toggle */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 text-[#e2be6b]">
-            <Compass className="w-4 h-4" />
-            <span className="font-typewriter text-xs font-bold tracking-widest uppercase">
-              T. REYES // LOGBOOK
+            <Compass className="w-4 h-4 text-[#c89d45]" />
+            <span className="font-serif-book text-xs md:text-sm tracking-wider text-[#e8dcc4] font-medium">
+              Tomás Reyes
             </span>
           </div>
 
           {isOpen && (
             <button
               onClick={closeBook}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-[#2d1b11] hover:bg-[#3d2518] text-[#e8dcc4] border border-[#c89d45]/40 font-typewriter text-[11px] uppercase tracking-wider transition-colors cursor-pointer"
-              title={isEs ? "Volver a la portada" : "Back to cover"}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-[#24150d] hover:bg-[#352014] text-[#dfcdad] border border-[#c89d45]/30 font-serif-book text-xs italic transition-colors cursor-pointer"
+              title={isEs ? "Cerrar libro y volver a la portada" : "Close logbook"}
             >
               <BookMarked className="w-3.5 h-3.5 text-[#c89d45]" />
               <span className="hidden sm:inline">
-                {isEs ? "Cerrar Libro" : "Close Book"}
+                {isEs ? "Cerrar libro" : "Close book"}
               </span>
             </button>
           )}
         </div>
 
-        {/* Center: Keyboard Navigation Hint (Desktop only when open) */}
-        {isOpen && (
-          <div className="hidden lg:flex items-center gap-2 font-typewriter text-[11px] text-[#c89d45]/75">
-            <span>{isEs ? "Pasar páginas:" : "Turn pages:"}</span>
-            <kbd className="px-1.5 py-0.5 bg-[#2a1910] border border-[#c89d45]/40 rounded-xs text-[#e8dcc4]">
-              ←
-            </kbd>
-            <kbd className="px-1.5 py-0.5 bg-[#2a1910] border border-[#c89d45]/40 rounded-xs text-[#e8dcc4]">
-              →
-            </kbd>
-          </div>
-        )}
-
-        {/* Right: CV Download Stamp & Language Switch */}
+        {/* Right: CV Download Stamp & Language Toggle */}
         <div className="flex items-center gap-2.5">
           <a
             href="/projects/Tomas%20Reyes%20CV.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1 rounded-xs bg-[#2b583c]/90 hover:bg-[#2b583c] text-[#f5e8c7] border border-[#e2be6b]/40 font-typewriter text-[11px] uppercase tracking-wider transition-all shadow-xs"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-xs bg-[#265538]/90 hover:bg-[#265538] text-[#f5ebd6] border border-[#e2be6b]/30 font-typewriter text-[11px] uppercase tracking-wider transition-all shadow-xs"
           >
             <FileDown className="w-3.5 h-3.5" />
             <span>{t.nav.cv}</span>
@@ -239,7 +208,7 @@ export default function Book() {
 
           <button
             onClick={toggleLanguage}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-[#2a1910] hover:bg-[#3a2317] text-[#e2be6b] border border-[#c89d45]/40 font-typewriter text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-[#24150d] hover:bg-[#352014] text-[#e2be6b] border border-[#c89d45]/35 font-typewriter text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
           >
             <Globe className="w-3.5 h-3.5" />
             <span>{language.toUpperCase()}</span>
@@ -247,30 +216,30 @@ export default function Book() {
         </div>
       </header>
 
-      {/* MAIN VIEWPORT STAGE: CLOSED COVER OR OPEN BOOK */}
-      <div className="relative flex-1 w-full flex items-center justify-center overflow-hidden px-2 sm:px-6 md:px-10 py-2 md:py-5 perspective-book">
+      {/* MAIN VIEWPORT STAGE */}
+      <div className="relative flex-1 w-full flex items-center justify-center overflow-hidden px-2 sm:px-6 md:px-10 py-1.5 md:py-3.5 perspective-book">
         <AnimatePresence mode="wait">
           {!isOpen ? (
             <BookCover key="book-cover" />
           ) : (
             <motion.div
               key="open-book-container"
-              initial={{ scale: 0.92, opacity: 0, rotateX: 8 }}
+              initial={{ scale: 0.94, opacity: 0, rotateX: 6 }}
               animate={{ scale: 1, opacity: 1, rotateX: 0 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-full max-w-[1260px] h-full max-h-[820px] flex flex-col md:flex-row items-stretch md:items-center justify-center"
+              exit={{ scale: 0.92, opacity: 0 }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="relative w-full max-w-[1260px] h-full max-h-[810px] flex flex-col md:flex-row items-stretch md:items-center justify-center"
             >
               {/* OUTER LEATHER HARDCOVER FRAME */}
               <div
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
-                className="relative flex flex-1 w-full h-full leather-cover rounded-xl p-2 sm:p-3 md:p-4 shadow-[0_35px_70px_rgba(0,0,0,0.9)] border border-[#c89d45]/30 overflow-hidden"
+                className="relative flex flex-1 w-full h-full leather-cover rounded-xl p-2 sm:p-2.5 md:p-3.5 shadow-[0_35px_70px_rgba(0,0,0,0.9)] border border-[#c89d45]/25 overflow-hidden"
               >
                 {/* Left Stacked Pages Thickness */}
                 <div className="hidden md:block w-2.5 h-[98%] my-auto book-pages-stack-left rounded-l-xs shrink-0" />
 
-                {/* ANIMATED 2-PAGE SPREAD (Desktop) / 1-PAGE (Mobile) */}
+                {/* ANIMATED SPREAD */}
                 <div className="relative flex-1 h-full flex overflow-hidden perspective-book">
                   {/* 3D Flipping Sheet Overlay on Spine */}
                   <BookPageTurn
@@ -289,23 +258,13 @@ export default function Book() {
                       exit="exit"
                       className="w-full h-full flex preserve-3d"
                     >
-                      {/* DESKTOP: Left Page + Spine + Right Page */}
+                      {/* DESKTOP SPREAD */}
                       <div className="hidden md:flex w-full h-full">
                         <BookPage
                           side="left"
                           pageNumber={leftPageNum}
-                          chapterCode={currentSpread.leftCode}
                           chapterTitle={currentSpread.leftTitle}
                           onCornerClick={prevPage}
-                          cornerLabel={
-                            sectionIndex === 0
-                              ? isEs
-                                ? "Portada"
-                                : "Cover"
-                              : isEs
-                              ? "Anterior"
-                              : "Previous"
-                          }
                         >
                           {currentSpread.leftContent}
                         </BookPage>
@@ -315,20 +274,18 @@ export default function Book() {
                         <BookPage
                           side="right"
                           pageNumber={rightPageNum}
-                          chapterCode={currentSpread.rightCode}
                           chapterTitle={currentSpread.rightTitle}
                           onCornerClick={
                             sectionIndex < BOOK_SECTIONS.length - 1
                               ? nextPage
                               : undefined
                           }
-                          cornerLabel={isEs ? "Siguiente" : "Next"}
                         >
                           {currentSpread.rightContent}
                         </BookPage>
                       </div>
 
-                      {/* MOBILE: Single Page at a time with Sub-Page Toggle & Swipe */}
+                      {/* MOBILE SINGLE PAGE WITH SWIPE */}
                       <div className="flex md:hidden flex-col w-full h-full">
                         <BookPage
                           side={mobileSubPage}
@@ -336,11 +293,6 @@ export default function Book() {
                             mobileSubPage === "left"
                               ? leftPageNum
                               : rightPageNum
-                          }
-                          chapterCode={
-                            mobileSubPage === "left"
-                              ? currentSpread.leftCode
-                              : currentSpread.rightCode
                           }
                           chapterTitle={
                             mobileSubPage === "left"
@@ -351,15 +303,6 @@ export default function Book() {
                             setMobileSubPage(
                               mobileSubPage === "left" ? "right" : "left"
                             )
-                          }
-                          cornerLabel={
-                            mobileSubPage === "left"
-                              ? isEs
-                                ? "Ver pág. derecha"
-                                : "Right page"
-                              : isEs
-                              ? "Ver pág. izquierda"
-                              : "Left page"
                           }
                         >
                           {mobileSubPage === "left"
@@ -375,7 +318,7 @@ export default function Book() {
                 <div className="hidden md:block w-2.5 h-[98%] my-auto book-pages-stack-right rounded-r-xs shrink-0" />
               </div>
 
-              {/* PHYSICAL BOOKMARK TABS ON THE RIGHT EDGE (Desktop) / BOTTOM (Mobile) */}
+              {/* LATERAL INDEX TABS */}
               <BookTabs />
             </motion.div>
           )}
