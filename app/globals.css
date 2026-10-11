@@ -1,119 +1,193 @@
 @import "tailwindcss";
 
 :root {
-  --accent: #d4ff00;
-  --accent-hover: #bcf000;
-  --accent-muted: rgba(212, 255, 0, 0.12);
-  --accent-glow: rgba(212, 255, 0, 0.25);
-  --bg-deep: #080808;
-  --bg-surface: #121214;
-  --border-subtle: #222226;
-  --border-strong: #333338;
+  /* Explorer / Adventure Book Palette */
+  --book-bg: #16100b;
+  --desk-wood: #1f1610;
+  --page-kraft: #e8dcc4;
+  --page-aged: #d9c8a9;
+  --page-edge: #bba57f;
+  --spine-leather: #3a2418;
+  --cover-leather: #2d1b11;
+  --cover-leather-light: #442a1c;
+
+  /* Inks & Accents */
+  --ink-dark: #25160e;
+  --ink-medium: #4a3325;
+  --ink-light: #6e523e;
+  --stamp-red: #8c2d2d;
+  --stamp-green: #2b583c;
+  --tape-green: #4c7056;
+  --compass-gold: #c89d45;
+  --brass-light: #e2be6b;
+  --wax-seal: #7a2028;
+
+  /* Legacy variables in case old components are referenced */
+  --accent: #c89d45;
+  --bg-deep: #16100b;
 }
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-    color-scheme: dark;
-  }
-
+  html,
   body {
-    background-color: var(--bg-deep);
-    color: #f4f4f5;
-    overflow-x: hidden;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: var(--book-bg);
+    color: var(--ink-dark);
   }
 
   ::selection {
-    background-color: var(--accent);
-    color: #000000;
-  }
-
-  /* Custom sharp scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #080808;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #27272a;
-    border-radius: 0px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--accent);
+    background-color: rgba(200, 157, 69, 0.35);
+    color: var(--ink-dark);
   }
 }
 
-/* Precision Architectural Grid Pattern */
-.tech-grid-pattern {
-  background-size: 40px 40px;
+/* Typography Helpers */
+.font-serif-book {
+  font-family: var(--font-lora), Georgia, serif;
+}
+
+.font-handwriting {
+  font-family: var(--font-caveat), cursive;
+}
+
+.font-typewriter {
+  font-family: var(--font-courier), monospace;
+}
+
+/* 3D Book Perspective Utilities */
+.perspective-book {
+  perspective: 2200px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Expedition Desk Surface */
+.expedition-desk {
+  background-color: #140e09;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    radial-gradient(circle at 50% 45%, rgba(65, 42, 25, 0.45) 0%, rgba(15, 10, 6, 0.95) 85%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 235, 200, 0.012) 0px,
+      rgba(255, 235, 200, 0.012) 2px,
+      transparent 2px,
+      transparent 14px
+    );
 }
 
-.tech-dots-pattern {
-  background-image: radial-gradient(rgba(212, 255, 0, 0.15) 1px, transparent 1px);
-  background-size: 32px 32px;
+/* Leather Cover Texture */
+.leather-cover {
+  background-color: #2f1b10;
+  background-image: 
+    radial-gradient(ellipse at 35% 25%, rgba(92, 56, 34, 0.5) 0%, transparent 65%),
+    radial-gradient(ellipse at 80% 80%, rgba(20, 10, 5, 0.7) 0%, transparent 60%),
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      rgba(0, 0, 0, 0.08) 0px,
+      rgba(255, 255, 255, 0.02) 1px,
+      rgba(0, 0, 0, 0.06) 2px
+    );
+  box-shadow: 
+    0 30px 60px -12px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(200, 157, 69, 0.2),
+    inset 0 2px 6px rgba(255, 225, 180, 0.12),
+    inset 0 -8px 20px rgba(0, 0, 0, 0.65);
 }
 
-/* Hard Neo-Industrial Shadows */
-.hard-shadow-accent {
-  box-shadow: 4px 4px 0px 0px var(--accent);
+/* Aged Parchment / Kraft Page Texture */
+.parchment-page-left {
+  background-color: var(--page-kraft);
+  background-image: 
+    /* Center spine crease shadow on right edge of left page */
+    linear-gradient(to right, rgba(139, 105, 65, 0.22) 0%, transparent 6%, transparent 86%, rgba(45, 26, 12, 0.26) 98%, rgba(28, 16, 8, 0.45) 100%),
+    /* Aged vignette edges */
+    radial-gradient(ellipse at center, rgba(255, 250, 238, 0.35) 35%, rgba(185, 156, 114, 0.35) 90%, rgba(142, 112, 74, 0.55) 100%),
+    /* Subtle coffee/water stain top left */
+    radial-gradient(circle at 14% 18%, rgba(145, 102, 55, 0.08) 0%, rgba(145, 102, 55, 0.12) 8%, transparent 11%),
+    /* Subtle paper grain grid */
+    repeating-linear-gradient(0deg, rgba(90, 65, 40, 0.018) 0px, rgba(90, 65, 40, 0.018) 1px, transparent 1px, transparent 3px);
 }
 
-.hard-shadow-zinc {
-  box-shadow: 4px 4px 0px 0px #27272a;
+.parchment-page-right {
+  background-color: var(--page-kraft);
+  background-image: 
+    /* Center spine crease shadow on left edge of right page */
+    linear-gradient(to left, rgba(139, 105, 65, 0.22) 0%, transparent 6%, transparent 86%, rgba(45, 26, 12, 0.24) 98%, rgba(28, 16, 8, 0.42) 100%),
+    /* Aged vignette edges */
+    radial-gradient(ellipse at center, rgba(255, 250, 238, 0.35) 35%, rgba(185, 156, 114, 0.35) 90%, rgba(142, 112, 74, 0.55) 100%),
+    /* Subtle coffee ring bottom right */
+    radial-gradient(circle at 84% 78%, transparent 5%, rgba(138, 94, 48, 0.09) 6.5%, transparent 7.8%),
+    /* Subtle paper grain */
+    repeating-linear-gradient(0deg, rgba(90, 65, 40, 0.018) 0px, rgba(90, 65, 40, 0.018) 1px, transparent 1px, transparent 3px);
 }
 
-.hard-shadow-accent-sm {
-  box-shadow: 2px 2px 0px 0px var(--accent);
+/* Stacked paper pages effect on book sides */
+.book-pages-stack-left {
+  background: repeating-linear-gradient(
+    to right,
+    #d8c7a8 0px,
+    #bfa984 1px,
+    #e5d6ba 2px,
+    #cab694 3px
+  );
 }
 
-/* Industrial Card / Surface */
-.industrial-card {
-  background: rgba(18, 18, 20, 0.85);
-  border: 1px solid var(--border-subtle);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+.book-pages-stack-right {
+  background: repeating-linear-gradient(
+    to left,
+    #d8c7a8 0px,
+    #bfa984 1px,
+    #e5d6ba 2px,
+    #cab694 3px
+  );
 }
 
-.industrial-card:hover {
-  border-color: rgba(212, 255, 0, 0.5);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+/* Custom subtle vintage scrollbar inside book pages */
+.book-scroll::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
 }
 
-/* Distinctive typography accents */
-.text-accent {
-  color: var(--accent);
+.book-scroll::-webkit-scrollbar-track {
+  background: rgba(139, 105, 65, 0.1);
+  border-radius: 4px;
 }
 
-.bg-accent {
-  background-color: var(--accent);
+.book-scroll::-webkit-scrollbar-thumb {
+  background: rgba(92, 61, 38, 0.35);
+  border-radius: 4px;
 }
 
-.border-accent {
-  border-color: var(--accent);
+.book-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(92, 61, 38, 0.6);
 }
 
-.gradient-text-accent {
-  background: linear-gradient(135deg, #ffffff 10%, #d4ff00 90%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Polaroid & Stamp Effects */
+.polaroid-card {
+  background: #f9f5eb;
+  box-shadow: 
+    0 6px 16px rgba(32, 18, 8, 0.22),
+    0 1px 3px rgba(32, 18, 8, 0.15),
+    inset 0 0 12px rgba(175, 148, 105, 0.15);
 }
 
-.gradient-text-sky {
-  background: linear-gradient(135deg, #ffffff 20%, #d4ff00 90%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.passport-stamp {
+  border: 2px dashed currentColor;
+  mask-image: radial-gradient(circle at 30% 40%, black 80%, rgba(0, 0, 0, 0.75) 100%);
 }
 
-.gradient-text-purple {
-  background: linear-gradient(135deg, #ffffff 0%, #e4e4e7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.washi-tape {
+  background-color: rgba(76, 112, 86, 0.78);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  border-left: 2px dotted rgba(255, 255, 255, 0.35);
+  border-right: 2px dotted rgba(255, 255, 255, 0.35);
 }
