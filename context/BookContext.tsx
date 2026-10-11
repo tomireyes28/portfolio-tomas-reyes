@@ -47,20 +47,15 @@ export function BookProvider({ children }: { children: React.ReactNode }) {
 
   const goToSection = useCallback(
     (targetSection: BookSectionId) => {
-      if (targetSection === activeSection || isTurning) return;
+      if (targetSection === activeSection) return;
       const currentIndex = BOOK_SECTIONS.indexOf(activeSection);
       const targetIndex = BOOK_SECTIONS.indexOf(targetSection);
 
       setTurnDirection(targetIndex > currentIndex ? "next" : "prev");
-      setIsTurning(true);
       setSelectedProject(null);
       setActiveSection(targetSection);
-
-      setTimeout(() => {
-        setIsTurning(false);
-      }, 650);
     },
-    [activeSection, isTurning]
+    [activeSection]
   );
 
   const nextPage = useCallback(() => {
