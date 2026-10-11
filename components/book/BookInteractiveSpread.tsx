@@ -411,7 +411,7 @@ export default function BookInteractiveSpread({
       {/* ============================================================== */}
       {/* MOBILE SINGLE-PAGE SPREAD WITH TOUCH PAN */}
       {/* ============================================================== */}
-      <div
+      <motion.div
         onPan={handlePan}
         onPanEnd={handlePanEnd}
         className="flex md:hidden flex-col w-full h-full relative"
@@ -428,7 +428,7 @@ export default function BookInteractiveSpread({
         >
           {currentSpread.leftContent}
         </BookPage>
-      </div>
+      </motion.div>
     </div>
   );
 }
