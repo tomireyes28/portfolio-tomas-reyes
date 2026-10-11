@@ -89,7 +89,7 @@ export default function BookCover() {
 
           {/* Subtitle */}
           <p className="font-typewriter text-xs uppercase tracking-[0.25em] text-[#c89d45] mb-2">
-            {isEs ? "Bitácora de Ingeniería & Producto" : "Engineering & Product Logbook"}
+            {isEs ? "Bitácora de Ingeniería & Automatizaciones" : "Engineering & Automation Logbook"}
           </p>
 
           {/* Main Embossed Name */}
@@ -112,14 +112,14 @@ export default function BookCover() {
           {/* Role Plate */}
           <div className="mt-2 px-4 py-2 rounded-sm bg-[#e8dcc4] text-[#25160e] border-2 border-[#8c6d46] shadow-md transform -rotate-1">
             <p className="font-handwriting text-xl md:text-2xl font-bold leading-none">
-              Full Stack & Product Developer
+              Full Stack & Automation Developer
             </p>
           </div>
 
           <p className="mt-4 font-serif-book text-xs md:text-sm text-[#d9c8a9]/80 max-w-xs leading-relaxed italic">
             {isEs
-              ? "“Notas de campo, arquitecturas escalables, diseño de interfaces y productos digitales de alto impacto.”"
-              : "“Field notes, scalable architectures, interface design, and high-impact digital products.”"}
+              ? "“Notas de campo, arquitecturas web escalables, automatizaciones de procesos y desarrollo Full Stack.”"
+              : "“Field notes, scalable web architectures, process automations, and Full Stack development.”"}
           </p>
         </div>
 

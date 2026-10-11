@@ -21,7 +21,9 @@ export const skills: Skill[] = [
   { name: "Supabase", icon: "", category: "databases", highlight: true },
   { name: "MongoDB", icon: "/icons/mongodb.svg", category: "databases" },
 
-  // CLOUD, DEVOPS & HERRAMIENTAS
+  // AUTOMATIZACIÓN, CLOUD & HERRAMIENTAS
+  { name: "Make", icon: "/icons/make.svg", category: "tools", highlight: true },
+  { name: "n8n", icon: "/icons/n8n.svg", category: "tools", highlight: true },
   { name: "Docker", icon: "", category: "tools", highlight: true },
   { name: "Git", icon: "/icons/git.svg", category: "tools" },
   { name: "GitHub", icon: "/icons/github.svg", category: "tools" },

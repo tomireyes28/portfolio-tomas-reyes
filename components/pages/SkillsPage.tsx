@@ -181,7 +181,7 @@ export function SkillsLeftPage() {
 
       <div className="pt-2 text-right">
         <span className="font-handwriting text-base text-[#6a4f3b] italic">
-          — Ecosistema Full Stack en producción —
+          {t.skills.footerNote || "— Ecosistema Full Stack & Automatización —"}
         </span>
       </div>
     </div>
@@ -189,11 +189,12 @@ export function SkillsLeftPage() {
 }
 
 export function SkillsRightPage() {
+  const { t } = useLanguage();
   const dbSkills = skills.filter((s) => s.category === "databases");
   const toolSkills = skills.filter((s) => s.category === "tools");
 
   const dbRotations = [-6, 7, -4, 5];
-  const toolRotations = [6, -5, 5, -4, 4];
+  const toolRotations = [-5, 6, -4, 5, -6, 4, -3];
 
   return (
     <div className="flex flex-col justify-between h-full space-y-3 py-1">
@@ -201,7 +202,7 @@ export function SkillsRightPage() {
       <div className="space-y-2 border-b border-[#8c6d46]/20 pb-3">
         <div className="flex items-center gap-2">
           <h3 className="font-serif-book text-base font-bold italic text-[#2d4558]">
-            Bases de Datos
+            {t.skills.databases}
           </h3>
           <div className="h-px flex-1 bg-gradient-to-r from-[#2d4558]/30 to-transparent" />
         </div>
@@ -217,11 +218,11 @@ export function SkillsRightPage() {
         </div>
       </div>
 
-      {/* Section 4: Herramientas & Cloud - Fixed 4-column grid (4 top, 1 bottom) */}
+      {/* Section 4: Automatización & Cloud - Fixed 4-column grid (4 top, 3 bottom) */}
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <h3 className="font-serif-book text-base font-bold italic text-[#94631d]">
-            Herramientas & Cloud
+            {t.skills.tools}
           </h3>
           <div className="h-px flex-1 bg-gradient-to-r from-[#94631d]/30 to-transparent" />
         </div>
@@ -240,7 +241,7 @@ export function SkillsRightPage() {
       {/* Note on bottom right */}
       <div className="pt-2 border-t border-dashed border-[#8c6d46]/30">
         <p className="font-handwriting text-xl text-[#22140c] leading-snug">
-          “Enfoque en código tipado estricto, arquitecturas limpias y entrega ágil de valor.”
+          {t.skills.quote || "“Enfoque en código tipado estricto, automatización eficiente y entrega continua de valor.”"}
         </p>
       </div>
     </div>

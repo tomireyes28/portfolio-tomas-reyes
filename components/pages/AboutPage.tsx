@@ -26,7 +26,7 @@ export function AboutLeftPage() {
           Tomás Reyes
         </p>
         <span className="font-typewriter text-[9px] text-[#6a4f3b] uppercase tracking-widest block mt-0.5">
-          Full Stack Developer
+          Full Stack & Automation Dev
         </span>
       </div>
 
@@ -45,20 +45,20 @@ export function AboutLeftPage() {
         <div className="ink-stamp p-2 text-[#882b2b] border-[#882b2b]/40 transform rotate-1 text-left">
           <div className="flex items-center gap-1 font-typewriter text-[9px] uppercase tracking-wider opacity-85">
             <Terminal className="w-3 h-3" />
-            <span>{isEs ? "Proyectos" : "Projects"}</span>
+            <span>{isEs ? "Experiencia" : "Experience"}</span>
           </div>
           <p className="font-serif-book text-xs font-bold mt-0.5 text-[#22140c]">
-            {isEs ? "+12 en Producción" : "+12 in Production"}
+            {isEs ? "+2 Años en Producción" : "+2 Years in Production"}
           </p>
         </div>
 
         <div className="ink-stamp p-2 text-[#452f20] border-[#452f20]/40 transform rotate-1 text-left">
           <div className="flex items-center gap-1 font-typewriter text-[9px] uppercase tracking-wider opacity-85">
             <Compass className="w-3 h-3" />
-            <span>{isEs ? "Enfoque" : "Focus"}</span>
+            <span>{isEs ? "Especialidad" : "Specialty"}</span>
           </div>
           <p className="font-serif-book text-xs font-bold mt-0.5 text-[#22140c]">
-            {isEs ? "Producto & UX" : "Product & UX"}
+            {isEs ? "Full Stack & Auto." : "Full Stack & Auto."}
           </p>
         </div>
 
@@ -68,7 +68,7 @@ export function AboutLeftPage() {
             <span>{isEs ? "Formación" : "Education"}</span>
           </div>
           <p className="font-serif-book text-xs font-bold mt-0.5 text-[#22140c]">
-            {isEs ? "Téc. Programación" : "Software Degree"}
+            {isEs ? "Periodismo + Prog." : "Journalism + CS"}
           </p>
         </div>
       </div>
@@ -141,20 +141,20 @@ export function AboutRightPage() {
           </div>
           <div>
             <span className="font-typewriter text-[9px] uppercase text-[#6a4f3b] block">
-              {isEs ? "Bases de Datos & ORM" : "Databases & ORM"}
+              {isEs ? "Automatización & Datos" : "Automation & Data"}
             </span>
             <span className="font-semibold text-[#22140c]">
-              PostgreSQL, Prisma, Supabase, TypeORM
+              Make, n8n, PostgreSQL, Prisma, Supabase
             </span>
           </div>
           <div>
             <span className="font-typewriter text-[9px] uppercase text-[#6a4f3b] block">
-              {isEs ? "Formación Académica" : "Academic Background"}
+              {isEs ? "Formación & Medios" : "Background & Media"}
             </span>
             <span className="font-semibold text-[#22140c]">
               {isEs
-                ? "Técnico Superior en Programación (Teclab)"
-                : "Higher Technician in Programming (Teclab)"}
+                ? "Periodismo (UCES) + Prog. (Teclab)"
+                : "Journalism (UCES) + CS (Teclab)"}
             </span>
           </div>
         </div>

@@ -31,8 +31,8 @@ export function JourneyLeftPage() {
       roman: "I",
       icon: Target,
       title: isEs
-        ? "Fundador & Liderazgo de Producto"
-        : "Founder & Product Leadership",
+        ? "Fundación de Zonasyc & Liderazgo"
+        : "Zonasyc Founding & Leadership",
       narrative: t.story.narrative1,
       inkColor: "#882b2b",
     },
@@ -49,8 +49,8 @@ export function JourneyLeftPage() {
       roman: "III",
       icon: Award,
       title: isEs
-        ? "Ingeniería de Software Full Stack"
-        : "Full Stack Software Engineering",
+        ? "Automatizaciones & Full Stack en Prod."
+        : "Automation & Production Full Stack",
       narrative: t.story.narrative3,
       inkColor: "#2d4558",
     },
