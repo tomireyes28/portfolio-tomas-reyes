@@ -3,7 +3,6 @@
 import React from "react";
 import { Compass, MapPin, Terminal, Award, FileDown } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
-import { useBook } from "@/context/BookContext";
 
 export function AboutLeftPage() {
   const { language, t } = useLanguage();
@@ -116,7 +115,6 @@ export function AboutLeftPage() {
 
 export function AboutRightPage() {
   const { language, t } = useLanguage();
-  const { goToSection } = useBook();
   const isEs = language === "es";
 
   return (
@@ -138,32 +136,21 @@ export function AboutRightPage() {
         <p>{t.about.p3}</p>
       </div>
 
-      {/* Bottom Action Navigation */}
-      <div className="pt-2 border-t border-[#8c6d46]/25 flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => goToSection("projects")}
-            className="px-3.5 py-1.5 bg-[#265538] hover:bg-[#1a3d27] text-[#f5ebd6] font-typewriter text-xs font-bold uppercase tracking-wider rounded-xs shadow-xs transition-colors cursor-pointer"
-          >
-            {t.hero.btnPrimary} →
-          </button>
-          <button
-            onClick={() => goToSection("contact")}
-            className="px-3 py-1.5 border border-[#5a4232]/70 hover:bg-[#5a4232]/10 text-[#22140c] font-typewriter text-xs font-bold uppercase tracking-wider rounded-xs transition-colors cursor-pointer"
-          >
-            {t.hero.btnSecondary}
-          </button>
-        </div>
-
+      {/* Bottom: Natural CV Text Link + Right Handwritten Signature */}
+      <div className="pt-3 border-t border-[#8c6d46]/25 flex items-center justify-between gap-3">
         <a
           href="/projects/Tomas%20Reyes%20CV.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 font-typewriter text-[11px] font-bold uppercase tracking-wider text-[#882b2b] hover:underline"
+          className="inline-flex items-center gap-1.5 font-typewriter text-xs font-bold uppercase tracking-wider text-[#882b2b] hover:underline transition-colors"
         >
           <FileDown className="w-3.5 h-3.5" />
           <span>{t.hero.btnCv}</span>
         </a>
+
+        <span className="font-handwriting text-2xl sm:text-3xl text-[#452f20] leading-none select-none transform -rotate-1">
+          Tomás Reyes
+        </span>
       </div>
     </div>
   );
