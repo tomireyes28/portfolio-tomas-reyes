@@ -108,27 +108,23 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
         {/* TOP HEADER */}
         <div className="relative z-10 pl-5 md:pl-6 flex items-center justify-between">
           <span className="font-typewriter text-[10px] md:text-[11px] tracking-[0.2em] uppercase text-[#e2be6b]/85 border border-[#c89d45]/35 px-2.5 py-1 rounded-xs bg-[#1b0f08]/60">
-            {isEs ? "ARCHIVO DE EXPEDICIÓN № 26" : "FIELD LOGBOOK № 26"}
+            {isEs ? "PORTAFOLIO 2026" : "PORTFOLIO // 2026"}
           </span>
           <span className="font-typewriter text-[10px] md:text-[11px] text-[#c89d45]/80 flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-[#4ea868] animate-pulse" />
-            BUE // AR
+            {isEs ? "BUENOS AIRES, ARGENTINA" : "BUENOS AIRES, AR"}
           </span>
         </div>
 
         {/* CENTER MEDALLION & TITLE */}
         <div className="relative z-10 pl-5 md:pl-6 my-auto flex flex-col items-center text-center">
-          <div className="relative mb-4 flex items-center justify-center">
+          <div className="relative mb-3 flex items-center justify-center">
             <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border border-[#c89d45]/50 bg-[#1f120b]/85 flex items-center justify-center shadow-[inset_0_0_20px_rgba(0,0,0,0.85),0_0_25px_rgba(200,157,69,0.2)] group-hover:scale-105 transition-transform duration-500">
               <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-dashed border-[#c89d45]/40 flex items-center justify-center">
                 <Compass className="w-9 h-9 md:w-11 md:h-11 text-[#e2be6b] transition-transform duration-700 group-hover:rotate-45" />
               </div>
             </div>
           </div>
-
-          <p className="font-typewriter text-[11px] uppercase tracking-[0.22em] text-[#c89d45] mb-1.5">
-            {isEs ? "Bitácora de Ingeniería & Automatizaciones" : "Engineering & Automation Logbook"}
-          </p>
 
           <h1
             className="font-serif-book text-2xl md:text-3xl lg:text-4xl font-bold tracking-wide text-[#f5e8c7] mb-2"
@@ -151,29 +147,48 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
             </p>
           </div>
 
-          <p className="mt-3 font-serif-book text-xs text-[#d9c8a9]/80 max-w-xs leading-relaxed italic">
-            {isEs
-              ? "“Notas de campo, arquitecturas web escalables, automatizaciones de procesos y desarrollo Full Stack.”"
-              : "“Field notes, scalable web architectures, process automations, and Full Stack development.”"}
-          </p>
+          {/* Tech Stack Chips (Alternativa A) */}
+          <div className="mt-4 flex flex-wrap justify-center gap-1.5 max-w-xs px-1">
+            {[
+              "Next.js",
+              "TypeScript",
+              "React",
+              "Node.js",
+              "Make",
+              "n8n",
+              "APIs & Webhooks",
+              "PostgreSQL",
+            ].map((tech) => (
+              <span
+                key={tech}
+                className="font-typewriter text-[9.5px] tracking-wider uppercase px-2 py-0.5 rounded-xs bg-[#190d07]/80 text-[#e2be6b]/90 border border-[#c89d45]/35 shadow-xs"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
         </div>
 
-        {/* BOTTOM CTA: Wax Seal Button */}
+        {/* BOTTOM INVITATION: Subtle gold engraved prompt */}
         <div className="relative z-10 pl-5 md:pl-6 flex flex-col items-center">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.96 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              onOpen();
-            }}
-            className="wax-seal-btn flex items-center gap-2.5 px-6 md:px-7 py-2.5 md:py-3 rounded-full text-[#f7ecd5] border-2 border-[#e2be6b]/70 cursor-pointer group-hover:border-[#e2be6b]"
-          >
-            <BookOpen className="w-4 h-4 text-[#e2be6b]" />
-            <span className="font-typewriter text-xs md:text-sm font-bold uppercase tracking-widest">
-              {isEs ? "Abrir Libro" : "Open Book"}
+          <div className="flex items-center gap-2 text-[#e2be6b]/75 font-typewriter text-[10px] md:text-[11px] tracking-[0.22em] uppercase group-hover:text-[#f5e8c7] transition-colors py-1.5 px-3.5 rounded-full border border-[#c89d45]/30 bg-[#170c06]/70 shadow-inner">
+            <span className="text-[#c89d45]">✦</span>
+            <span>{isEs ? "Haz click en la tapa para abrir" : "Click cover to open"}</span>
+            <span className="text-[#c89d45]">✦</span>
+          </div>
+        </div>
+
+        {/* Antique Brass & Leather Clasp Tab on Right Edge */}
+        <div
+          className="pointer-events-none absolute -right-3.5 top-1/2 -translate-y-1/2 z-30 hidden sm:flex items-center justify-center py-3.5 px-1 rounded-r-md border-y-2 border-r-2 border-[#e2be6b]/70 bg-gradient-to-r from-[#24140b] to-[#3a2012] shadow-xl group-hover:translate-x-1 transition-transform duration-300"
+        >
+          <div className="flex flex-col items-center gap-1.5 text-[#e2be6b]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#e2be6b] shadow-xs" />
+            <span className="font-typewriter text-[9px] font-bold tracking-widest uppercase [writing-mode:vertical-lr] text-[#f5e8c7]">
+              {isEs ? "ABRIR" : "OPEN"}
             </span>
-          </motion.button>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#e2be6b] shadow-xs" />
+          </div>
         </div>
       </div>
 

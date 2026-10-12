@@ -48,7 +48,7 @@ export function AboutLeftPage() {
             <span>{isEs ? "Experiencia" : "Experience"}</span>
           </div>
           <p className="font-serif-book text-xs font-bold mt-0.5 text-[#22140c]">
-            {isEs ? "+2 Años en Producción" : "+2 Years in Production"}
+            {isEs ? "+2 Años de Experiencia" : "+2 Years of Experience"}
           </p>
         </div>
 
@@ -68,26 +68,46 @@ export function AboutLeftPage() {
             <span>{isEs ? "Formación" : "Education"}</span>
           </div>
           <p className="font-serif-book text-xs font-bold mt-0.5 text-[#22140c]">
-            {isEs ? "Periodismo + Prog." : "Journalism + CS"}
+            {isEs ? "Periodismo & Programación" : "Journalism & Programming"}
           </p>
         </div>
       </div>
 
-      {/* Field Notes: Hobbies (Directly on paper) */}
-      <div className="w-full border-t border-dashed border-[#8c6d46]/30 pt-2 text-left">
-        <p className="font-serif-book text-xs italic font-bold text-[#5a4232] mb-1">
-          {t.about.hobbiesTitle}
-        </p>
-        <div className="space-y-0.5 text-xs font-serif-book text-[#22140c]">
-          <p>
-            {t.about.hobbies.cinema.emoji} {t.about.hobbies.cinema.text}
-          </p>
-          <p>
-            {t.about.hobbies.culture.emoji} {t.about.hobbies.culture.text}
-          </p>
-          <p>
-            {t.about.hobbies.learning.emoji} {t.about.hobbies.learning.text}
-          </p>
+      {/* Availability & Core Info (Clean, unified typography without digital banners or pulses) */}
+      <div className="w-full border-t border-dashed border-[#8c6d46]/30 pt-3 text-left">
+        <div className="space-y-2 text-xs pl-2.5 border-l-2 border-[#8c6d46]/30">
+          <div>
+            <span className="font-typewriter text-[9.5px] uppercase text-[#6a4f3b] block mb-0.5">
+              {isEs ? "Disponibilidad" : "Availability"}
+            </span>
+            <p className="font-serif-book font-semibold text-[#22140c] text-xs">
+              {isEs
+                ? "Disponible para nuevos proyectos y oportunidades"
+                : "Open to new projects and opportunities"}
+            </p>
+          </div>
+
+          <div>
+            <span className="font-typewriter text-[9.5px] uppercase text-[#6a4f3b] block mb-0.5">
+              {isEs ? "Rol principal" : "Core Focus"}
+            </span>
+            <p className="font-serif-book font-semibold text-[#22140c] text-xs">
+              {isEs
+                ? "Full Stack Developer & Automatización de Procesos"
+                : "Full Stack Developer & Workflow Automation"}
+            </p>
+          </div>
+
+          <div>
+            <span className="font-typewriter text-[9.5px] uppercase text-[#6a4f3b] block mb-0.5">
+              {isEs ? "Modalidad" : "Work Mode"}
+            </span>
+            <p className="font-serif-book font-semibold text-[#22140c] text-xs">
+              {isEs
+                ? "Remoto / Híbrido • Buenos Aires, Argentina"
+                : "Remote / Hybrid • Buenos Aires, Argentina"}
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -100,68 +120,26 @@ export function AboutRightPage() {
   const isEs = language === "es";
 
   return (
-    <div className="flex flex-col justify-between h-full py-1 space-y-2.5">
+    <div className="flex flex-col justify-between h-full py-2 space-y-4">
       {/* Title & Role */}
-      <div>
+      <div className="border-b border-[#8c6d46]/25 pb-2.5">
         <h2 className="font-serif-book text-2xl lg:text-3xl font-bold text-[#22140c] leading-tight">
           {t.about.title}
         </h2>
-        <p className="font-handwriting text-xl text-[#6a4f3b] leading-snug">
-          {t.hero.role}
+        <p className="font-handwriting text-xl text-[#6a4f3b] leading-snug mt-0.5">
+          {t.about.role}
         </p>
       </div>
 
-      {/* Narrative Bio */}
-      <div className="space-y-2 font-serif-book text-xs sm:text-sm text-[#382215] leading-relaxed pl-3 border-l-2 border-[#8c6d46]/35">
+      {/* Narrative Bio - Generous reading layout */}
+      <div className="space-y-3 font-serif-book text-xs sm:text-[13px] md:text-[13.5px] text-[#2f1c10] leading-relaxed pl-3.5 border-l-2 border-[#8c6d46]/40 flex-1 flex flex-col justify-center">
         <p>{t.about.p1}</p>
         <p>{t.about.p2}</p>
-      </div>
-
-      {/* Core Specialty Ledger (Directly on paper, no nested card) */}
-      <div className="border-y border-[#8c6d46]/25 py-2.5 space-y-1.5">
-        <h3 className="font-serif-book text-xs font-bold italic text-[#22140c]">
-          {isEs ? "— Stack Principal & Especialidad —" : "— Core Stack & Specialty —"}
-        </h3>
-        <div className="grid grid-cols-2 gap-2 text-xs font-serif-book">
-          <div>
-            <span className="font-typewriter text-[9px] uppercase text-[#6a4f3b] block">
-              Frontend & UI
-            </span>
-            <span className="font-semibold text-[#22140c]">
-              React 19, Next.js 16, TS, Tailwind CSS
-            </span>
-          </div>
-          <div>
-            <span className="font-typewriter text-[9px] uppercase text-[#6a4f3b] block">
-              Backend & APIs
-            </span>
-            <span className="font-semibold text-[#22140c]">
-              NestJS, Node.js, Express, REST APIs
-            </span>
-          </div>
-          <div>
-            <span className="font-typewriter text-[9px] uppercase text-[#6a4f3b] block">
-              {isEs ? "Automatización & Datos" : "Automation & Data"}
-            </span>
-            <span className="font-semibold text-[#22140c]">
-              Make, n8n, PostgreSQL, Prisma, Supabase
-            </span>
-          </div>
-          <div>
-            <span className="font-typewriter text-[9px] uppercase text-[#6a4f3b] block">
-              {isEs ? "Formación & Medios" : "Background & Media"}
-            </span>
-            <span className="font-semibold text-[#22140c]">
-              {isEs
-                ? "Periodismo (UCES) + Prog. (Teclab)"
-                : "Journalism (UCES) + CS (Teclab)"}
-            </span>
-          </div>
-        </div>
+        <p>{t.about.p3}</p>
       </div>
 
       {/* Bottom Action Navigation */}
-      <div className="pt-1 flex flex-wrap items-center justify-between gap-2">
+      <div className="pt-2 border-t border-[#8c6d46]/25 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <button
             onClick={() => goToSection("projects")}

@@ -85,8 +85,10 @@ export const translations = {
     about: {
       badge: "Conoce más",
       title: "Sobre mí",
-      p1: "Soy Tomás Reyes, desarrollador Full Stack especializado en el ecosistema TypeScript y la automatización de procesos operativos. Disfruto construyendo software robusto que resuelva problemas reales de punta a punta, con interfaces limpias y arquitecturas eficientes.",
-      p2: "Cuento con más de 2 años implementando flujos de trabajo con Make y n8n, integrando APIs, webhooks y bases de datos relacionales. Complemento esto con mi experiencia como fundador de Zonasyc, lo que me dio liderazgo de redactores, criterio de negocio y comunicación clara.",
+      role: "Desarrollador Full Stack & Automation",
+      p1: "Combino solidez técnica Full Stack con el diseño de arquitecturas eficientes orientadas a resolver problemas complejos de negocio. Me especializo en construir aplicaciones escalables utilizando Next.js, Node.js y PostgreSQL, siempre bajo principios de Clean Code, modularidad y seguridad.",
+      p2: "Actualmente en Habitium, desarrollo e implemento automatizaciones y flujos agénticos (Make, n8n) integrando modelos de lenguaje (LLMs) y APIs corporativas. Optimizo la orquestación de datos y el consumo de recursos, aplicando criterio de backend para asegurar integraciones robustas y escalables.",
+      p3: "Mi formación en Comunicación me otorga una ventaja clave: no solo escribo código, sino que entiendo profundamente los requerimientos del producto y actúo como puente entre la lógica técnica y la necesidad operativa.",
       cta: "Iniciemos una conversación",
       hobbiesTitle: "Fuera de la terminal:",
       hobbies: {
@@ -213,8 +215,10 @@ export const translations = {
     about: {
       badge: "Discover More",
       title: "About Me",
-      p1: "I'm Tomás Reyes, a Full Stack Developer specializing in the TypeScript ecosystem and business process automation. I love building robust software that solves real problems end-to-end, with clean interfaces and efficient architectures.",
-      p2: "I bring over 2 years of experience building production workflows with Make and n8n, integrating APIs, webhooks, and relational databases. I pair this with founding Zonasyc, which forged my editorial team leadership, business mindset, and crisp communication.",
+      role: "Full Stack & Automation Developer",
+      p1: "I combine Full Stack technical rigor with efficient architectural design to solve complex business problems. I specialize in building scalable applications with Next.js, Node.js, and PostgreSQL, strictly adhering to Clean Code, modularity, and security best practices.",
+      p2: "Currently at Habitium, I design and deploy automations and agentic workflows (Make, n8n) integrating large language models (LLMs) and corporate APIs. I optimize data orchestration and resource consumption, applying backend principles to ensure robust and scalable integrations.",
+      p3: "My background in Communication gives me a strategic edge: I don't just write code; I deeply understand product requirements and act as a seamless bridge between technical logic and business operations.",
       cta: "Let's start a conversation",
       hobbiesTitle: "Beyond the terminal:",
       hobbies: {
