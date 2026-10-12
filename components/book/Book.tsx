@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookMarked, FileDown, Globe, Compass } from "lucide-react";
 import { useBook } from "@/context/BookContext";
@@ -18,6 +18,14 @@ export default function Book() {
   const [projectFilter, setProjectFilter] =
     useState<ProjectCategoryFilter>("all");
   const [projectSubPage, setProjectSubPage] = useState<number>(0);
+
+  const [hasOpenedOnce, setHasOpenedOnce] = useState(false);
+
+  useEffect(() => {
+    if (isOpen && !hasOpenedOnce) {
+      setHasOpenedOnce(true);
+    }
+  }, [isOpen, hasOpenedOnce]);
 
   const isEs = language === "es";
 
@@ -72,59 +80,63 @@ export default function Book() {
 
       {/* MAIN VIEWPORT STAGE */}
       <div className="relative flex-1 w-full flex items-center justify-center px-2 sm:px-6 md:px-10 py-1.5 md:py-3.5 perspective-book">
-        <AnimatePresence mode="wait">
-          {!isOpen ? (
-            <BookCover key="book-cover" />
-          ) : (
-            <motion.div
-              key="open-book-container"
-              initial={{ scale: 0.94, opacity: 0, rotateX: 6 }}
-              animate={{ scale: 1, opacity: 1, rotateX: 0 }}
-              exit={{ scale: 0.92, opacity: 0 }}
-              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-full max-w-[1280px] h-full max-h-[815px] flex flex-col md:flex-row items-stretch md:items-center justify-center"
-            >
-              {/* REALISTIC LEATHER HARDCOVER CASE (NO overflow-hidden to allow 3D page pop-out!) */}
-              <div className="relative flex flex-1 w-full h-full realistic-leather-cover rounded-xl p-2.5 sm:p-3.5 md:p-4.5">
-                {/* Gold Stitched Perimeter Seam (Costura de cuero) */}
-                <div className="pointer-events-none absolute inset-1.5 sm:inset-2 border border-dashed border-[#c89d45]/35 rounded-lg" />
+        {/* OPEN 2-PAGE SPREAD (Revealed seamlessly once cover finishes opening) */}
+        {isOpen && (
+          <motion.div
+            key="open-book-container"
+            initial={{ opacity: 0, scale: 0.99 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.99, transition: { duration: 0.2 } }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="relative w-full max-w-[1280px] h-full max-h-[815px] flex flex-col md:flex-row items-stretch md:items-center justify-center z-10"
+          >
+            {/* REALISTIC LEATHER HARDCOVER CASE (NO overflow-hidden to allow 3D page pop-out!) */}
+            <div className="relative flex flex-1 w-full h-full realistic-leather-cover rounded-xl p-2.5 sm:p-3.5 md:p-4.5">
+              {/* Gold Stitched Perimeter Seam (Costura de cuero) */}
+              <div className="pointer-events-none absolute inset-1.5 sm:inset-2 border border-dashed border-[#c89d45]/35 rounded-lg" />
 
-                {/* 4 Antique Brass Metal Corner Protectors with Rivets */}
-                {/* Top-Left */}
-                <div className="pointer-events-none absolute top-1 left-1 w-7 h-7 border-t-2 border-l-2 border-[#d4a74a]/75 rounded-tl-md flex items-start justify-start p-1 bg-gradient-to-br from-[#d4a74a]/30 to-transparent">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
-                </div>
-                {/* Top-Right */}
-                <div className="pointer-events-none absolute top-1 right-1 w-7 h-7 border-t-2 border-r-2 border-[#d4a74a]/75 rounded-tr-md flex items-start justify-end p-1 bg-gradient-to-bl from-[#d4a74a]/30 to-transparent">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
-                </div>
-                {/* Bottom-Left */}
-                <div className="pointer-events-none absolute bottom-1 left-1 w-7 h-7 border-b-2 border-l-2 border-[#d4a74a]/75 rounded-bl-md flex items-end justify-start p-1 bg-gradient-to-tr from-[#d4a74a]/30 to-transparent">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
-                </div>
-                {/* Bottom-Right */}
-                <div className="pointer-events-none absolute bottom-1 right-1 w-7 h-7 border-b-2 border-r-2 border-[#d4a74a]/75 rounded-br-md flex items-end justify-end p-1 bg-gradient-to-tl from-[#d4a74a]/30 to-transparent">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
-                </div>
-
-                {/* Left Stacked Paper Block (Grosor real de páginas de la izquierda) */}
-                <div className="hidden md:block w-3 h-[97%] my-auto book-edge-left rounded-l-xs shrink-0" />
-
-                {/* 3D DOUBLE-SIDED INTERACTIVE SPREAD ENGINE */}
-                <BookInteractiveSpread
-                  projectFilter={projectFilter}
-                  setProjectFilter={setProjectFilter}
-                  projectSubPage={projectSubPage}
-                  setProjectSubPage={setProjectSubPage}
-                />
-
-                {/* Right Stacked Paper Block (Grosor real de páginas de la derecha) */}
-                <div className="hidden md:block w-3 h-[97%] my-auto book-edge-right rounded-r-xs shrink-0" />
+              {/* 4 Antique Brass Metal Corner Protectors with Rivets */}
+              {/* Top-Left */}
+              <div className="pointer-events-none absolute top-1 left-1 w-7 h-7 border-t-2 border-l-2 border-[#d4a74a]/75 rounded-tl-md flex items-start justify-start p-1 bg-gradient-to-br from-[#d4a74a]/30 to-transparent">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
+              </div>
+              {/* Top-Right */}
+              <div className="pointer-events-none absolute top-1 right-1 w-7 h-7 border-t-2 border-r-2 border-[#d4a74a]/75 rounded-tr-md flex items-start justify-end p-1 bg-gradient-to-bl from-[#d4a74a]/30 to-transparent">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
+              </div>
+              {/* Bottom-Left */}
+              <div className="pointer-events-none absolute bottom-1 left-1 w-7 h-7 border-b-2 border-l-2 border-[#d4a74a]/75 rounded-bl-md flex items-end justify-start p-1 bg-gradient-to-tr from-[#d4a74a]/30 to-transparent">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
+              </div>
+              {/* Bottom-Right */}
+              <div className="pointer-events-none absolute bottom-1 right-1 w-7 h-7 border-b-2 border-r-2 border-[#d4a74a]/75 rounded-br-md flex items-end justify-end p-1 bg-gradient-to-tl from-[#d4a74a]/30 to-transparent">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
               </div>
 
-              {/* LATERAL INDEX TABS */}
-              <BookTabs />
-            </motion.div>
+              {/* Left Stacked Paper Block (Grosor real de páginas de la izquierda) */}
+              <div className="hidden md:block w-3 h-[97%] my-auto book-edge-left rounded-l-xs shrink-0" />
+
+              {/* 3D DOUBLE-SIDED INTERACTIVE SPREAD ENGINE */}
+              <BookInteractiveSpread
+                projectFilter={projectFilter}
+                setProjectFilter={setProjectFilter}
+                projectSubPage={projectSubPage}
+                setProjectSubPage={setProjectSubPage}
+              />
+
+              {/* Right Stacked Paper Block (Grosor real de páginas de la derecha) */}
+              <div className="hidden md:block w-3 h-[97%] my-auto book-edge-right rounded-r-xs shrink-0" />
+            </div>
+
+            {/* LATERAL INDEX TABS */}
+            <BookTabs />
+          </motion.div>
+        )}
+
+        {/* 3D FRONT COVER FLAP (Opens persistent in 3D without disappearing) */}
+        <AnimatePresence>
+          {!isOpen && (
+            <BookCover key="book-cover" isClosing={hasOpenedOnce} />
           )}
         </AnimatePresence>
       </div>
