@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, Github, X, Layers, Code2, Sparkles } from "lucide-react";
 import { useBook } from "@/context/BookContext";
 import { useLanguage } from "@/context/LanguageContext";
+import TechBadge from "@/components/ui/TechBadge";
 
 export default function ScrollDetail() {
   const { selectedProject, setSelectedProject } = useBook();
@@ -55,11 +56,7 @@ export default function ScrollDetail() {
             >
               {/* Left & Right Brass End Caps */}
               <div className="w-6 h-6 -ml-2 rounded-sm bg-gradient-to-b from-[#e2be6b] via-[#b8860b] to-[#6e4e08] border border-[#3b2212] shadow-md" />
-              <span className="font-typewriter text-[10px] tracking-[0.25em] uppercase text-[#e2be6b]/90">
-                {isEs
-                  ? "📜 PERGAMINO DE ESPECIFICACIÓN TÉCNICA"
-                  : "📜 TECHNICAL SPECIFICATION SCROLL"}
-              </span>
+              <div className="w-24 h-1 rounded-full bg-[#c89d45]/40" />
               <div className="w-6 h-6 -mr-2 rounded-sm bg-gradient-to-b from-[#e2be6b] via-[#b8860b] to-[#6e4e08] border border-[#3b2212] shadow-md" />
             </div>
 
@@ -72,37 +69,21 @@ export default function ScrollDetail() {
                   "radial-gradient(ellipse at center, rgba(255,250,238,0.4) 30%, rgba(185,156,114,0.4) 95%)",
               }}
             >
-              {/* Top Stamp & Close Button */}
-              <div className="flex items-start justify-between gap-4 border-b border-[#8c6d46]/40 pb-3 mb-4">
-                <div>
-                  <div className="flex flex-wrap items-center gap-2 mb-1">
-                    <span className="font-typewriter text-[10px] uppercase tracking-widest px-2 py-0.5 bg-[#8c2d2d]/15 text-[#8c2d2d] border border-dashed border-[#8c2d2d] rounded-xs font-bold">
-                      {selectedProject.category?.toUpperCase() || "FULLSTACK"}
-                    </span>
-                    {selectedProject.featured && (
-                      <span className="inline-flex items-center gap-1 font-typewriter text-[10px] uppercase tracking-widest px-2 py-0.5 bg-[#2b583c]/15 text-[#2b583c] border border-[#2b583c]/50 rounded-xs font-bold">
-                        <Sparkles className="w-3 h-3" />
-                        {isEs ? "Destacado" : "Featured"}
-                      </span>
-                    )}
-                    <span className="font-typewriter text-[11px] text-[#6e523e]">
-                      ID: {selectedProject.id}
-                    </span>
-                  </div>
-
-                  <h2 className="font-serif-book text-xl sm:text-2xl font-bold text-[#25160e]">
-                    {typeof selectedProject.title === "string"
-                      ? selectedProject.title
-                      : selectedProject.title[language]}
-                  </h2>
-                </div>
+              {/* Top Title & Close Button */}
+              <div className="flex items-start justify-between gap-4 border-b border-[#8c6d46]/35 pb-2.5 mb-4">
+                <h2 className="font-serif-book text-xl sm:text-2xl font-bold text-[#25160e] leading-snug">
+                  {typeof selectedProject.title === "string"
+                    ? selectedProject.title
+                    : selectedProject.title[language]}
+                </h2>
 
                 <button
                   onClick={() => setSelectedProject(null)}
-                  className="p-1.5 rounded-full bg-[#4a3325]/15 hover:bg-[#8c2d2d] text-[#25160e] hover:text-[#f5e8c7] border border-[#8c6d46]/50 transition-colors cursor-pointer shrink-0"
+                  className="w-8 h-8 rounded-full bg-[#3d2416] hover:bg-[#882b2b] text-[#f5ebd6] border border-[#8c6d46]/70 shadow-md flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
                   title={t.projects.modal.close}
+                  aria-label={t.projects.modal.close}
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-4 h-4 stroke-[2.5]" />
                 </button>
               </div>
 
@@ -157,12 +138,7 @@ export default function ScrollDetail() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {selectedProject.techStack.map((tech) => (
-                    <span
-                      key={tech}
-                      className="font-typewriter text-xs font-bold px-2.5 py-1 bg-[#d9c8a9] text-[#25160e] border border-[#8c6d46]/60 rounded-xs shadow-2xs"
-                    >
-                      {tech}
-                    </span>
+                    <TechBadge key={tech} name={tech} />
                   ))}
                 </div>
               </div>
@@ -197,9 +173,10 @@ export default function ScrollDetail() {
 
                 <button
                   onClick={() => setSelectedProject(null)}
-                  className="font-typewriter text-xs uppercase tracking-wider text-[#6e523e] hover:text-[#25160e] underline cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#dfd0b5] hover:bg-[#d0be9f] text-[#3d2416] border border-[#8c6d46]/60 rounded-xs font-typewriter text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
                 >
-                  {isEs ? "Enrollar pergamino" : "Roll up scroll"}
+                  <X className="w-3.5 h-3.5" />
+                  <span>{t.projects.modal.close}</span>
                 </button>
               </div>
             </div>
