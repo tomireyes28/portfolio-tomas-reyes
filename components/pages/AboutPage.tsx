@@ -12,20 +12,20 @@ export function AboutLeftPage() {
   return (
     <div className="flex flex-col items-center text-center h-full justify-between py-1">
       {/* Polaroid Profile Card */}
-      <div className="relative polaroid-card p-2.5 pb-4 rounded-xs border border-[#bfa984] transform -rotate-1.5 max-w-[195px] mt-0.5 shadow-md">
+      <div className="relative polaroid-card p-3 pb-4.5 rounded-xs border border-[#bfa984] transform -rotate-1.5 max-w-[250px] w-full mt-0.5 shadow-lg hover:rotate-0 transition-transform duration-300">
         {/* Washi tape top */}
-        <div className="washi-tape absolute -top-2 left-1/2 -translate-x-1/2 w-16 h-4 rotate-1" />
-        <div className="w-34 h-34 mx-auto overflow-hidden bg-[#24140b] rounded-xs border border-[#8c6d46]/35">
+        <div className="washi-tape absolute -top-2.5 left-1/2 -translate-x-1/2 w-20 h-4.5 rotate-1" />
+        <div className="w-full aspect-square mx-auto overflow-hidden bg-[#24140b] rounded-xs border border-[#8c6d46]/35 shadow-inner">
           <img
             src="/perfil.jpg"
             alt="Tomás Reyes"
-            className="w-full h-full object-cover sepia-[0.12] contrast-[1.03]"
+            className="w-full h-full object-cover sepia-[0.10] contrast-[1.04]"
           />
         </div>
-        <p className="font-handwriting text-2xl font-bold text-[#22140c] mt-1.5 leading-none">
+        <p className="font-handwriting text-3xl font-bold text-[#22140c] mt-2 leading-none">
           Tomás Reyes
         </p>
-        <span className="font-typewriter text-[9px] text-[#6a4f3b] uppercase tracking-widest block mt-0.5">
+        <span className="font-typewriter text-[10px] text-[#6a4f3b] uppercase tracking-widest block mt-1">
           Full Stack & Automation Dev
         </span>
       </div>
