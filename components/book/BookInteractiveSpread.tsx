@@ -35,7 +35,7 @@ export default function BookInteractiveSpread({
   projectSubPage,
   setProjectSubPage,
 }: BookInteractiveSpreadProps) {
-  const { activeSection, goToSection } = useBook();
+  const { activeSection, goToSection, isOpen } = useBook();
   const { language } = useLanguage();
   const isEs = language === "es";
 
@@ -316,7 +316,11 @@ export default function BookInteractiveSpread({
         {/* BASE STATIC LEFT PAGE */}
         {/* WHEN TURNING PREV: Shows prevSpread.leftContent so it NEVER repeats! */}
         {/* ============================================================== */}
-        <div className="w-1/2 h-full relative">
+        <div
+          className={`w-1/2 h-full relative transition-opacity duration-300 ${
+            isOpen ? "opacity-100 delay-500" : "opacity-0 pointer-events-none"
+          }`}
+        >
           <BookPage
             side="left"
             pageNumber={
@@ -342,7 +346,11 @@ export default function BookInteractiveSpread({
         {/* ============================================================== */}
         {/* CENTER LEATHER SPINE (Centered over the seam without altering page widths) */}
         {/* ============================================================== */}
-        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 z-25 pointer-events-none hidden md:flex">
+        <div
+          className={`absolute inset-y-0 left-1/2 -translate-x-1/2 z-25 pointer-events-none hidden md:flex transition-opacity duration-500 ${
+            isOpen ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <BookSpine />
         </div>
 

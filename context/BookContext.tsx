@@ -42,6 +42,7 @@ export function BookProvider({ children }: { children: React.ReactNode }) {
 
   const closeBook = useCallback(() => {
     setSelectedProject(null);
+    setActiveSection("about");
     setIsOpen(false);
   }, []);
 

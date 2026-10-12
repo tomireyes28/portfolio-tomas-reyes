@@ -56,8 +56,8 @@ function InteractivePageCurl({
   const isLeft = side === "left";
   const [isHovered, setIsHovered] = useState(false);
 
-  // Fold extent: 28px at rest, expands deeply to 72px when hovered
-  const s = isHovered ? 72 : 28;
+  // Fold extent: 24px at rest, expands to 52px when hovered
+  const s = isHovered ? 52 : 24;
   const box = 112;
 
   // Paths for right corner (bottom-right origin: x=112, y=112)
@@ -70,16 +70,9 @@ function InteractivePageCurl({
 
   return (
     <div
-      onClick={(e) => {
-        e.stopPropagation();
-        onClick();
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className={`absolute bottom-0 ${
+      className={`pointer-events-none absolute bottom-0 ${
         isLeft ? "left-0" : "right-0"
-      } w-28 h-28 z-50 cursor-pointer select-none`}
-      title={isLeft ? "Página anterior" : "Página siguiente"}
+      } w-28 h-28 z-40 select-none`}
     >
       <svg
         viewBox={`0 0 ${box} ${box}`}
@@ -163,6 +156,31 @@ function InteractivePageCurl({
           }}
           transition={{ type: "spring", stiffness: 240, damping: 22 }}
         />
+
+        {/* 4. PRECISE INTERACTIVE HIT-TARGET: Only the folded corner polygon receives events */}
+        <motion.polygon
+          points={
+            isLeft
+              ? `0,${box} ${s + 6},${box} 0,${box - (s + 6)}`
+              : `${box - (s + 6)},${box} ${box},${box - (s + 6)} ${box},${box}`
+          }
+          animate={{
+            points: isLeft
+              ? `0,${box} ${s + 6},${box} 0,${box - (s + 6)}`
+              : `${box - (s + 6)},${box} ${box},${box - (s + 6)} ${box},${box}`,
+          }}
+          transition={{ type: "spring", stiffness: 240, damping: 22 }}
+          fill="transparent"
+          className="pointer-events-auto cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick();
+          }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <title>{isLeft ? "Página anterior" : "Página siguiente"}</title>
+        </motion.polygon>
       </svg>
     </div>
   );
@@ -222,11 +240,11 @@ export default function BookPage({
 
       {/* Natural Bottom Footer with Page Number & Clickable Indicator */}
       <footer
-        className={`relative z-10 flex items-center justify-between px-5 md:px-7 pb-3 pt-1.5 border-t border-[#8c6d46]/15 mx-3 md:mx-5 ${
+        className={`relative z-20 flex items-center justify-between px-5 md:px-7 pb-3 pt-1.5 border-t border-[#8c6d46]/15 mx-3 md:mx-5 ${
           isLeft ? "flex-row" : "flex-row-reverse"
         }`}
       >
-        <span className="font-typewriter text-[11px] font-bold tracking-widest text-[#6a4f3b]">
+        <span className="font-typewriter text-[11px] font-bold tracking-widest text-[#6a4f3b] select-none">
           — {pageNumber} —
         </span>
 
@@ -234,7 +252,7 @@ export default function BookPage({
         {onCornerClick && (
           <button
             onClick={onCornerClick}
-            className="group font-serif-book text-xs italic text-[#8c6e54] hover:text-[#22140c] transition-colors cursor-pointer"
+            className="group font-serif-book text-xs italic text-[#8c6e54] hover:text-[#22140c] transition-colors cursor-pointer select-none py-1 px-2.5 -my-1 rounded hover:bg-[#8c6d46]/10"
           >
             {isLeft ? "‹ anterior" : "siguiente ›"}
           </button>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { BookMarked, FileDown, Globe, Compass } from "lucide-react";
 import { useBook } from "@/context/BookContext";
 import { useLanguage } from "@/context/LanguageContext";
@@ -12,20 +12,22 @@ import ScrollDetail from "@/components/ui/ScrollDetail";
 import { ProjectCategoryFilter } from "@/components/pages/ProjectsPage";
 
 export default function Book() {
-  const { isOpen, closeBook } = useBook();
+  const { isOpen, openBook, closeBook } = useBook();
   const { language, toggleLanguage, t } = useLanguage();
 
   const [projectFilter, setProjectFilter] =
     useState<ProjectCategoryFilter>("all");
   const [projectSubPage, setProjectSubPage] = useState<number>(0);
-
-  const [hasOpenedOnce, setHasOpenedOnce] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    if (isOpen && !hasOpenedOnce) {
-      setHasOpenedOnce(true);
-    }
-  }, [isOpen, hasOpenedOnce]);
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    checkDesktop();
+    window.addEventListener("resize", checkDesktop);
+    return () => window.removeEventListener("resize", checkDesktop);
+  }, []);
 
   const isEs = language === "es";
 
@@ -79,44 +81,75 @@ export default function Book() {
       </header>
 
       {/* MAIN VIEWPORT STAGE */}
-      <div className="relative flex-1 w-full flex items-center justify-center px-2 sm:px-6 md:px-10 py-1.5 md:py-3.5 perspective-book">
-        {/* OPEN 2-PAGE SPREAD (Revealed seamlessly once cover finishes opening) */}
-        {isOpen && (
-          <motion.div
-            key="open-book-container"
-            initial={{ opacity: 0, scale: 0.99 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.99, transition: { duration: 0.2 } }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full max-w-[1280px] h-full max-h-[815px] flex flex-col md:flex-row items-stretch md:items-center justify-center z-10"
+      <div className="relative flex-1 w-full flex items-center justify-center px-2 sm:px-6 md:px-10 py-1.5 md:py-3.5 perspective-book select-none overflow-hidden">
+        {/* ============================================================== */}
+        {/* UNIFIED 3D BOOK RIG (Fixed size: same dimensions open and closed. */}
+        {/* Shifts to center on open via GPU translateX. Zero resizing stutter!) */}
+        {/* ============================================================== */}
+        <motion.div
+          animate={{
+            x: isOpen ? 0 : isDesktop ? "-25%" : 0,
+            rotateX: isOpen ? 0 : 4,
+          }}
+          transition={{
+            duration: 0.7,
+            ease: [0.25, 0.1, 0.25, 1],
+          }}
+          style={{ transformStyle: "preserve-3d" }}
+          className="relative w-full max-w-[1280px] h-full max-h-[815px] flex flex-col md:flex-row items-stretch md:items-center justify-center z-10"
+        >
+          {/* 1. DEEP REALISTIC DESK CAST SHADOWS */}
+          <div
+            className={`pointer-events-none absolute top-5 rounded-2xl bg-black/85 blur-2xl transition-all duration-700 ${
+              isOpen ? "-inset-3" : "left-1/2 -inset-y-3 -right-3"
+            }`}
+            style={{ transform: "translateZ(-24px)" }}
+          />
+          <div
+            className={`pointer-events-none absolute -bottom-5 h-16 rounded-full bg-black/90 blur-xl transition-all duration-700 ${
+              isOpen ? "inset-x-6" : "left-[55%] right-6"
+            }`}
+            style={{ transform: "translateZ(-20px)" }}
+          />
+
+          {/* 2. REALISTIC LEATHER HARDCOVER CASE (Fixed dimensions!) */}
+          <div
+            className={`relative flex flex-1 w-full h-full rounded-xl p-2.5 sm:p-3.5 md:p-4.5 transition-all duration-700 ${
+              isOpen ? "realistic-leather-cover shadow-2xl" : "bg-transparent"
+            }`}
           >
-            {/* REALISTIC LEATHER HARDCOVER CASE (NO overflow-hidden to allow 3D page pop-out!) */}
-            <div className="relative flex flex-1 w-full h-full realistic-leather-cover rounded-xl p-2.5 sm:p-3.5 md:p-4.5">
-              {/* Gold Stitched Perimeter Seam (Costura de cuero) */}
-              <div className="pointer-events-none absolute inset-1.5 sm:inset-2 border border-dashed border-[#c89d45]/35 rounded-lg" />
+            {/* Gold Stitched Perimeter Seam (when open) */}
+            <div
+              className={`pointer-events-none absolute inset-1.5 sm:inset-2 border border-dashed border-[#c89d45]/35 rounded-lg z-25 transition-opacity duration-500 ${
+                isOpen ? "opacity-100" : "opacity-0"
+              }`}
+            />
 
-              {/* 4 Antique Brass Metal Corner Protectors with Rivets */}
-              {/* Top-Left */}
-              <div className="pointer-events-none absolute top-1 left-1 w-7 h-7 border-t-2 border-l-2 border-[#d4a74a]/75 rounded-tl-md flex items-start justify-start p-1 bg-gradient-to-br from-[#d4a74a]/30 to-transparent">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
-              </div>
-              {/* Top-Right */}
-              <div className="pointer-events-none absolute top-1 right-1 w-7 h-7 border-t-2 border-r-2 border-[#d4a74a]/75 rounded-tr-md flex items-start justify-end p-1 bg-gradient-to-bl from-[#d4a74a]/30 to-transparent">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
-              </div>
-              {/* Bottom-Left */}
-              <div className="pointer-events-none absolute bottom-1 left-1 w-7 h-7 border-b-2 border-l-2 border-[#d4a74a]/75 rounded-bl-md flex items-end justify-start p-1 bg-gradient-to-tr from-[#d4a74a]/30 to-transparent">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
-              </div>
-              {/* Bottom-Right */}
-              <div className="pointer-events-none absolute bottom-1 right-1 w-7 h-7 border-b-2 border-r-2 border-[#d4a74a]/75 rounded-br-md flex items-end justify-end p-1 bg-gradient-to-tl from-[#d4a74a]/30 to-transparent">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
-              </div>
+            {/* Antique Brass Metal Corner Protectors (Top-Left & Bottom-Left when open) */}
+            <div
+              className={`pointer-events-none absolute top-1 left-1 w-7 h-7 border-t-2 border-l-2 border-[#d4a74a]/75 rounded-tl-md flex items-start justify-start p-1 bg-gradient-to-br from-[#d4a74a]/30 to-transparent z-25 transition-opacity duration-500 ${
+                isOpen ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
+            </div>
+            <div
+              className={`pointer-events-none absolute bottom-1 left-1 w-7 h-7 border-b-2 border-l-2 border-[#d4a74a]/75 rounded-bl-md flex items-end justify-start p-1 bg-gradient-to-tr from-[#d4a74a]/30 to-transparent z-25 transition-opacity duration-500 ${
+                isOpen ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
+            </div>
 
-              {/* Left Stacked Paper Block (Grosor real de páginas de la izquierda) */}
-              <div className="hidden md:block w-3 h-[97%] my-auto book-edge-left rounded-l-xs shrink-0" />
+            {/* Left Stacked Paper Block */}
+            <div
+              className={`hidden md:block w-3 h-[97%] my-auto book-edge-left rounded-l-xs shrink-0 transition-opacity duration-500 ${
+                isOpen ? "opacity-100" : "opacity-0"
+              }`}
+            />
 
-              {/* 3D DOUBLE-SIDED INTERACTIVE SPREAD ENGINE */}
+            {/* 3D DOUBLE-SIDED INTERACTIVE SPREAD ENGINE (Always mounted! Real pages!) */}
+            <div className="flex-1 h-full relative">
               <BookInteractiveSpread
                 projectFilter={projectFilter}
                 setProjectFilter={setProjectFilter}
@@ -124,21 +157,27 @@ export default function Book() {
                 setProjectSubPage={setProjectSubPage}
               />
 
-              {/* Right Stacked Paper Block (Grosor real de páginas de la derecha) */}
-              <div className="hidden md:block w-3 h-[97%] my-auto book-edge-right rounded-r-xs shrink-0" />
+              {/* 3D FRONT COVER FLAP: Exactly matched to inner page dimensions! */}
+              <BookCover isOpen={isOpen} onOpen={openBook} />
             </div>
 
-            {/* LATERAL INDEX TABS */}
+            {/* Right Stacked Paper Block */}
+            <div className="hidden md:block w-3 h-[97%] my-auto book-edge-right rounded-r-xs shrink-0" />
+          </div>
+
+          {/* LATERAL INDEX TABS */}
+          <motion.div
+            animate={{
+              opacity: isOpen ? 1 : 0,
+              x: isOpen ? 0 : -20,
+              pointerEvents: isOpen ? "auto" : "none",
+            }}
+            transition={{ duration: 0.5, delay: isOpen ? 0.35 : 0 }}
+            className="hidden md:block"
+          >
             <BookTabs />
           </motion.div>
-        )}
-
-        {/* 3D FRONT COVER FLAP (Opens persistent in 3D without disappearing) */}
-        <AnimatePresence>
-          {!isOpen && (
-            <BookCover key="book-cover" isClosing={hasOpenedOnce} />
-          )}
-        </AnimatePresence>
+        </motion.div>
       </div>
 
       {/* UNROLLING PARCHMENT SCROLL MODAL FOR PROJECT DETAILS */}
