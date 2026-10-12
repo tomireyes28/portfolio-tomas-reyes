@@ -204,22 +204,97 @@ export default function BookInteractiveSpread({
     }
   };
 
-  // 3D Physical Transforms:
-  // Z-Elevation: Arching up towards the user during the turn
+  // 3D Physical Paper Bending Transforms (Bold & Tactile Flex):
+  // 1. Z-Elevation: Bold arching lift up towards the user during the turn
   const zElevation = useTransform(
     turnAngle,
     turnState === "turning-next" ? [0, -90, -180] : [0, 90, 180],
-    [0, 55, 0]
+    [0, 92, 0]
   );
 
-  // Realistic Drop Shadow under the lifted sheet
+  // 2. Horizontal chord contraction (scaleX): page bows into an arch (up to 16% narrower)
+  const sheetScaleX = useTransform(
+    turnAngle,
+    turnState === "turning-next"
+      ? [0, -45, -90, -135, -180]
+      : [0, 45, 90, 135, 180],
+    [1, 0.89, 0.84, 0.90, 1]
+  );
+
+  // 3. Aerodynamic drag & twist (skewY): trailing edge bows with noticeable slant
+  const sheetSkewY = useTransform(
+    turnAngle,
+    turnState === "turning-next"
+      ? [0, -45, -90, -135, -180]
+      : [0, 45, 90, 135, 180],
+    turnState === "turning-next"
+      ? [0, -7.5, -6.0, 4.0, 0]
+      : [0, 7.5, 6.0, -4.0, 0]
+  );
+
+  // 4. Diagonal corner lift (rotateZ): natural wrist/finger pull angle
+  const sheetRotateZ = useTransform(
+    turnAngle,
+    turnState === "turning-next"
+      ? [0, -60, -120, -180]
+      : [0, 60, 120, 180],
+    turnState === "turning-next"
+      ? [0, 5.0, -3.0, 0]
+      : [0, -5.0, 3.0, 0]
+  );
+
+  // 5. 3D Hand Pitch Tilt (rotateX): bottom corner pulls forward toward camera
+  const sheetRotateX = useTransform(
+    turnAngle,
+    turnState === "turning-next"
+      ? [0, -45, -90, -135, -180]
+      : [0, 45, 90, 135, 180],
+    [0, 7.5, 9.0, 4.0, 0]
+  );
+
+  // 6. Realistic multi-tier drop shadow under the vaulted sheet
   const sheetDropShadow = useTransform(
     turnAngle,
-    turnState === "turning-next" ? [0, -90, -180] : [0, 90, 180],
+    turnState === "turning-next"
+      ? [0, -45, -90, -135, -180]
+      : [0, 45, 90, 135, 180],
     [
       "0 0 10px rgba(0,0,0,0.15)",
-      "-20px 25px 45px rgba(0,0,0,0.55)",
+      "-24px 28px 48px rgba(18,8,2,0.58), -8px 12px 22px rgba(18,8,2,0.38)",
+      "-42px 45px 80px rgba(12,5,1,0.75), -16px 20px 35px rgba(12,5,1,0.5)",
+      "24px 28px 48px rgba(18,8,2,0.58), 8px 12px 22px rgba(18,8,2,0.38)",
       "0 0 10px rgba(0,0,0,0.15)",
+    ]
+  );
+
+  // 7. Cylindrical curvature light wave (front face) - crisp highlight on the bending crest
+  const frontCurvatureLight = useTransform(
+    turnAngle,
+    turnState === "turning-next"
+      ? [0, -30, -75, -120, -165, -180]
+      : [0, 30, 75, 120, 165, 180],
+    [
+      "linear-gradient(90deg, transparent 0%, transparent 100%)",
+      "linear-gradient(90deg, transparent 10%, rgba(255,255,255,0.48) 35%, rgba(45,20,8,0.28) 58%, transparent 88%)",
+      "linear-gradient(90deg, transparent 15%, rgba(255,255,255,0.68) 48%, rgba(45,20,8,0.38) 72%, transparent 95%)",
+      "linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.54) 58%, rgba(45,20,8,0.3) 80%, transparent 98%)",
+      "linear-gradient(90deg, transparent 40%, rgba(255,255,255,0.3) 72%, transparent 100%)",
+      "linear-gradient(90deg, transparent 0%, transparent 100%)",
+    ]
+  );
+
+  // 8. Cylindrical curvature light wave (back face) - crisp highlight on the convex back
+  const backCurvatureLight = useTransform(
+    turnAngle,
+    turnState === "turning-next"
+      ? [0, -75, -115, -150, -180]
+      : [0, 75, 115, 150, 180],
+    [
+      "linear-gradient(90deg, transparent 0%, transparent 100%)",
+      "linear-gradient(90deg, transparent 8%, rgba(45,20,8,0.35) 28%, rgba(255,255,255,0.6) 54%, transparent 85%)",
+      "linear-gradient(90deg, transparent 12%, rgba(45,20,8,0.28) 38%, rgba(255,255,255,0.68) 64%, transparent 90%)",
+      "linear-gradient(90deg, transparent 25%, rgba(45,20,8,0.18) 52%, rgba(255,255,255,0.38) 75%, transparent 95%)",
+      "linear-gradient(90deg, transparent 0%, transparent 100%)",
     ]
   );
 
@@ -227,7 +302,7 @@ export default function BookInteractiveSpread({
   const ambientShadow = useTransform(
     turnAngle,
     turnState === "turning-next" ? [0, -90, -180] : [0, 90, 180],
-    [0, 0.4, 0]
+    [0, 0.45, 0]
   );
 
   return (
@@ -309,12 +384,16 @@ export default function BookInteractiveSpread({
         />
 
         {/* ============================================================== */}
-        {/* 3D DOUBLE-SIDED SHEET TURNING FORWARD (NEXT) */}
+        {/* 3D DOUBLE-SIDED SHEET TURNING FORWARD (NEXT) WITH PHYSICAL BEND */}
         {/* ============================================================== */}
         {turnState === "turning-next" && (
           <motion.div
             style={{
               rotateY: turnAngle,
+              rotateX: sheetRotateX,
+              rotateZ: sheetRotateZ,
+              skewY: sheetSkewY,
+              scaleX: sheetScaleX,
               z: zElevation,
               boxShadow: sheetDropShadow,
               transformOrigin: "left center",
@@ -331,6 +410,11 @@ export default function BookInteractiveSpread({
               >
                 {currentSpread.rightContent}
               </BookPage>
+              {/* Dynamic Curvature Specular Wave */}
+              <motion.div
+                style={{ background: frontCurvatureLight }}
+                className="pointer-events-none absolute inset-0 z-40 rounded-r-md"
+              />
             </div>
 
             {/* CONTRACARA / DORSO (Left page of next section) */}
@@ -345,17 +429,26 @@ export default function BookInteractiveSpread({
               >
                 {nextSpread.leftContent}
               </BookPage>
+              {/* Dynamic Curvature Specular Wave */}
+              <motion.div
+                style={{ background: backCurvatureLight }}
+                className="pointer-events-none absolute inset-0 z-40 rounded-l-md"
+              />
             </div>
           </motion.div>
         )}
 
         {/* ============================================================== */}
-        {/* 3D DOUBLE-SIDED SHEET TURNING BACKWARD (PREV) */}
+        {/* 3D DOUBLE-SIDED SHEET TURNING BACKWARD (PREV) WITH PHYSICAL BEND */}
         {/* ============================================================== */}
         {turnState === "turning-prev" && (
           <motion.div
             style={{
               rotateY: turnAngle,
+              rotateX: sheetRotateX,
+              rotateZ: sheetRotateZ,
+              skewY: sheetSkewY,
+              scaleX: sheetScaleX,
               z: zElevation,
               boxShadow: sheetDropShadow,
               transformOrigin: "right center",
@@ -372,6 +465,11 @@ export default function BookInteractiveSpread({
               >
                 {currentSpread.leftContent}
               </BookPage>
+              {/* Dynamic Curvature Specular Wave */}
+              <motion.div
+                style={{ background: frontCurvatureLight }}
+                className="pointer-events-none absolute inset-0 z-40 rounded-l-md"
+              />
             </div>
 
             {/* CONTRACARA / DORSO (Right page of previous section) */}
@@ -386,6 +484,11 @@ export default function BookInteractiveSpread({
               >
                 {prevSpread.rightContent}
               </BookPage>
+              {/* Dynamic Curvature Specular Wave */}
+              <motion.div
+                style={{ background: backCurvatureLight }}
+                className="pointer-events-none absolute inset-0 z-40 rounded-r-md"
+              />
             </div>
           </motion.div>
         )}

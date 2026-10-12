@@ -59,7 +59,7 @@
 
 /* 3D Book Perspective Utilities */
 .perspective-book {
-  perspective: 2600px;
+  perspective: 1500px;
   perspective-origin: center center;
 }
 
