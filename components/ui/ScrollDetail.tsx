@@ -134,6 +134,19 @@ export default function ScrollDetail() {
                     ? selectedProject.shortDescription
                     : selectedProject.shortDescription[language]}
                 </p>
+                {selectedProject.demoCredentials && (
+                  <div className="mt-3 pt-2.5 border-t border-[#8c6d46]/30 flex flex-wrap items-center gap-2 font-typewriter text-xs text-[#5a3e22]">
+                    <span className="font-bold text-[#8c2d2d] uppercase text-[11px]">
+                      {isEs ? "Acceso de prueba:" : "Test credentials:"}
+                    </span>
+                    <span className="bg-[#e8dcc4] px-2 py-0.5 rounded-xs border border-[#8c6d46]/40 text-[11px]">
+                      <strong>User:</strong> {selectedProject.demoCredentials.user}
+                    </span>
+                    <span className="bg-[#e8dcc4] px-2 py-0.5 rounded-xs border border-[#8c6d46]/40 text-[11px]">
+                      <strong>Pass:</strong> {selectedProject.demoCredentials.pass}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Complete Tech Stack */}

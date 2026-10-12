@@ -8,4 +8,5 @@ export interface Project {
   image: string;
   category?: "fullstack" | "frontend" | "tools";
   featured?: boolean;
+  demoCredentials?: { user: string; pass: string };
 }

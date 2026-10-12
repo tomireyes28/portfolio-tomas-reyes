@@ -36,7 +36,7 @@ export const translations = {
       filterAll: "Todos",
       filterFullstack: "Full Stack & SaaS",
       filterFrontend: "Frontend & Web",
-      filterTools: "Herramientas & APIs",
+      filterTools: "Automatización & APIs",
       card: {
         code: "Código",
         demo: "Demo en Vivo",
@@ -166,7 +166,7 @@ export const translations = {
       filterAll: "All",
       filterFullstack: "Full Stack & SaaS",
       filterFrontend: "Frontend & Web",
-      filterTools: "Tools & APIs",
+      filterTools: "Automation & APIs",
       card: {
         code: "Code",
         demo: "Live Demo",

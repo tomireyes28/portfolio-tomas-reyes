@@ -25,15 +25,13 @@ import {
 interface BookInteractiveSpreadProps {
   projectFilter: ProjectCategoryFilter;
   setProjectFilter: (f: ProjectCategoryFilter) => void;
-  projectSubPage: number;
-  setProjectSubPage: React.Dispatch<React.SetStateAction<number>>;
+  projectSubPage?: number;
+  setProjectSubPage?: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function BookInteractiveSpread({
   projectFilter,
   setProjectFilter,
-  projectSubPage,
-  setProjectSubPage,
 }: BookInteractiveSpreadProps) {
   const { activeSection, goToSection, isOpen } = useBook();
   const { language } = useLanguage();
@@ -47,76 +45,6 @@ export default function BookInteractiveSpread({
 
   // Turn angle motion value: 0 to -180 for next, 0 to 180 for prev
   const turnAngle = useMotionValue(0);
-
-  // Pre-render all 5 spreads stably so React NEVER flashes or re-mounts
-  const spreads = useMemo(() => {
-    return [
-      {
-        id: "about",
-        leftTitle: isEs ? "Sobre Mí" : "About Me",
-        rightTitle: isEs ? "Enfoque & Stack" : "Focus & Stack",
-        leftNum: "01",
-        rightNum: "02",
-        leftContent: <AboutLeftPage />,
-        rightContent: <AboutRightPage />,
-      },
-      {
-        id: "projects",
-        leftTitle: isEs ? "Proyectos" : "Projects",
-        rightTitle: isEs ? "Catálogo Visual" : "Visual Catalog",
-        leftNum: "03",
-        rightNum: "04",
-        leftContent: (
-          <ProjectsLeftPage
-            filter={projectFilter}
-            setFilter={setProjectFilter}
-            subPage={projectSubPage}
-            setSubPage={setProjectSubPage}
-          />
-        ),
-        rightContent: (
-          <ProjectsRightPage
-            filter={projectFilter}
-            setFilter={setProjectFilter}
-            subPage={projectSubPage}
-            setSubPage={setProjectSubPage}
-          />
-        ),
-      },
-      {
-        id: "skills",
-        leftTitle: isEs ? "Tecnologías" : "Technologies",
-        rightTitle: isEs ? "Herramientas & Cloud" : "Tools & Cloud",
-        leftNum: "05",
-        rightNum: "06",
-        leftContent: <SkillsLeftPage />,
-        rightContent: <SkillsRightPage />,
-      },
-      {
-        id: "story",
-        leftTitle: isEs ? "Trayectoria" : "Journey",
-        rightTitle: isEs ? "Habilidades Blandas" : "Soft Skills",
-        leftNum: "07",
-        rightNum: "08",
-        leftContent: <JourneyLeftPage />,
-        rightContent: <JourneyRightPage />,
-      },
-      {
-        id: "contact",
-        leftTitle: isEs ? "Contacto Directo" : "Direct Contact",
-        rightTitle: isEs ? "Correspondencia" : "Correspondence",
-        leftNum: "09",
-        rightNum: "10",
-        leftContent: <ContactLeftPage />,
-        rightContent: <ContactRightPage />,
-      },
-    ];
-  }, [isEs, projectFilter, projectSubPage, setProjectFilter, setProjectSubPage]);
-
-  // Current, next, and previous spreads
-  const currentSpread = spreads[currentIndex] || spreads[0];
-  const nextSpread = spreads[Math.min(spreads.length - 1, currentIndex + 1)];
-  const prevSpread = spreads[Math.max(0, currentIndex - 1)];
 
   // Trigger automated animated page turn
   const triggerTurn = useCallback(
@@ -141,6 +69,71 @@ export default function BookInteractiveSpread({
     },
     [currentIndex, turnState, turnAngle, goToSection]
   );
+
+  // Pre-render all 6 spreads stably so React NEVER flashes or re-mounts
+  const spreads = useMemo(() => {
+    return [
+      {
+        id: "about",
+        leftTitle: isEs ? "Sobre Mí" : "About Me",
+        rightTitle: isEs ? "Enfoque & Stack" : "Focus & Stack",
+        leftNum: "01",
+        rightNum: "02",
+        leftContent: <AboutLeftPage />,
+        rightContent: <AboutRightPage />,
+      },
+      {
+        id: "projects",
+        leftTitle: isEs ? "Proyectos I" : "Projects I",
+        rightTitle: isEs ? "Catálogo Visual" : "Visual Catalog",
+        leftNum: "03",
+        rightNum: "04",
+        leftContent: <ProjectsLeftPage spreadIndex={0} />,
+        rightContent: <ProjectsRightPage spreadIndex={0} />,
+      },
+      {
+        id: "projects-2",
+        leftTitle: isEs ? "Proyectos II" : "Projects II",
+        rightTitle: isEs ? "Catálogo Visual" : "Visual Catalog",
+        leftNum: "05",
+        rightNum: "06",
+        leftContent: <ProjectsLeftPage spreadIndex={1} />,
+        rightContent: <ProjectsRightPage spreadIndex={1} />,
+      },
+      {
+        id: "skills",
+        leftTitle: isEs ? "Tecnologías" : "Technologies",
+        rightTitle: isEs ? "Herramientas & Cloud" : "Tools & Cloud",
+        leftNum: "07",
+        rightNum: "08",
+        leftContent: <SkillsLeftPage />,
+        rightContent: <SkillsRightPage />,
+      },
+      {
+        id: "story",
+        leftTitle: isEs ? "Trayectoria" : "Journey",
+        rightTitle: isEs ? "Habilidades Blandas" : "Soft Skills",
+        leftNum: "09",
+        rightNum: "10",
+        leftContent: <JourneyLeftPage />,
+        rightContent: <JourneyRightPage />,
+      },
+      {
+        id: "contact",
+        leftTitle: isEs ? "Contacto Directo" : "Direct Contact",
+        rightTitle: isEs ? "Correspondencia" : "Correspondence",
+        leftNum: "11",
+        rightNum: "12",
+        leftContent: <ContactLeftPage />,
+        rightContent: <ContactRightPage />,
+      },
+    ];
+  }, [isEs, projectFilter, setProjectFilter, triggerTurn]);
+
+  // Current, next, and previous spreads
+  const currentSpread = spreads[currentIndex] || spreads[0];
+  const nextSpread = spreads[Math.min(spreads.length - 1, currentIndex + 1)];
+  const prevSpread = spreads[Math.max(0, currentIndex - 1)];
 
   // Pan / Drag gesture handler
   const handlePan = (

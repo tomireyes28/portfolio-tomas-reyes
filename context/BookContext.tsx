@@ -3,11 +3,18 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { Project } from "@/types/Project";
 
-export type BookSectionId = "about" | "projects" | "skills" | "story" | "contact";
+export type BookSectionId =
+  | "about"
+  | "projects"
+  | "projects-2"
+  | "skills"
+  | "story"
+  | "contact";
 
 export const BOOK_SECTIONS: BookSectionId[] = [
   "about",
   "projects",
+  "projects-2",
   "skills",
   "story",
   "contact",

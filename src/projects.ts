@@ -151,8 +151,8 @@ export const projects: Project[] = [
       en: "Cash Tracker — Budget & Expense Management",
     },
     shortDescription: {
-      es: "Demo user: user@user.com, password:12345678 | Herramienta financiera para el control de presupuestos. Implementa autenticación segura y gestión de roles. Desarrollado con React y PostgreSQL/Prisma para monitorear el estado presupuestario en tiempo real.",
-      en: "Demo user: user@user.com, password:12345678 | Financial tool for budget control. Implements secure authentication and role management. Developed with React and PostgreSQL/Prisma to monitor budget status in real-time.",
+      es: "Herramienta financiera para el control de presupuestos. Implementa autenticación segura y gestión de roles. Desarrollado con React y PostgreSQL/Prisma para monitorear el estado presupuestario en tiempo real.",
+      en: "Financial tool for budget control. Implements secure authentication and role management. Developed with React and PostgreSQL/Prisma to monitor budget status in real-time.",
     },
     techStack: ["React", "PostgreSQL", "Prisma", "Node.js", "Express", "TailwindCSS", "JavaScript"],
     category: "fullstack",
@@ -160,6 +160,7 @@ export const projects: Project[] = [
     demoUrl: "https://cashtracker-frontend-snowy.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/cashtracker_frontend",
     image: "/projects/cashtracker.png",
+    demoCredentials: { user: "user@user.com", pass: "12345678" },
   },
   {
     id: "food-kiosk",
@@ -185,8 +186,8 @@ export const projects: Project[] = [
       en: "Uptask — Full Stack Task Manager (MERN)",
     },
     shortDescription: {
-      es: "Demo user: user@user.com, password:12345678 | Aplicación de gestión de proyectos basada en la metodología Kanban. Desarrollada con el Stack MERN para administrar el flujo de trabajo de tareas entre múltiples estados. Incluye autenticación y gestión de permisos.",
-      en: "Demo user: user@user.com, password:12345678 | Project management app based on Kanban methodology. Developed with the MERN Stack to manage task workflow across multiple states. Includes authentication and permission management.",
+      es: "Aplicación de gestión de proyectos basada en la metodología Kanban. Desarrollada con el Stack MERN para administrar el flujo de trabajo de tareas entre múltiples estados. Incluye autenticación y gestión de permisos.",
+      en: "Project management app based on Kanban methodology. Developed with the MERN Stack to manage task workflow across multiple states. Includes authentication and permission management.",
     },
     techStack: ["React", "Node.js", "Express", "MongoDB", "TailwindCSS", "JavaScript"],
     category: "fullstack",
@@ -194,6 +195,7 @@ export const projects: Project[] = [
     demoUrl: "https://uptask-frontend-w4hc.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/uptask_frontend",
     image: "/projects/uptask.png",
+    demoCredentials: { user: "user@user.com", pass: "12345678" },
   },
   {
     id: "devtree",
@@ -202,8 +204,8 @@ export const projects: Project[] = [
       en: "DevTree — Custom Link Ecosystem",
     },
     shortDescription: {
-      es: "Demo user: user@user.com, password:12345678 | Plataforma Full Stack que permite diseñar un perfil de enlaces público personalizable. Construido con React y MongoDB, se enfoca en la persistencia de datos y en ofrecer una interfaz dinámica.",
-      en: "Demo user: user@user.com, password:12345678 | Full Stack platform that allows designing a customizable public link profile. Built with React and MongoDB, focusing on data persistence and offering a dynamic interface.",
+      es: "Plataforma Full Stack que permite diseñar un perfil de enlaces público personalizable. Construido con React y MongoDB, se enfoca en la persistencia de datos y en ofrecer una interfaz dinámica.",
+      en: "Full Stack platform that allows designing a customizable public link profile. Built with React and MongoDB, focusing on data persistence and offering a dynamic interface.",
     },
     techStack: ["React", "Node.js", "Express", "MongoDB", "JavaScript", "HTML", "CSS"],
     category: "fullstack",
@@ -211,5 +213,6 @@ export const projects: Project[] = [
     demoUrl: "https://devtree-frontend-phi.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/devtree_frontend",
     image: "/projects/devtree.png",
+    demoCredentials: { user: "user@user.com", pass: "12345678" },
   },
 ];

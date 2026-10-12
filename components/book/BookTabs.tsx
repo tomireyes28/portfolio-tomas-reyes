@@ -71,7 +71,10 @@ export default function BookTabs() {
       >
         {TABS.map((tab) => {
           const Icon = tab.icon;
-          const isActive = activeSection === tab.id;
+          const isActive =
+            tab.id === "projects"
+              ? activeSection === "projects" || activeSection === "projects-2"
+              : activeSection === tab.id;
           const label = language === "es" ? tab.labelEs : tab.labelEn;
 
           return (
@@ -135,7 +138,10 @@ export default function BookTabs() {
       >
         {TABS.map((tab) => {
           const Icon = tab.icon;
-          const isActive = activeSection === tab.id;
+          const isActive =
+            tab.id === "projects"
+              ? activeSection === "projects" || activeSection === "projects-2"
+              : activeSection === tab.id;
           const label = language === "es" ? tab.labelEs : tab.labelEn;
 
           return (
