@@ -14,7 +14,10 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
-const softSkillIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+const softSkillIcons: Record<
+  string,
+  React.ComponentType<{ className?: string; style?: React.CSSProperties }>
+> = {
   team: Users,
   product: Lightbulb,
   problem: Puzzle,
@@ -249,58 +252,54 @@ export function JourneyRightPage() {
         </p>
       </div>
 
-      {/* 6 Circular Stamped Insignias with full visual body */}
-      <div className="grid grid-cols-2 gap-x-3 gap-y-2.5 my-auto">
-        {softSkills.map((item) => {
+      {/* 6 Editorial Entries directly on parchment: No boxes, no cards, no artificial shadows */}
+      <div className="grid grid-cols-2 gap-x-7 gap-y-5 flex-1 my-3">
+        {softSkills.map((item, index) => {
           const Icon = softSkillIcons[item.id] || Award;
+          const romanNums = ["I", "II", "III", "IV", "V", "VI"];
 
           return (
             <div
               key={item.id}
-              className="group flex items-start gap-2 p-1.5 rounded-xs border border-transparent hover:border-[#8c6d46]/20 hover:bg-[#f4ecd8]/40 transition-colors"
+              className="group flex flex-col justify-start"
             >
-              {/* Circular Stamp Emblem */}
-              <div
-                className="w-8 h-8 rounded-full border-1.5 border-dashed flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 group-hover:rotate-6 mt-0.5 bg-[#ebdcc3]/60 shadow-2xs"
-                style={{ borderColor: item.color, color: item.color }}
-              >
-                <Icon className="w-4 h-4" />
-              </div>
-
-              {/* Text directly on parchment */}
-              <div className="space-y-0.5 flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-1">
-                  <h4 className="font-serif-book text-xs font-bold text-[#22140c] leading-tight truncate group-hover:text-[#882b2b] transition-colors">
-                    {item.name}
-                  </h4>
-                </div>
-                <span className="font-typewriter text-[8px] uppercase tracking-wider text-[#8c6e54] block">
+              {/* Header: Section mark + Icon + Tag */}
+              <div className="flex items-center gap-1.5 mb-1 pb-1 border-b border-[#8c6d46]/20">
+                <span className="font-typewriter text-[9px] font-bold text-[#8c6d46]">
+                  § {romanNums[index]}
+                </span>
+                <span className="text-[#8c6d46]/40">•</span>
+                <Icon className="w-3.5 h-3.5 shrink-0" style={{ color: item.color }} />
+                <span
+                  className="font-typewriter text-[9px] uppercase font-bold tracking-wider truncate"
+                  style={{ color: item.color }}
+                >
                   {item.tag}
                 </span>
-                <p className="font-serif-book text-[10.5px] text-[#4a3526] leading-tight">
-                  {item.desc}
-                </p>
               </div>
+
+              {/* Title */}
+              <h4 className="font-serif-book text-sm md:text-[14.5px] font-bold text-[#22140c] leading-snug mb-1 group-hover:text-[#882b2b] transition-colors">
+                {item.name}
+              </h4>
+
+              {/* Description directly on paper with left ink guide matching the left page */}
+              <p className="font-serif-book text-xs md:text-[12px] text-[#452f20] leading-relaxed pl-2.5 border-l-2 border-[#8c6d46]/25">
+                {item.desc}
+              </p>
             </div>
           );
         })}
       </div>
 
-      {/* Field Balance Certification Box */}
-      <div className="p-2 rounded-xs border border-dashed border-[#8c6d46]/35 bg-[#f4ecd8]/50 flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full border border-[#8c6d46]/50 flex items-center justify-center shrink-0 text-[#8c6d46]">
-          <Compass className="w-4 h-4" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="font-serif-book text-[11px] text-[#3d2719] italic leading-tight">
-            {isEs
-              ? "“El buen software no solo resuelve la lógica técnica: optimiza el tiempo de quienes lo operan y garantiza una base mantenible a largo plazo.”"
-              : "“Great software solves technical logic while respecting the time of those who operate it and ensuring long-term maintainability.”"}
-          </p>
-          <span className="font-typewriter text-[8px] uppercase tracking-widest text-[#8c6e54] mt-0.5 block">
-            {isEs ? "CRITERIO DE INGENIERÍA // EXPEDICIÓN 2026" : "ENGINEERING CRITERIA // EXPEDITION 2026"}
-          </span>
-        </div>
+      {/* Subtle Bottom Field Anchor (Quote box removed!) */}
+      <div className="pt-1.5 border-t border-dashed border-[#8c6d46]/20 flex items-center justify-between text-xs">
+        <span className="font-typewriter text-[9px] uppercase tracking-wider text-[#8c6e54]">
+          {isEs ? "COMPETENCIAS // ENFOQUE FULL STACK" : "CAPABILITIES // FULL STACK MINDSET"}
+        </span>
+        <span className="font-typewriter text-[9px] text-[#7a5a40]">
+          {isEs ? "6 EJES DE TRABAJO" : "6 WORK AXES"}
+        </span>
       </div>
     </div>
   );
