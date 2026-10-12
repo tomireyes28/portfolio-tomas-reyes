@@ -494,19 +494,19 @@ export default function BookInteractiveSpread({
         )}
 
         {/* ============================================================== */}
-        {/* INTERACTIVE DRAG ZONES OVER THE EDGES & FOLDED CORNERS */}
+        {/* INTERACTIVE DRAG ZONES OVER THE EDGES (Above the corner curls) */}
         {/* ============================================================== */}
         <motion.div
           onPan={handlePan}
           onPanEnd={handlePanEnd}
-          className="absolute inset-y-0 right-0 w-20 z-30 cursor-grab active:cursor-grabbing hover:bg-black/2"
+          className="absolute top-0 bottom-28 right-0 w-20 z-30 cursor-grab active:cursor-grabbing hover:bg-black/2"
           title={isEs ? "Arrastrá la hoja para pasar página" : "Drag page to turn"}
         />
 
         <motion.div
           onPan={handlePan}
           onPanEnd={handlePanEnd}
-          className="absolute inset-y-0 left-0 w-20 z-30 cursor-grab active:cursor-grabbing hover:bg-black/2"
+          className="absolute top-0 bottom-28 left-0 w-20 z-30 cursor-grab active:cursor-grabbing hover:bg-black/2"
           title={isEs ? "Arrastrá la hoja para volver" : "Drag page to go back"}
         />
       </div>

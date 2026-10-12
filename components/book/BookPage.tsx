@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 interface BookPageProps {
   side: "left" | "right";
@@ -37,6 +38,133 @@ function CompassWatermark({ className = "" }: { className?: string }) {
       <line x1="27" y1="27" x2="93" y2="93" strokeWidth="0.6" />
       <line x1="93" y1="27" x2="27" y2="93" strokeWidth="0.6" />
     </svg>
+  );
+}
+
+/**
+ * Physical Paper Dog-Ear Corner
+ * When hovered, the corner physically folds and peels deeper into the page
+ * (fold expands from 30px to 66px with fluid paper spring physics).
+ */
+function InteractivePageCurl({
+  side,
+  onClick,
+}: {
+  side: "left" | "right";
+  onClick: () => void;
+}) {
+  const isLeft = side === "left";
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Fold extent: 28px at rest, expands deeply to 72px when hovered
+  const s = isHovered ? 72 : 28;
+  const box = 112;
+
+  // Paths for right corner (bottom-right origin: x=112, y=112)
+  const rightShadowPath = `M ${box - s} ${box} L ${box} ${box - s} L ${box} ${box} Z`;
+  const rightFlapPath = `M ${box - s} ${box} L ${box - s} ${box - s} L ${box} ${box - s} Z`;
+
+  // Paths for left corner (bottom-left origin: x=0, y=112)
+  const leftShadowPath = `M 0 ${box} L ${s} ${box} L 0 ${box - s} Z`;
+  const leftFlapPath = `M ${s} ${box} L ${s} ${box - s} L 0 ${box - s} Z`;
+
+  return (
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`absolute bottom-0 ${
+        isLeft ? "left-0" : "right-0"
+      } w-28 h-28 z-50 cursor-pointer select-none`}
+      title={isLeft ? "Página anterior" : "Página siguiente"}
+    >
+      <svg
+        viewBox={`0 0 ${box} ${box}`}
+        className="w-full h-full overflow-visible pointer-events-none"
+      >
+        <defs>
+          {/* Shadow underneath the fold where page was lifted */}
+          <radialGradient
+            id={`corner-shadow-${side}`}
+            cx={isLeft ? "0%" : "100%"}
+            cy="100%"
+            r="85%"
+          >
+            <stop offset="0%" stopColor="#1a0c04" stopOpacity="0.7" />
+            <stop offset="55%" stopColor="#2c1709" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="#2c1709" stopOpacity="0.03" />
+          </radialGradient>
+
+          {/* Paper texture gradient for the folded flap */}
+          <linearGradient
+            id={`corner-flap-${side}`}
+            x1={isLeft ? "100%" : "0%"}
+            y1="0%"
+            x2={isLeft ? "0%" : "100%"}
+            y2="100%"
+          >
+            <stop offset="0%" stopColor="#fffef9" />
+            <stop offset="30%" stopColor="#f7eedb" />
+            <stop offset="65%" stopColor="#ebdcc3" />
+            <stop offset="100%" stopColor="#cfba92" />
+          </linearGradient>
+
+          {/* Drop shadow cast by the folded flap onto the page */}
+          <filter
+            id={`flap-drop-shadow-${side}`}
+            x="-25%"
+            y="-25%"
+            width="150%"
+            height="150%"
+          >
+            <feDropShadow
+              dx={isLeft ? "4" : "-4"}
+              dy="-4"
+              stdDeviation="3.5"
+              floodColor="#1a0c04"
+              floodOpacity="0.38"
+            />
+          </filter>
+        </defs>
+
+        {/* 1. Underlying Void/Shadow where paper was lifted */}
+        <motion.path
+          d={isLeft ? leftShadowPath : rightShadowPath}
+          fill={`url(#corner-shadow-${side})`}
+          animate={{ d: isLeft ? leftShadowPath : rightShadowPath }}
+          transition={{ type: "spring", stiffness: 240, damping: 22 }}
+        />
+
+        {/* 2. Folded Page Flap that peels up */}
+        <motion.path
+          d={isLeft ? leftFlapPath : rightFlapPath}
+          fill={`url(#corner-flap-${side})`}
+          filter={`url(#flap-drop-shadow-${side})`}
+          animate={{ d: isLeft ? leftFlapPath : rightFlapPath }}
+          transition={{ type: "spring", stiffness: 240, damping: 22 }}
+        />
+
+        {/* 3. Subtle fold crease specular line */}
+        <motion.line
+          x1={isLeft ? 0 : box}
+          y1={box - s}
+          x2={isLeft ? s : box - s}
+          y2={box}
+          stroke="rgba(255, 255, 255, 0.55)"
+          strokeWidth="1"
+          animate={{
+            x1: isLeft ? 0 : box,
+            y1: box - s,
+            x2: isLeft ? s : box - s,
+            y2: box,
+          }}
+          transition={{ type: "spring", stiffness: 240, damping: 22 }}
+        />
+      </svg>
+    </div>
   );
 }
 
@@ -92,7 +220,7 @@ export default function BookPage({
         {children}
       </div>
 
-      {/* Natural Bottom Footer with Page Number & Folded Page Corner (Page Curl) */}
+      {/* Natural Bottom Footer with Page Number & Clickable Indicator */}
       <footer
         className={`relative z-10 flex items-center justify-between px-5 md:px-7 pb-3 pt-1.5 border-t border-[#8c6d46]/15 mx-3 md:mx-5 ${
           isLeft ? "flex-row" : "flex-row-reverse"
@@ -113,15 +241,9 @@ export default function BookPage({
         )}
       </footer>
 
-      {/* Realistic 3D Page Curl in Bottom Corner */}
+      {/* Physical Paper Dog-Ear Corner (Peels and folds more on hover) */}
       {onCornerClick && (
-        <div
-          onClick={onCornerClick}
-          title={isLeft ? "Página anterior" : "Página siguiente"}
-          className={
-            isLeft ? "page-curl-corner-left" : "page-curl-corner-right"
-          }
-        />
+        <InteractivePageCurl side={side} onClick={onCornerClick} />
       )}
     </div>
   );
