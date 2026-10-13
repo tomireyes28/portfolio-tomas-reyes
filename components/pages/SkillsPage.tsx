@@ -54,7 +54,7 @@ function BigLogo({ skill, rotation }: BigLogoProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="relative flex items-center justify-center p-1">
+    <div className={`relative flex items-center justify-center p-1 ${isHovered ? "z-40" : "z-10"}`}>
       {/* Permanent adventure sticker tilt (Pure CSS, never resets or reanimates on turn) */}
       <div
         style={{ transform: `rotate(${rotation}deg)` }}
@@ -65,17 +65,17 @@ function BigLogo({ skill, rotation }: BigLogoProps) {
           onMouseLeave={() => setIsHovered(false)}
           onFocus={() => setIsHovered(true)}
           onBlur={() => setIsHovered(false)}
-          whileHover={{ scale: 1.25, rotate: -rotation }}
+          whileHover={{ scale: 1.15, rotate: -rotation }}
           whileTap={{ scale: 0.95 }}
           className="relative cursor-pointer select-none"
         >
-          {/* LOGO GIGANTE Y PROTAGONISTA (Hasta 80px en pantallas grandes) */}
+          {/* LOGO STICKER GRANDE Y PROTAGONISTA CON BORDE FINO Y SOMBRA DE RELIEVE */}
           <div
-            className="w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 flex items-center justify-center"
+            className="w-18 h-18 sm:w-20 sm:h-20 lg:w-[82px] lg:h-[82px] flex items-center justify-center transition-all duration-200"
             style={{
               filter: isHovered
-                ? "drop-shadow(0 10px 18px rgba(35, 20, 10, 0.55)) contrast(1.15)"
-                : "drop-shadow(0 4px 7px rgba(35, 20, 10, 0.28)) contrast(1.05)",
+                ? "drop-shadow(0.9px 0.9px 0 #fffdfa) drop-shadow(-0.9px -0.9px 0 #fffdfa) drop-shadow(0.9px -0.9px 0 #fffdfa) drop-shadow(-0.9px 0.9px 0 #fffdfa) drop-shadow(0 10px 18px rgba(35, 20, 10, 0.4)) contrast(1.1)"
+                : "drop-shadow(0.75px 0.75px 0 rgba(255, 253, 248, 0.95)) drop-shadow(-0.75px -0.75px 0 rgba(255, 253, 248, 0.95)) drop-shadow(0.75px -0.75px 0 rgba(255, 253, 248, 0.95)) drop-shadow(-0.75px 0.75px 0 rgba(255, 253, 248, 0.95)) drop-shadow(0 3px 6px rgba(35, 20, 10, 0.25)) contrast(1.05)",
             }}
           >
             {skill.icon ? (
@@ -88,29 +88,29 @@ function BigLogo({ skill, rotation }: BigLogoProps) {
             ) : (
               <FallbackLogo
                 name={skill.name}
-                className="w-14 h-14 sm:w-16 sm:h-16 text-[#22140c]"
+                className="w-15 h-15 sm:w-17 sm:h-17 lg:w-18 lg:h-18 text-[#22140c]"
               />
             )}
           </div>
         </motion.div>
       </div>
 
-      {/* Cartelito flotante con el nombre exacto al señalar */}
+      {/* Cartelito flotante con el nombre exacto al señalar - posicionado arriba del sticker */}
       <AnimatePresence>
         {isHovered && (
           <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.9 }}
+            initial={{ opacity: 0, y: 4, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 4, scale: 0.9 }}
-            transition={{ duration: 0.15, ease: "easeOut" }}
-            className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center"
+            exit={{ opacity: 0, y: 2, scale: 0.92 }}
+            transition={{ duration: 0.12, ease: "easeOut" }}
+            className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center"
           >
-            <div className="w-2.5 h-2.5 rotate-45 -mb-1.5 bg-[#22140c]" />
-            <div className="bg-[#22140c] text-[#f5ebd6] px-3.5 py-1.5 rounded-xs shadow-xl border border-[#8c6d46]/70 whitespace-nowrap">
-              <span className="font-typewriter text-xs sm:text-sm font-bold tracking-wide">
+            <div className="bg-[#22140c] text-[#f5ebd6] px-2.5 py-1 rounded-xs shadow-xl border border-[#8c6d46]/70 whitespace-nowrap">
+              <span className="font-typewriter text-xs font-bold tracking-wide">
                 {skill.name}
               </span>
             </div>
+            <div className="w-2 h-2 rotate-45 -mt-1 bg-[#22140c]" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -124,14 +124,14 @@ export function SkillsLeftPage() {
   const frontendSkills = skills.filter((s) => s.category === "frontend");
   const backendSkills = skills.filter((s) => s.category === "backend");
 
-  const frontendRotations = [-6, 5, -4, 7, -5, 6, -3];
-  const backendRotations = [5, -6, 4];
+  const frontendRotations = [-3, 2.5, -2, 3.5, -3, 3, -1.5];
+  const backendRotations = [3, -3.5, 2.5];
 
   return (
-    <div className="flex flex-col justify-between h-full space-y-3 py-1">
-      {/* Page Title */}
-      <div>
-        <h2 className="font-serif-book text-2xl font-bold text-[#22140c]">
+    <div className="flex flex-col h-full py-1">
+      {/* Editorial Header Left */}
+      <div className="border-b border-[#8c6d46]/25 pb-2">
+        <h2 className="font-serif-book text-xl lg:text-2xl font-bold text-[#22140c]">
           {t.skills.title}
         </h2>
         <p className="font-serif-book text-xs text-[#5a4232] mt-0.5 leading-relaxed">
@@ -139,111 +139,116 @@ export function SkillsLeftPage() {
         </p>
       </div>
 
-      {/* Section 1: Frontend - Fixed 4-column grid (4 top, 3 bottom) */}
-      <div className="space-y-2 border-b border-[#8c6d46]/20 pb-3">
-        <div className="flex items-center gap-2">
-          <h3 className="font-serif-book text-base font-bold italic text-[#265538]">
-            Frontend
-          </h3>
-          <div className="h-px flex-1 bg-gradient-to-r from-[#265538]/30 to-transparent" />
+      {/* Sections with balanced midpoint spacing */}
+      <div className="flex flex-col gap-7 sm:gap-8 mt-3.5 sm:mt-4.5">
+        {/* Section 1: Frontend */}
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-2">
+            <h3 className="font-serif-book text-sm sm:text-base font-bold italic text-[#265538]">
+              {t.skills.frontend}
+            </h3>
+            <div className="h-px flex-1 bg-gradient-to-r from-[#265538]/30 to-transparent" />
+          </div>
+
+          <div className="grid grid-cols-4 gap-x-2 sm:gap-x-3 gap-y-3 sm:gap-y-3.5 justify-items-center">
+            {frontendSkills.map((sk, idx) => (
+              <BigLogo
+                key={sk.name}
+                skill={sk}
+                rotation={frontendRotations[idx % frontendRotations.length]}
+              />
+            ))}
+          </div>
         </div>
 
-        <div className="grid grid-cols-4 gap-x-2 sm:gap-x-3 gap-y-1.5 pt-0.5 justify-items-center">
-          {frontendSkills.map((sk, idx) => (
-            <BigLogo
-              key={sk.name}
-              skill={sk}
-              rotation={frontendRotations[idx % frontendRotations.length]}
-            />
-          ))}
-        </div>
-      </div>
+        {/* Section 2: Backend */}
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-2">
+            <h3 className="font-serif-book text-sm sm:text-base font-bold italic text-[#882b2b]">
+              {t.skills.backend}
+            </h3>
+            <div className="h-px flex-1 bg-gradient-to-r from-[#882b2b]/30 to-transparent" />
+          </div>
 
-      {/* Section 2: Backend - Fixed 4-column grid (3 in row 1) */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          <h3 className="font-serif-book text-base font-bold italic text-[#882b2b]">
-            Backend
-          </h3>
-          <div className="h-px flex-1 bg-gradient-to-r from-[#882b2b]/30 to-transparent" />
+          <div className="grid grid-cols-4 gap-x-2 sm:gap-x-3 gap-y-2 justify-items-center">
+            {backendSkills.map((sk, idx) => (
+              <BigLogo
+                key={sk.name}
+                skill={sk}
+                rotation={backendRotations[idx % backendRotations.length]}
+              />
+            ))}
+          </div>
         </div>
-
-        <div className="grid grid-cols-4 gap-x-2 sm:gap-x-3 gap-y-1.5 pt-0.5 justify-items-center">
-          {backendSkills.map((sk, idx) => (
-            <BigLogo
-              key={sk.name}
-              skill={sk}
-              rotation={backendRotations[idx % backendRotations.length]}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="pt-2 text-right">
-        <span className="font-handwriting text-base text-[#6a4f3b] italic">
-          {t.skills.footerNote || "— Ecosistema Full Stack & Automatización —"}
-        </span>
       </div>
     </div>
   );
 }
 
 export function SkillsRightPage() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const isEs = language === "es";
   const dbSkills = skills.filter((s) => s.category === "databases");
   const toolSkills = skills.filter((s) => s.category === "tools");
 
-  const dbRotations = [-6, 7, -4, 5];
-  const toolRotations = [-5, 6, -4, 5, -6, 4, -3];
+  const dbRotations = [-3, 3.5, -2.5, 3];
+  const toolRotations = [-3, 3, -2.5, 3.5, -3, 2.5, -2];
 
   return (
-    <div className="flex flex-col justify-between h-full space-y-3 py-1">
-      {/* Section 3: Bases de Datos - Fixed 4-column grid (All 4 in a clean row) */}
-      <div className="space-y-2 border-b border-[#8c6d46]/20 pb-3">
-        <div className="flex items-center gap-2">
-          <h3 className="font-serif-book text-base font-bold italic text-[#2d4558]">
-            {t.skills.databases}
-          </h3>
-          <div className="h-px flex-1 bg-gradient-to-r from-[#2d4558]/30 to-transparent" />
-        </div>
-
-        <div className="grid grid-cols-4 gap-x-2 sm:gap-x-3 gap-y-1.5 pt-0.5 justify-items-center">
-          {dbSkills.map((sk, idx) => (
-            <BigLogo
-              key={sk.name}
-              skill={sk}
-              rotation={dbRotations[idx % dbRotations.length]}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Section 4: Automatización & Cloud - Fixed 4-column grid (4 top, 3 bottom) */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          <h3 className="font-serif-book text-base font-bold italic text-[#94631d]">
-            {t.skills.tools}
-          </h3>
-          <div className="h-px flex-1 bg-gradient-to-r from-[#94631d]/30 to-transparent" />
-        </div>
-
-        <div className="grid grid-cols-4 gap-x-2 sm:gap-x-3 gap-y-1.5 pt-0.5 justify-items-center">
-          {toolSkills.map((sk, idx) => (
-            <BigLogo
-              key={sk.name}
-              skill={sk}
-              rotation={toolRotations[idx % toolRotations.length]}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Note on bottom right */}
-      <div className="pt-2 border-t border-dashed border-[#8c6d46]/30">
-        <p className="font-handwriting text-xl text-[#22140c] leading-snug">
-          {t.skills.quote || "“Enfoque en código tipado estricto, automatización eficiente y entrega continua de valor.”"}
+    <div className="flex flex-col h-full py-1">
+      {/* Editorial Header Right - Perfectly mirrors left page */}
+      <div className="border-b border-[#8c6d46]/25 pb-2">
+        <h2 className="font-serif-book text-xl lg:text-2xl font-bold text-[#22140c]">
+          {t.skills.rightTitle || (isEs ? "Servicios & Despliegue" : "Services & Deployment")}
+        </h2>
+        <p className="font-serif-book text-xs text-[#5a4232] mt-0.5 leading-relaxed">
+          {t.skills.rightDescription || (isEs ? "Persistencia, orquestación de datos y plataformas en la nube." : "Persistence, data orchestration, and cloud platforms.")}
         </p>
+      </div>
+
+      {/* Sections with balanced midpoint spacing */}
+      <div className="flex flex-col gap-7 sm:gap-8 mt-3.5 sm:mt-4.5">
+        {/* Section 3: Bases de Datos */}
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-2">
+            <h3 className="font-serif-book text-sm sm:text-base font-bold italic text-[#2d4558]">
+              {t.skills.databases}
+            </h3>
+            <div className="h-px flex-1 bg-gradient-to-r from-[#2d4558]/30 to-transparent" />
+          </div>
+
+          <div className="grid grid-cols-4 gap-x-2 sm:gap-x-3 gap-y-2 justify-items-center">
+            {dbSkills.map((sk, idx) => (
+              <BigLogo
+                key={sk.name}
+                skill={sk}
+                rotation={dbRotations[idx % dbRotations.length]}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Section 4: Automatización & Cloud */}
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-2">
+            <h3 className="font-serif-book text-sm sm:text-base font-bold italic text-[#94631d]">
+              {t.skills.tools}
+            </h3>
+            <div className="h-px flex-1 bg-gradient-to-r from-[#94631d]/30 to-transparent" />
+          </div>
+
+          <div className="grid grid-cols-4 gap-x-2 sm:gap-x-3 gap-y-3 sm:gap-y-3.5 justify-items-center">
+            {toolSkills.map((sk, idx) => (
+              <BigLogo
+                key={sk.name}
+                skill={sk}
+                rotation={toolRotations[idx % toolRotations.length]}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
