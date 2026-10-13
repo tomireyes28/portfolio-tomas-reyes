@@ -118,21 +118,20 @@ export function JourneyLeftPage() {
           </div>
         </div>
 
-        {/* Section 3: Idiomas (micro-sección al final) */}
-        <div className="pt-1.5 border-t border-[#8c6d46]/20 flex items-center justify-between">
+        {/* Section 3: Idiomas (texto editorial limpio sobre pergamino, sin cajas) */}
+        <div className="pt-1.5 border-t border-[#8c6d46]/20 flex items-center justify-between text-xs">
           <div className="flex items-center gap-1.5">
             <Globe className="w-3 h-3 text-[#94631d]" />
             <span className="font-serif-book text-[11px] font-bold uppercase tracking-wider text-[#94631d]">
               {story.languagesHeading}:
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5 font-serif-book text-[11.5px] text-[#452f20]">
             {story.languages.map((lang, lIdx) => (
-              <span
-                key={lIdx}
-                className="font-typewriter text-[9.5px] px-2 py-0.5 rounded-xs border border-[#8c6d46]/30 bg-[#f4ecd8]/60 text-[#452f20]"
-              >
-                <strong>{lang.name}:</strong> {lang.level}
+              <span key={lIdx} className="flex items-center gap-1">
+                {lIdx > 0 && <span className="text-[#8c6d46]/50 mr-1 select-none">•</span>}
+                <span className="font-bold text-[#22140c]">{lang.name}:</span>
+                <span className="italic text-[#6a4f3b]">{lang.level}</span>
               </span>
             ))}
           </div>
@@ -182,8 +181,8 @@ export function JourneyRightPage() {
         </p>
       </div>
 
-      {/* 4 Strategic Pillars in a single column with compact, natural spacing */}
-      <div className="flex flex-col gap-3 sm:gap-3.5 my-auto py-1">
+      {/* 4 Strategic Pillars with uniform spacing between header, paragraphs, and footer */}
+      <div className="flex flex-col justify-evenly flex-1 py-1">
         {story.principles.map((pillar) => {
           const Icon = principleIcons[pillar.id] || Lightbulb;
 

@@ -127,7 +127,7 @@ export const translations = {
       ],
       languages: [
         { name: "Español", level: "Nativo" },
-        { name: "Inglés", level: "Intermedio (B2)" },
+        { name: "Inglés", level: "Intermedio" },
       ],
       principlesBadge: "Criterio Profesional",
       principlesTitle: "Filosofía de Trabajo & Criterio",
@@ -357,7 +357,7 @@ export const translations = {
       ],
       languages: [
         { name: "Spanish", level: "Native" },
-        { name: "English", level: "Intermediate (B2)" },
+        { name: "English", level: "Intermediate" },
       ],
       principlesBadge: "Engineering Judgment",
       principlesTitle: "Work Philosophy & Mindset",
