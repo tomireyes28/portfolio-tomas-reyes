@@ -198,7 +198,9 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
       {/* ============================================================== */}
       <div
         style={{ transform: "rotateY(180deg)" }}
-        className="absolute inset-0 backface-hidden preserve-3d"
+        className={`absolute inset-0 backface-hidden preserve-3d ${
+          !isOpen ? "pointer-events-none invisible" : ""
+        }`}
       >
         <BookPage
           side="left"

@@ -301,7 +301,9 @@ export default function BookInteractiveSpread({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full flex perspective-book select-none"
+      className={`relative w-full h-full flex perspective-book select-none ${
+        !isOpen ? "pointer-events-none" : ""
+      }`}
     >
       {/* DESKTOP 2-PAGE SPREAD */}
       <div className="hidden md:flex w-full h-full relative preserve-3d">

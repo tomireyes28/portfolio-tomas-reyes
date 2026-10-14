@@ -34,7 +34,7 @@ export default function Book() {
   return (
     <div className="relative w-screen h-screen overflow-hidden expedition-desk flex flex-col justify-between select-none">
       {/* EXPEDITION DESK TOP BAR */}
-      <header className="relative z-40 flex items-center justify-between px-4 md:px-8 py-2 bg-[#100a06]/85 border-b border-[#c89d45]/15 backdrop-blur-xs shrink-0">
+      <header className="relative z-40 flex items-center justify-between px-4 md:px-8 py-2 bg-[#090f1b]/85 border-b border-[#c89d45]/20 backdrop-blur-xs shrink-0">
         {/* Left: Brand Identity & Close Book Button */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 text-[#e2be6b]">
