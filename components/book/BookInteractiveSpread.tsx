@@ -120,8 +120,8 @@ export default function BookInteractiveSpread({
       },
       {
         id: "contact",
-        leftTitle: isEs ? "Estación Postal" : "Postal Station",
-        rightTitle: isEs ? "Correspondencia" : "Correspondence",
+        leftTitle: isEs ? "Contacto Directo" : "Direct Contact",
+        rightTitle: isEs ? "Mensaje Directo" : "Direct Message",
         leftNum: "11",
         rightNum: "12",
         leftContent: <ContactLeftPage />,
