@@ -279,6 +279,34 @@
   transform: scale(0.97);
 }
 
+/* Authentic 3D Red Wax Seal Stamp with Embossed Ring */
+.wax-seal-stamp {
+  background: radial-gradient(circle at 30% 30%, #a8262f 0%, #801820 60%, #4a0d12 100%);
+  border: 1.5px solid #4a0d12;
+  box-shadow: 
+    0 5px 14px rgba(35, 12, 14, 0.45),
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.35),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.65);
+  transition: all 0.2s ease-out;
+}
+
+.wax-seal-stamp:hover {
+  transform: translateY(-1.5px) scale(1.02);
+  box-shadow: 
+    0 8px 20px rgba(45, 12, 14, 0.55),
+    0 3px 6px rgba(0, 0, 0, 0.35),
+    inset 0 2px 3px rgba(255, 255, 255, 0.45),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.wax-seal-stamp:active {
+  transform: translateY(1px) scale(0.97);
+  box-shadow: 
+    0 2px 6px rgba(35, 12, 14, 0.4),
+    inset 0 2px 5px rgba(0, 0, 0, 0.75);
+}
+
 /* Polaroid & Washi Tape with realistic crepe paper texture */
 .polaroid-card {
   background: #fdfaf2;
