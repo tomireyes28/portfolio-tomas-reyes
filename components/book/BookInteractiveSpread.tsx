@@ -305,8 +305,8 @@ export default function BookInteractiveSpread({
         !isOpen ? "pointer-events-none" : ""
       }`}
     >
-      {/* DESKTOP 2-PAGE SPREAD */}
-      <div className="hidden md:flex w-full h-full relative preserve-3d">
+      {/* 2-PAGE SPREAD */}
+      <div className="flex w-full h-full relative preserve-3d">
         {/* ============================================================== */}
         {/* BASE STATIC LEFT PAGE */}
         {/* WHEN TURNING PREV: Shows prevSpread.leftContent so it NEVER repeats! */}
@@ -513,28 +513,6 @@ export default function BookInteractiveSpread({
           title={isEs ? "Arrastrá la hoja para volver" : "Drag page to go back"}
         />
       </div>
-
-      {/* ============================================================== */}
-      {/* MOBILE SINGLE-PAGE SPREAD WITH TOUCH PAN */}
-      {/* ============================================================== */}
-      <motion.div
-        onPan={handlePan}
-        onPanEnd={handlePanEnd}
-        className="flex md:hidden flex-col w-full h-full relative"
-      >
-        <BookPage
-          side="left"
-          pageNumber={currentSpread.leftNum}
-          chapterTitle={currentSpread.leftTitle}
-          onCornerClick={
-            currentIndex < BOOK_SECTIONS.length - 1
-              ? () => triggerTurn(currentIndex + 1)
-              : undefined
-          }
-        >
-          {currentSpread.leftContent}
-        </BookPage>
-      </motion.div>
     </div>
   );
 }

@@ -37,7 +37,7 @@ interface BookContextType {
 const BookContext = createContext<BookContextType | undefined>(undefined);
 
 export function BookProvider({ children }: { children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [activeSection, setActiveSection] = useState<BookSectionId>("about");
   const [turnDirection, setTurnDirection] = useState<"next" | "prev">("next");
   const [isTurning, setIsTurning] = useState(false);

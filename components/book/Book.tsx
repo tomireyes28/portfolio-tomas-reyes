@@ -8,7 +8,6 @@ import { useLanguage } from "@/context/LanguageContext";
 import BookCover from "./BookCover";
 import BookTabs from "./BookTabs";
 import BookInteractiveSpread from "./BookInteractiveSpread";
-import ScrollDetail from "@/components/ui/ScrollDetail";
 import { ProjectCategoryFilter } from "@/components/pages/ProjectsPage";
 
 export default function Book() {
@@ -179,9 +178,6 @@ export default function Book() {
           </motion.div>
         </motion.div>
       </div>
-
-      {/* UNROLLING PARCHMENT SCROLL MODAL FOR PROJECT DETAILS */}
-      <ScrollDetail />
     </div>
   );
 }
