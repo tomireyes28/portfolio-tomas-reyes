@@ -48,7 +48,7 @@ export default function Book() {
             <button
               onClick={closeBook}
               className="flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-[#24150d] hover:bg-[#352014] text-[#dfcdad] border border-[#c89d45]/30 font-serif-book text-xs italic transition-colors cursor-pointer"
-              title={isEs ? "Cerrar libro y volver a la portada" : "Close logbook"}
+              title={isEs ? "Cerrar libro y volver a la portada" : "Close book"}
             >
               <BookMarked className="w-3.5 h-3.5 text-[#c89d45]" />
               <span className="hidden sm:inline">

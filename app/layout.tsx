@@ -30,27 +30,40 @@ const courierPrime = Courier_Prime({
 });
 
 export const metadata: Metadata = {
-  title: "Tomás Reyes | Bitácora de Ingeniería & Producto — Full Stack Developer",
+  title: "Tomás Reyes | Desarrollador Full Stack & Automatizaciones",
   description:
-    "Portfolio interactivo de Tomás Reyes — Desarrollador Full Stack & Product Engineer especializado en Next.js, React, NestJS, TypeScript e Inteligencia Artificial.",
+    "Portfolio de Tomás Reyes — Desarrollador Full Stack especializado en Next.js, React, Node.js, TypeScript y automatización de procesos (Make, n8n).",
   keywords: [
     "Tomás Reyes",
+    "Desarrollador Full Stack",
     "Full Stack Developer",
-    "Frontend Developer",
+    "Automatizaciones",
+    "Make",
+    "n8n",
     "Next.js",
     "React",
-    "NestJS",
     "TypeScript",
+    "Node.js",
+    "PostgreSQL",
     "Tailwind CSS",
-    "Portfolio",
+    "Portfolio Web",
+    "Buenos Aires",
+    "Argentina",
   ],
   authors: [{ name: "Tomás Reyes" }],
+  creator: "Tomás Reyes",
   openGraph: {
-    title: "Tomás Reyes | Full Stack Developer & Product Engineer",
+    title: "Tomás Reyes | Desarrollador Full Stack & Automatizaciones",
     description:
-      "Explora la bitácora interactiva de proyectos, arquitectura y habilidades de Tomás Reyes.",
+      "Portfolio de Tomás Reyes. Proyectos de desarrollo web, arquitectura de software y automatización de flujos de trabajo.",
     type: "website",
-    locale: "es_ES",
+    locale: "es_AR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tomás Reyes | Desarrollador Full Stack & Automatizaciones",
+    description:
+      "Portfolio de Tomás Reyes. Proyectos web, arquitectura y automatizaciones.",
   },
 };
 

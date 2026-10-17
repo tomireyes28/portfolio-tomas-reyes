@@ -66,7 +66,7 @@ export default function BookTabs() {
     <>
       {/* DESKTOP RIGHT-EDGE BOOKMARK TABS */}
       <nav
-        aria-label="Secciones de la bitácora"
+        aria-label="Secciones del portfolio"
         className="hidden md:flex flex-col justify-center gap-2.5 py-8 z-30 -ml-1 select-none shrink-0"
       >
         {TABS.map((tab) => {
@@ -133,7 +133,7 @@ export default function BookTabs() {
 
       {/* MOBILE BOTTOM TABS */}
       <nav
-        aria-label="Secciones de la bitácora (móvil)"
+        aria-label="Secciones del portfolio (móvil)"
         className="flex md:hidden items-center justify-around bg-[#2a190f] border-t border-[#8c6d46]/40 px-2 py-1.5 z-40 shrink-0"
       >
         {TABS.map((tab) => {

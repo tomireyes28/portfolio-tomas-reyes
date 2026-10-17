@@ -194,8 +194,8 @@ export function ContactRightPage() {
       <div className="space-y-2 text-[#2f1c10] font-serif-book text-xs sm:text-[13px] leading-relaxed pl-3 border-l-2 border-[#8c6d46]/35">
         <p>
           {isEs
-            ? "Gracias por tomarte el tiempo de recorrer esta bitácora. Cada proyecto, componente y automatización refleja mi compromiso con construir software mantenible, con foco en negocio y sin fricción técnica."
-            : "Thank you for taking the time to explore this portfolio book. Every project, component, and automation reflects my commitment to building resilient software with clear business impact and zero technical friction."}
+            ? "Gracias por tomarte el tiempo de recorrer este portfolio. Cada proyecto, componente y automatización refleja mi compromiso con construir software mantenible, con foco en negocio y sin fricción técnica."
+            : "Thank you for taking the time to explore this portfolio. Every project, component, and automation reflects my commitment to building resilient software with clear business impact and zero technical friction."}
         </p>
       </div>
 
