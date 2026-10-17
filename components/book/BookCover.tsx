@@ -169,24 +169,13 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
           </div>
         </div>
 
-        {/* BOTTOM INVITATION: Subtle gold engraved prompt */}
-        <div className="relative z-10 pl-5 md:pl-6 flex flex-col items-center">
-          <div className="flex items-center gap-2 text-[#e2be6b]/75 font-typewriter text-[10px] md:text-[11px] tracking-[0.22em] uppercase group-hover:text-[#f5e8c7] transition-colors py-1.5 px-3.5 rounded-full border border-[#c89d45]/30 bg-[#170c06]/70 shadow-inner">
-            <span className="text-[#c89d45]">✦</span>
-            <span>{isEs ? "Haz click en la tapa para abrir" : "Click cover to open"}</span>
-            <span className="text-[#c89d45]">✦</span>
-          </div>
-        </div>
-
         {/* Antique Brass & Leather Clasp Tab on Right Edge */}
         <div
-          className="pointer-events-none absolute -right-3.5 top-1/2 -translate-y-1/2 z-30 hidden sm:flex items-center justify-center py-3.5 px-1 rounded-r-md border-y-2 border-r-2 border-[#e2be6b]/70 bg-gradient-to-r from-[#24140b] to-[#3a2012] shadow-xl group-hover:translate-x-1 transition-transform duration-300"
+          className="pointer-events-none absolute -right-3.5 top-1/2 -translate-y-1/2 z-30 hidden sm:flex items-center justify-center py-4 px-1 rounded-r-md border-y-2 border-r-2 border-[#e2be6b]/70 bg-gradient-to-r from-[#24140b] to-[#3a2012] shadow-xl group-hover:translate-x-1 transition-transform duration-300"
         >
           <div className="flex flex-col items-center gap-1.5 text-[#e2be6b]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#e2be6b] shadow-xs" />
-            <span className="font-typewriter text-[9px] font-bold tracking-widest uppercase [writing-mode:vertical-lr] text-[#f5e8c7]">
-              {isEs ? "ABRIR" : "OPEN"}
-            </span>
+            <span className="w-1 h-3 rounded-full bg-[#c89d45]/60" />
             <span className="w-1.5 h-1.5 rounded-full bg-[#e2be6b] shadow-xs" />
           </div>
         </div>

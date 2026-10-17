@@ -134,9 +134,6 @@ export function SkillsLeftPage() {
         <h2 className="font-serif-book text-xl lg:text-2xl font-bold text-[#22140c]">
           {t.skills.title}
         </h2>
-        <p className="font-serif-book text-xs text-[#5a4232] mt-0.5 leading-relaxed">
-          {t.skills.description}
-        </p>
       </div>
 
       {/* Sections with balanced midpoint spacing */}
@@ -201,9 +198,6 @@ export function SkillsRightPage() {
         <h2 className="font-serif-book text-xl lg:text-2xl font-bold text-[#22140c]">
           {t.skills.rightTitle || (isEs ? "Servicios & Despliegue" : "Services & Deployment")}
         </h2>
-        <p className="font-serif-book text-xs text-[#5a4232] mt-0.5 leading-relaxed">
-          {t.skills.rightDescription || (isEs ? "Persistencia, orquestación de datos y plataformas en la nube." : "Persistence, data orchestration, and cloud platforms.")}
-        </p>
       </div>
 
       {/* Sections with balanced midpoint spacing */}

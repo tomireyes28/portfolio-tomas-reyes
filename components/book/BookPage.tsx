@@ -238,7 +238,7 @@ export default function BookPage({
         {children}
       </div>
 
-      {/* Natural Bottom Footer with Page Number & Clickable Indicator */}
+      {/* Natural Bottom Footer with Page Number */}
       <footer
         className={`relative z-20 flex items-center justify-between px-5 md:px-7 pb-3 pt-1.5 border-t border-[#8c6d46]/15 mx-3 md:mx-5 ${
           isLeft ? "flex-row" : "flex-row-reverse"
@@ -247,16 +247,6 @@ export default function BookPage({
         <span className="font-typewriter text-[11px] font-bold tracking-widest text-[#6a4f3b] select-none">
           — {pageNumber} —
         </span>
-
-        {/* Clickable subtle text indicator if corner click is available */}
-        {onCornerClick && (
-          <button
-            onClick={onCornerClick}
-            className="group font-serif-book text-xs italic text-[#8c6e54] hover:text-[#22140c] transition-colors cursor-pointer select-none py-1 px-2.5 -my-1 rounded hover:bg-[#8c6d46]/10"
-          >
-            {isLeft ? "‹ anterior" : "siguiente ›"}
-          </button>
-        )}
       </footer>
 
       {/* Physical Paper Dog-Ear Corner (Peels and folds more on hover) */}

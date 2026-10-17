@@ -37,25 +37,15 @@ export function ProjectsLeftPage({
       {/* Editorial Header */}
       {spreadIndex === 0 ? (
         <div className="border-b border-[#8c6d46]/25 pb-2">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="font-serif-book text-xl lg:text-2xl font-bold text-[#25160e]">
-              {t.projects.title}
-            </h2>
-            <span className="font-typewriter text-[10px] px-2 py-0.5 bg-[#8c2d2d]/15 text-[#8c2d2d] border border-dashed border-[#8c2d2d] rounded-xs font-bold">
-              8 {isEs ? "DESTACADOS" : "FEATURED"}
-            </span>
-          </div>
+          <h2 className="font-serif-book text-xl lg:text-2xl font-bold text-[#25160e]">
+            {t.projects.title}
+          </h2>
         </div>
       ) : (
         <div className="border-b border-[#8c6d46]/25 pb-2">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="font-serif-book text-xl lg:text-2xl font-bold text-[#25160e]">
-              {isEs ? "Proyectos Seleccionados" : "Selected Projects"}
-            </h2>
-            <span className="font-typewriter text-[10px] px-2 py-0.5 bg-[#8c2d2d]/15 text-[#8c2d2d] border border-dashed border-[#8c2d2d] rounded-xs font-bold">
-              {isEs ? "PLIEGO II" : "SHEET II"}
-            </span>
-          </div>
+          <h2 className="font-serif-book text-xl lg:text-2xl font-bold text-[#25160e]">
+            {isEs ? "Proyectos Seleccionados" : "Selected Projects"}
+          </h2>
         </div>
       )}
 

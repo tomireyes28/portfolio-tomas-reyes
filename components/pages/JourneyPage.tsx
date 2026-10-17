@@ -26,9 +26,6 @@ export function JourneyLeftPage() {
         <h2 className="font-serif-book text-xl lg:text-2xl font-bold text-[#22140c] leading-tight">
           {story.title}
         </h2>
-        <p className="font-serif-book text-xs text-[#5a4232] mt-0.5 leading-relaxed">
-          {story.subtitle}
-        </p>
       </div>
 
       {/* Main Content: Experiencia, Formación & Idiomas */}
@@ -138,12 +135,8 @@ export function JourneyLeftPage() {
         </div>
       </div>
 
-      {/* Marginal Signature & Status Footer */}
-      <div className="pt-1.5 border-t border-dashed border-[#8c6d46]/20 flex items-center justify-between text-xs">
-        <span className="font-typewriter text-[9px] uppercase tracking-wider text-[#8c6e54] flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#265538]" />
-          STATUS: {story.statusText}
-        </span>
+      {/* Marginal Signature Footer */}
+      <div className="pt-1.5 border-t border-dashed border-[#8c6d46]/20 flex items-center justify-end text-xs">
         <span className="font-handwriting text-lg text-[#8c6e54] italic">
           — Tomás Reyes
         </span>
@@ -176,9 +169,6 @@ export function JourneyRightPage() {
         <h3 className="font-serif-book text-xl lg:text-2xl font-bold text-[#22140c] leading-tight">
           {story.principlesTitle}
         </h3>
-        <p className="font-serif-book text-xs text-[#5a4232] mt-0.5 leading-relaxed">
-          {story.principlesSubtitle}
-        </p>
       </div>
 
       {/* 4 Strategic Pillars with uniform spacing between header, paragraphs, and footer */}
@@ -225,16 +215,6 @@ export function JourneyRightPage() {
             </div>
           );
         })}
-      </div>
-
-      {/* Marginal Footer */}
-      <div className="pt-1.5 border-t border-dashed border-[#8c6d46]/20 flex items-center justify-between text-xs">
-        <span className="font-typewriter text-[9px] uppercase tracking-wider text-[#8c6e54]">
-          {story.principlesFooterBadge}
-        </span>
-        <span className="font-typewriter text-[9px] font-bold text-[#7a5a40]">
-          {story.principlesFooterCount}
-        </span>
       </div>
     </div>
   );
