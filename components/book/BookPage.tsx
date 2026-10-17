@@ -206,8 +206,10 @@ export default function BookPage({
     >
       {/* Decorative Inner Paper Margin */}
       <div
-        className={`pointer-events-none absolute inset-2.5 md:inset-3 border border-[#8c6d46]/20 ${
-          isLeft ? "rounded-l-xs" : "rounded-r-xs"
+        className={`pointer-events-none absolute inset-y-2.5 md:inset-y-3 border border-[#8c6d46]/20 ${
+          isLeft
+            ? "left-2.5 md:left-3 right-2.5 md:right-9 lg:right-11 rounded-l-xs"
+            : "left-2.5 md:left-9 lg:left-11 right-2.5 md:right-3 rounded-r-xs"
         }`}
       />
 
@@ -220,8 +222,10 @@ export default function BookPage({
 
       {/* Natural Book Folio Header */}
       <header
-        className={`relative z-10 flex items-center justify-between px-5 md:px-7 pt-4 pb-2 border-b border-[#8c6d46]/20 mx-3 md:mx-5 ${
-          isLeft ? "flex-row" : "flex-row-reverse"
+        className={`relative z-10 flex items-center justify-between pt-4 pb-2 border-b border-[#8c6d46]/20 mx-4 sm:mx-6 ${
+          isLeft
+            ? "flex-row md:ml-4 lg:ml-5 md:mr-10 lg:mr-12"
+            : "flex-row-reverse md:ml-10 lg:ml-12 md:mr-4 lg:mr-5"
         }`}
       >
         <span className="font-serif-book text-xs md:text-sm italic text-[#5a4232] font-medium tracking-wide">
@@ -233,15 +237,23 @@ export default function BookPage({
         </span>
       </header>
 
-      {/* Main Page Content Body */}
-      <div className="relative z-10 flex-1 overflow-y-auto book-scroll px-5 md:px-8 py-3 md:py-4">
+      {/* Main Page Content Body with Asymmetric Gutter Margins */}
+      <div
+        className={`relative z-10 flex-1 overflow-y-auto book-scroll py-3 md:py-4 px-4 sm:px-6 ${
+          isLeft
+            ? "md:pl-5 lg:pl-6 md:pr-11 lg:pr-13"
+            : "md:pl-11 lg:pl-13 md:pr-5 lg:pr-6"
+        }`}
+      >
         {children}
       </div>
 
       {/* Natural Bottom Footer with Page Number */}
       <footer
-        className={`relative z-20 flex items-center justify-between px-5 md:px-7 pb-3 pt-1.5 border-t border-[#8c6d46]/15 mx-3 md:mx-5 ${
-          isLeft ? "flex-row" : "flex-row-reverse"
+        className={`relative z-20 flex items-center justify-between pb-3 pt-1.5 border-t border-[#8c6d46]/15 mx-4 sm:mx-6 ${
+          isLeft
+            ? "flex-row md:ml-4 lg:ml-5 md:mr-10 lg:mr-12"
+            : "flex-row-reverse md:ml-10 lg:ml-12 md:mr-4 lg:mr-5"
         }`}
       >
         <span className="font-typewriter text-[11px] font-bold tracking-widest text-[#6a4f3b] select-none">

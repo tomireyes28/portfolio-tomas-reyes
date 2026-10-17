@@ -4,7 +4,7 @@ import React from "react";
 
 export default function BookSpine() {
   return (
-    <div className="relative z-20 hidden md:flex flex-col items-center justify-between w-9 lg:w-11 h-full select-none shrink-0">
+    <div className="relative z-20 hidden md:flex flex-col items-center justify-between w-8 lg:w-9 h-full select-none shrink-0">
       {/* Main Leather Spine Cylinder */}
       <div
         className="w-full h-full relative flex flex-col items-center justify-between py-6"
