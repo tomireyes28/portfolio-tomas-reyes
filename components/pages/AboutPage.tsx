@@ -81,8 +81,8 @@ export function AboutLeftPage() {
             </span>
             <p className="font-serif-book font-semibold text-[#22140c] text-xs">
               {isEs
-                ? "Disponible para nuevos proyectos y oportunidades"
-                : "Open to new projects and opportunities"}
+                ? "Inmediata (Full-time o Freelance)"
+                : "Immediate (Full-time or Freelance)"}
             </p>
           </div>
 

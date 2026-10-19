@@ -254,7 +254,7 @@ export default function MobilePortfolio() {
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#265538] shrink-0" />
                 <span className="font-typewriter text-[10px] text-[#452f20] font-semibold">
-                  {isEs ? "Disponible para nuevos proyectos" : "Available for new projects"}
+                  {isEs ? "Inmediata (Full-time o Freelance)" : "Immediate (Full-time or Freelance)"}
                 </span>
               </div>
               <span className="font-handwriting text-2xl text-[#6a4f3b]">

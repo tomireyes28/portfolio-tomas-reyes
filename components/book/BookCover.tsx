@@ -17,14 +17,13 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
   const isEs = language === "es";
 
   // When fully open, unmount this overlay so it NEVER blocks other portfolio sections!
-  const [isFullyOpen, setIsFullyOpen] = useState(false);
-  const wasOpenRef = useRef(false);
+  const [isFullyOpen, setIsFullyOpen] = useState(isOpen);
+  const wasOpenRef = useRef(isOpen);
 
   useEffect(() => {
     if (!isOpen) {
       setIsFullyOpen(false);
-    } else {
-      wasOpenRef.current = true;
+      wasOpenRef.current = false;
     }
   }, [isOpen]);
 
