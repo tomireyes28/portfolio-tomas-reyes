@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   Mail,
   Github,
@@ -9,9 +9,7 @@ import {
   Check,
   ExternalLink,
   ArrowUpRight,
-  Send,
 } from "lucide-react";
-import emailjs from "@emailjs/browser";
 import { useLanguage } from "@/context/LanguageContext";
 
 export function ContactLeftPage() {
@@ -46,13 +44,9 @@ export function ContactLeftPage() {
       <div className="space-y-2.5 my-auto">
         {/* Channel 1: Email Card */}
         <div className="p-3 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/35 shadow-xs space-y-2">
-          <div className="flex items-center justify-between border-b border-[#8c6d46]/20 pb-1">
+          <div className="border-b border-[#8c6d46]/20 pb-1">
             <span className="font-typewriter text-[9.5px] uppercase tracking-wider text-[#6a4f3b] font-medium">
               {isEs ? "Correo Electrónico" : "Email Address"}
-            </span>
-            <span className="font-typewriter text-[9px] text-[#265538] font-semibold flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#265538] animate-pulse" />
-              {isEs ? "Bandeja activa" : "Active inbox"}
             </span>
           </div>
 
@@ -111,17 +105,12 @@ export function ContactLeftPage() {
             <div className="w-7 h-7 rounded-xs bg-[#265538]/10 border border-[#265538]/30 flex items-center justify-center text-[#265538] shrink-0 group-hover:scale-105 transition-transform">
               <Linkedin className="w-3.5 h-3.5" />
             </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-typewriter text-xs font-bold text-[#22140c]">
-                  LinkedIn
-                </span>
-                <span className="font-typewriter text-[9.5px] text-[#265538] font-semibold">
-                  /in/tomasreyes1
-                </span>
-              </div>
-              <span className="font-serif-book text-[11px] text-[#6a4f3b] block">
-                {isEs ? "Red profesional y trayectoria" : "Professional network & background"}
+            <div className="flex items-center gap-2">
+              <span className="font-typewriter text-xs font-bold text-[#22140c]">
+                LinkedIn
+              </span>
+              <span className="font-typewriter text-[10px] text-[#265538] font-semibold">
+                /in/tomasreyes1
               </span>
             </div>
           </div>
@@ -139,17 +128,12 @@ export function ContactLeftPage() {
             <div className="w-7 h-7 rounded-xs bg-[#22140c]/5 border border-[#22140c]/20 flex items-center justify-center text-[#22140c] shrink-0 group-hover:scale-105 transition-transform">
               <Github className="w-3.5 h-3.5" />
             </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-typewriter text-xs font-bold text-[#22140c]">
-                  GitHub
-                </span>
-                <span className="font-typewriter text-[9.5px] text-[#6a4f3b] font-semibold">
-                  @tomireyes28
-                </span>
-              </div>
-              <span className="font-serif-book text-[11px] text-[#6a4f3b] block">
-                {isEs ? "Código fuente y repositorios de proyectos" : "Source code & project repositories"}
+            <div className="flex items-center gap-2">
+              <span className="font-typewriter text-xs font-bold text-[#22140c]">
+                GitHub
+              </span>
+              <span className="font-typewriter text-[10px] text-[#6a4f3b] font-semibold">
+                @tomireyes28
               </span>
             </div>
           </div>
@@ -157,14 +141,13 @@ export function ContactLeftPage() {
         </a>
       </div>
 
-      {/* Footer Info: Modality & Location */}
+      {/* Footer Info: Modality & Location (Clean, static typography without blinking lights) */}
       <div className="pt-2 border-t border-[#8c6d46]/25 flex items-center justify-between text-xs">
         <span className="font-serif-book text-[#6a4f3b] italic">
-          {isEs ? "Buenos Aires, AR • Remoto / Híbrido" : "Buenos Aires, AR • Remote / Hybrid"}
+          Buenos Aires, Argentina
         </span>
-        <span className="font-typewriter text-[9.5px] text-[#265538] font-bold uppercase tracking-wider flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#265538]" />
-          {isEs ? "Disponible" : "Available"}
+        <span className="font-typewriter text-[9.5px] text-[#6a4f3b] font-semibold uppercase tracking-wider">
+          {isEs ? "Remoto / Híbrido" : "Remote / Hybrid"}
         </span>
       </div>
     </div>
@@ -174,42 +157,6 @@ export function ContactLeftPage() {
 export function ContactRightPage() {
   const { language } = useLanguage();
   const isEs = language === "es";
-  const formRef = useRef<HTMLFormElement>(null);
-
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formRef.current) return;
-    setStatus("sending");
-
-    emailjs
-      .sendForm(
-        "service_qph1s2d",
-        "template_n1yn4sw",
-        formRef.current,
-        {
-          publicKey: "SdG0xE3GxYiYdOXRm",
-        }
-      )
-      .then(() => {
-        setStatus("success");
-        setFormData({ name: "", email: "", message: "" });
-      })
-      .catch((err) => {
-        console.error("EmailJS error:", err);
-        setStatus("error");
-      });
-  };
-
-  const mailtoFallback = `mailto:tomireyes.tr@gmail.com?subject=${encodeURIComponent(
-    formData.name ? `Contacto desde Portfolio - ${formData.name}` : "Contacto desde Portfolio"
-  )}&body=${encodeURIComponent(
-    formData.message
-      ? `${formData.message}\n\nDe: ${formData.name} (${formData.email})`
-      : "Hola Tomás, me contacto desde tu portfolio."
-  )}`;
 
   return (
     <div className="flex flex-col justify-between h-full py-1 space-y-3">
@@ -217,139 +164,68 @@ export function ContactRightPage() {
       <div className="border-b border-[#8c6d46]/25 pb-1.5">
         <div className="flex items-center justify-between">
           <span className="font-typewriter text-[9px] uppercase tracking-widest text-[#8c6d46] block">
-            {isEs ? "MENSAJE DIRECTO" : "DIRECT MESSAGE"}
+            {isEs ? "CIERRE" : "CLOSING"}
           </span>
           <span className="font-serif-book text-xs text-[#8c6d46]">✦ ❖ ✦</span>
         </div>
         <h3 className="font-serif-book text-2xl lg:text-3xl font-bold text-[#22140c] leading-tight">
-          {isEs ? "Enviar un Mensaje" : "Send a Message"}
+          {isEs ? "Colaboración & Criterio" : "Collaboration & Focus"}
         </h3>
-        <p className="font-serif-book text-xs text-[#6a4f3b] mt-1">
+      </div>
+
+      {/* Narrative & Focus */}
+      <div className="space-y-2 text-[#2f1c10] font-serif-book text-xs sm:text-[13px] leading-relaxed pl-3 border-l-2 border-[#8c6d46]/35 my-auto">
+        <p>
           {isEs
-            ? "Escribime una consulta, propuesta o saludo y te responderé a la brevedad."
-            : "Send an inquiry, project proposal, or greeting and I'll reply promptly."}
+            ? "Construyo software con foco en negocio y mantenibilidad a largo plazo: arquitecturas escalables en Next.js y TypeScript, y flujos automatizados diseñados para optimizar operaciones reales y ahorrar tiempo de equipo."
+            : "I build resilient software with clear business impact: scalable Next.js and TypeScript architectures, combined with automated pipelines designed to eliminate operational friction and manual overhead."}
         </p>
       </div>
 
-      {/* Main Form Body / Success Feedback */}
-      {status === "success" ? (
-        <div className="my-auto p-4 rounded-xs bg-[#265538]/10 border border-[#265538]/40 text-center space-y-2">
-          <div className="w-9 h-9 rounded-full bg-[#265538]/15 text-[#265538] flex items-center justify-center mx-auto">
-            <Check className="w-5 h-5 stroke-[2.5]" />
+      {/* Executive Profile Summary Box */}
+      <div className="p-3 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/35 shadow-xs space-y-2">
+        <span className="font-typewriter text-[9px] uppercase tracking-wider text-[#8c6e54] font-bold block border-b border-[#8c6d46]/20 pb-1">
+          {isEs ? "Ficha de Perfil" : "Profile Summary"}
+        </span>
+
+        <div className="grid grid-cols-2 gap-2 text-xs font-serif-book">
+          <div className="space-y-0.5">
+            <span className="font-typewriter text-[8.5px] uppercase text-[#6a4f3b] block">
+              {isEs ? "Enfoque" : "Core Focus"}
+            </span>
+            <p className="font-bold text-[#22140c] text-[11px] leading-tight">
+              Full Stack & Auto.
+            </p>
           </div>
-          <h4 className="font-serif-book text-lg font-bold text-[#22140c]">
-            {isEs ? "¡Mensaje Enviado!" : "Message Sent!"}
-          </h4>
-          <p className="font-serif-book text-xs sm:text-[13px] text-[#452f20] leading-relaxed max-w-xs mx-auto">
-            {isEs
-              ? "Gracias por comunicarte. El mensaje llegó a mi casilla y te responderé pronto."
-              : "Thank you for reaching out. Your message reached my inbox and I'll reply soon."}
-          </p>
-          <button
-            onClick={() => setStatus("idle")}
-            type="button"
-            className="mt-2 inline-flex items-center gap-1 font-typewriter text-[10.5px] uppercase font-bold text-[#265538] hover:underline cursor-pointer"
-          >
-            <span>{isEs ? "Enviar otro mensaje" : "Send another message"}</span>
-          </button>
+
+          <div className="space-y-0.5">
+            <span className="font-typewriter text-[8.5px] uppercase text-[#6a4f3b] block">
+              {isEs ? "Disponibilidad" : "Availability"}
+            </span>
+            <p className="font-bold text-[#22140c] text-[11px] leading-tight">
+              {isEs ? "Inmediata" : "Immediate"}
+            </p>
+          </div>
+
+          <div className="space-y-0.5">
+            <span className="font-typewriter text-[8.5px] uppercase text-[#6a4f3b] block">
+              {isEs ? "Modalidad" : "Work Mode"}
+            </span>
+            <p className="font-bold text-[#22140c] text-[11px] leading-tight">
+              {isEs ? "Remoto / Híbrido" : "Remote / Hybrid"}
+            </p>
+          </div>
+
+          <div className="space-y-0.5">
+            <span className="font-typewriter text-[8.5px] uppercase text-[#6a4f3b] block">
+              {isEs ? "Ubicación" : "Location"}
+            </span>
+            <p className="font-bold text-[#22140c] text-[11px] leading-tight">
+              Buenos Aires, AR
+            </p>
+          </div>
         </div>
-      ) : (
-        <form ref={formRef} onSubmit={handleSubmit} className="space-y-2.5 my-auto">
-          {status === "error" && (
-            <div className="p-2 rounded-xs bg-[#882b2b]/10 border border-[#882b2b]/35 text-[#882b2b] text-xs font-serif-book flex items-center justify-between gap-2">
-              <span>
-                {isEs
-                  ? "Hubo un error de conexión al enviar."
-                  : "Connection error while sending."}
-              </span>
-              <a
-                href={mailtoFallback}
-                className="font-typewriter text-[10px] font-bold underline shrink-0"
-              >
-                {isEs ? "Abrir correo" : "Open email"}
-              </a>
-            </div>
-          )}
-
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-1">
-                {isEs ? "Nombre" : "Name"}
-              </label>
-              <input
-                type="text"
-                name="name"
-                required
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder={isEs ? "Tu nombre" : "Your name"}
-                className="w-full px-2.5 py-1.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/40 text-[#22140c] placeholder:text-[#8c6e54]/50 font-serif-book text-xs focus:outline-none focus:border-[#265538] focus:ring-1 focus:ring-[#265538]/30 transition-all shadow-2xs"
-              />
-            </div>
-
-            <div>
-              <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-1">
-                {isEs ? "Correo" : "Email"}
-              </label>
-              <input
-                type="email"
-                name="email"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder={isEs ? "tu@email.com" : "you@email.com"}
-                className="w-full px-2.5 py-1.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/40 text-[#22140c] placeholder:text-[#8c6e54]/50 font-serif-book text-xs focus:outline-none focus:border-[#265538] focus:ring-1 focus:ring-[#265538]/30 transition-all shadow-2xs"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-1">
-              {isEs ? "Mensaje" : "Message"}
-            </label>
-            <textarea
-              name="message"
-              required
-              rows={3}
-              value={formData.message}
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              placeholder={
-                isEs
-                  ? "Contame sobre tu proyecto, propuesta o vacante..."
-                  : "Tell me about your project, proposal, or open role..."
-              }
-              className="w-full px-2.5 py-1.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/40 text-[#22140c] placeholder:text-[#8c6e54]/50 font-serif-book text-xs resize-none focus:outline-none focus:border-[#265538] focus:ring-1 focus:ring-[#265538]/30 transition-all shadow-2xs"
-            />
-          </div>
-
-          <div className="flex items-center justify-between pt-1 gap-2">
-            <button
-              type="submit"
-              disabled={status === "sending"}
-              className="flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xs bg-[#22140c] hover:bg-[#3d2416] text-[#f5ebd6] font-typewriter text-[11px] font-bold uppercase tracking-wider transition-all shadow-xs cursor-pointer disabled:opacity-50"
-            >
-              <Send className="w-3.5 h-3.5 text-[#e2be6b]" />
-              <span>
-                {status === "sending"
-                  ? isEs
-                    ? "Enviando..."
-                    : "Sending..."
-                  : isEs
-                  ? "Enviar Mensaje"
-                  : "Send Message"}
-              </span>
-            </button>
-
-            <a
-              href={mailtoFallback}
-              className="font-serif-book text-[11px] text-[#6a4f3b] hover:text-[#22140c] underline flex items-center gap-1 transition-colors"
-            >
-              <span>{isEs ? "O vía tu correo" : "Or via email client"}</span>
-              <ArrowUpRight className="w-3 h-3" />
-            </a>
-          </div>
-        </form>
-      )}
+      </div>
 
       {/* Signature & Location Footer */}
       <div className="pt-1.5 border-t border-[#8c6d46]/20 flex items-center justify-between text-xs">

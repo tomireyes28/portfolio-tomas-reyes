@@ -23,10 +23,7 @@ import {
   Workflow,
   Code2,
   ChevronUp,
-  Send,
-  ArrowUpRight,
 } from "lucide-react";
-import emailjs from "@emailjs/browser";
 import { useLanguage } from "@/context/LanguageContext";
 import { useBook } from "@/context/BookContext";
 import { projects } from "@/src/projects";
@@ -53,42 +50,6 @@ export default function MobilePortfolio() {
   const [filter, setFilter] = useState<ProjectCategoryFilter>("all");
   const [activeSection, setActiveSection] = useState<string>("sobre-mi");
   const [showBackToTop, setShowBackToTop] = useState(false);
-  const [msgStatus, setMsgStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-  const [msgData, setMsgData] = useState({ name: "", email: "", message: "" });
-  const msgFormRef = useRef<HTMLFormElement>(null);
-
-  // Send message via EmailJS
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!msgFormRef.current) return;
-    setMsgStatus("sending");
-
-    emailjs
-      .sendForm(
-        "service_qph1s2d",
-        "template_n1yn4sw",
-        msgFormRef.current,
-        {
-          publicKey: "SdG0xE3GxYiYdOXRm",
-        }
-      )
-      .then(() => {
-        setMsgStatus("success");
-        setMsgData({ name: "", email: "", message: "" });
-      })
-      .catch((err) => {
-        console.error("EmailJS mobile error:", err);
-        setMsgStatus("error");
-      });
-  };
-
-  const mailtoFallback = `mailto:tomireyes.tr@gmail.com?subject=${encodeURIComponent(
-    msgData.name ? `Contacto desde Portfolio - ${msgData.name}` : "Contacto desde Portfolio"
-  )}&body=${encodeURIComponent(
-    msgData.message
-      ? `${msgData.message}\n\nDe: ${msgData.name} (${msgData.email})`
-      : "Hola Tomás, me contacto desde tu portfolio."
-  )}`;
 
   // Copy email handler with feedback
   const handleCopyEmail = () => {
@@ -824,140 +785,67 @@ export default function MobilePortfolio() {
             </div>
           </div>
 
-          {/* Interactive Message Form Card */}
+          {/* Closing & Profile Summary Card */}
           <div className="parchment-page-right p-4.5 rounded-lg border border-[#8c6d46]/35 shadow-md space-y-4">
             <div className="border-b border-[#8c6d46]/25 pb-2">
               <span className="font-typewriter text-[9px] uppercase tracking-widest text-[#8c6d46] block font-bold mb-0.5">
-                {isEs ? "Mensaje Directo" : "Direct Message"}
+                {isEs ? "Cierre" : "Closing"}
               </span>
               <h3 className="font-serif-book text-xl font-bold text-[#22140c]">
-                {isEs ? "Enviar un Mensaje" : "Send a Message"}
+                {isEs ? "Colaboración & Criterio" : "Collaboration & Focus"}
               </h3>
-              <p className="font-serif-book text-xs text-[#6a4f3b] mt-1">
-                {isEs
-                  ? "Escribime una consulta, propuesta o saludo y te responderé a la brevedad."
-                  : "Send an inquiry, project proposal, or greeting and I'll reply promptly."}
-              </p>
             </div>
 
-            {msgStatus === "success" ? (
-              <div className="p-4 rounded-xs bg-[#265538]/10 border border-[#265538]/40 text-center space-y-2">
-                <div className="w-9 h-9 rounded-full bg-[#265538]/15 text-[#265538] flex items-center justify-center mx-auto">
-                  <Check className="w-5 h-5 stroke-[2.5]" />
-                </div>
-                <h4 className="font-serif-book text-base font-bold text-[#22140c]">
-                  {isEs ? "¡Mensaje Enviado!" : "Message Sent!"}
-                </h4>
-                <p className="font-serif-book text-xs text-[#452f20] leading-relaxed">
-                  {isEs
-                    ? "Gracias por comunicarte. El mensaje llegó a mi casilla y te responderé pronto."
-                    : "Thank you for reaching out. Your message reached my inbox and I'll reply soon."}
-                </p>
-                <button
-                  onClick={() => setMsgStatus("idle")}
-                  type="button"
-                  className="mt-2 inline-flex items-center gap-1 font-typewriter text-[10.5px] uppercase font-bold text-[#265538] hover:underline cursor-pointer"
-                >
-                  <span>{isEs ? "Enviar otro mensaje" : "Send another message"}</span>
-                </button>
-              </div>
-            ) : (
-              <form ref={msgFormRef} onSubmit={handleSendMessage} className="space-y-3">
-                {msgStatus === "error" && (
-                  <div className="p-2.5 rounded-xs bg-[#882b2b]/10 border border-[#882b2b]/35 text-[#882b2b] text-xs font-serif-book flex items-center justify-between gap-2">
-                    <span>
-                      {isEs
-                        ? "Error de conexión al enviar."
-                        : "Connection error while sending."}
-                    </span>
-                    <a
-                      href={mailtoFallback}
-                      className="font-typewriter text-[10px] font-bold underline shrink-0"
-                    >
-                      {isEs ? "Abrir correo" : "Open email"}
-                    </a>
-                  </div>
-                )}
+            <p className="font-serif-book text-[12.5px] text-[#3d2719] leading-relaxed pl-3 border-l-2 border-[#8c6d46]/40 italic">
+              {isEs
+                ? "Construyo software con foco en negocio y mantenibilidad a largo plazo: arquitecturas escalables en Next.js y TypeScript, y flujos automatizados diseñados para optimizar operaciones reales y ahorrar tiempo de equipo."
+                : "I build resilient software with clear business impact: scalable Next.js and TypeScript architectures, combined with automated pipelines designed to eliminate operational friction."}
+            </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  <div>
-                    <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-1">
-                      {isEs ? "Nombre" : "Name"}
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      required
-                      value={msgData.name}
-                      onChange={(e) => setMsgData({ ...msgData, name: e.target.value })}
-                      placeholder={isEs ? "Tu nombre" : "Your name"}
-                      className="w-full px-3 py-2 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/40 text-[#22140c] placeholder:text-[#8c6e54]/50 font-serif-book text-xs focus:outline-none focus:border-[#265538] focus:ring-1 focus:ring-[#265538]/30 transition-all shadow-2xs"
-                    />
-                  </div>
+            {/* Profile Summary Box */}
+            <div className="p-3.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/35 shadow-xs space-y-2">
+              <span className="font-typewriter text-[9px] uppercase tracking-wider text-[#8c6e54] font-bold block border-b border-[#8c6d46]/20 pb-1">
+                {isEs ? "Ficha de Perfil" : "Profile Summary"}
+              </span>
 
-                  <div>
-                    <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-1">
-                      {isEs ? "Correo" : "Email"}
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      required
-                      value={msgData.email}
-                      onChange={(e) => setMsgData({ ...msgData, email: e.target.value })}
-                      placeholder={isEs ? "tu@email.com" : "you@email.com"}
-                      className="w-full px-3 py-2 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/40 text-[#22140c] placeholder:text-[#8c6e54]/50 font-serif-book text-xs focus:outline-none focus:border-[#265538] focus:ring-1 focus:ring-[#265538]/30 transition-all shadow-2xs"
-                    />
-                  </div>
+              <div className="grid grid-cols-2 gap-2 text-xs font-serif-book">
+                <div>
+                  <span className="font-typewriter text-[8.5px] uppercase text-[#6a4f3b] block">
+                    {isEs ? "Enfoque" : "Core Focus"}
+                  </span>
+                  <p className="font-bold text-[#22140c] text-[11px] leading-tight">
+                    Full Stack & Auto.
+                  </p>
                 </div>
 
                 <div>
-                  <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-1">
-                    {isEs ? "Mensaje" : "Message"}
-                  </label>
-                  <textarea
-                    name="message"
-                    required
-                    rows={3}
-                    value={msgData.message}
-                    onChange={(e) => setMsgData({ ...msgData, message: e.target.value })}
-                    placeholder={
-                      isEs
-                        ? "Contame sobre tu proyecto, propuesta o vacante..."
-                        : "Tell me about your project, proposal, or open role..."
-                    }
-                    className="w-full px-3 py-2 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/40 text-[#22140c] placeholder:text-[#8c6e54]/50 font-serif-book text-xs resize-none focus:outline-none focus:border-[#265538] focus:ring-1 focus:ring-[#265538]/30 transition-all shadow-2xs"
-                  />
+                  <span className="font-typewriter text-[8.5px] uppercase text-[#6a4f3b] block">
+                    {isEs ? "Disponibilidad" : "Availability"}
+                  </span>
+                  <p className="font-bold text-[#22140c] text-[11px] leading-tight">
+                    {isEs ? "Inmediata" : "Immediate"}
+                  </p>
                 </div>
 
-                <div className="flex flex-wrap items-center justify-between pt-1 gap-2">
-                  <button
-                    type="submit"
-                    disabled={msgStatus === "sending"}
-                    className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xs bg-[#24150d] hover:bg-[#352014] text-[#f5ebd6] font-typewriter text-xs font-bold uppercase tracking-wider transition-all shadow-xs cursor-pointer disabled:opacity-50"
-                  >
-                    <Send className="w-3.5 h-3.5 text-[#e2be6b]" />
-                    <span>
-                      {msgStatus === "sending"
-                        ? isEs
-                          ? "Enviando..."
-                          : "Sending..."
-                        : isEs
-                        ? "Enviar Mensaje"
-                        : "Send Message"}
-                    </span>
-                  </button>
-
-                  <a
-                    href={mailtoFallback}
-                    className="font-serif-book text-xs text-[#6a4f3b] hover:text-[#22140c] underline flex items-center gap-1 transition-colors"
-                  >
-                    <span>{isEs ? "O vía tu correo" : "Or via email client"}</span>
-                    <ArrowUpRight className="w-3 h-3" />
-                  </a>
+                <div>
+                  <span className="font-typewriter text-[8.5px] uppercase text-[#6a4f3b] block">
+                    {isEs ? "Modalidad" : "Work Mode"}
+                  </span>
+                  <p className="font-bold text-[#22140c] text-[11px] leading-tight">
+                    {isEs ? "Remoto / Híbrido" : "Remote / Hybrid"}
+                  </p>
                 </div>
-              </form>
-            )}
+
+                <div>
+                  <span className="font-typewriter text-[8.5px] uppercase text-[#6a4f3b] block">
+                    {isEs ? "Ubicación" : "Location"}
+                  </span>
+                  <p className="font-bold text-[#22140c] text-[11px] leading-tight">
+                    Buenos Aires, AR
+                  </p>
+                </div>
+              </div>
+            </div>
 
             {/* Signature & Location */}
             <div className="pt-3 border-t border-[#8c6d46]/25 flex items-center justify-between text-xs">

@@ -110,7 +110,7 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
             {isEs ? "PORTAFOLIO 2026" : "PORTFOLIO // 2026"}
           </span>
           <span className="font-typewriter text-[10px] md:text-[11px] text-[#c89d45]/80 flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#4ea868] animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#c89d45]/60" />
             {isEs ? "BUENOS AIRES, ARGENTINA" : "BUENOS AIRES, AR"}
           </span>
         </div>
