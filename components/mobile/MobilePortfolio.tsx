@@ -23,6 +23,7 @@ import {
   Workflow,
   Code2,
   ChevronUp,
+  ArrowUpRight,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { useBook } from "@/context/BookContext";
@@ -785,65 +786,54 @@ export default function MobilePortfolio() {
             </div>
           </div>
 
-          {/* Closing & Profile Summary Card */}
+          {/* Closing & Direct Invitation Card */}
           <div className="parchment-page-right p-4.5 rounded-lg border border-[#8c6d46]/35 shadow-md space-y-4">
             <div className="border-b border-[#8c6d46]/25 pb-2">
               <span className="font-typewriter text-[9px] uppercase tracking-widest text-[#8c6d46] block font-bold mb-0.5">
-                {isEs ? "Cierre" : "Closing"}
+                {isEs ? "Hablemos" : "Let's Talk"}
               </span>
               <h3 className="font-serif-book text-xl font-bold text-[#22140c]">
-                {isEs ? "Colaboración & Criterio" : "Collaboration & Focus"}
+                {isEs ? "Construyamos juntos" : "Let's Build Together"}
               </h3>
             </div>
 
-            <p className="font-serif-book text-[12.5px] text-[#3d2719] leading-relaxed pl-3 border-l-2 border-[#8c6d46]/40 italic">
-              {isEs
-                ? "Construyo software con foco en negocio y mantenibilidad a largo plazo: arquitecturas escalables en Next.js y TypeScript, y flujos automatizados diseñados para optimizar operaciones reales y ahorrar tiempo de equipo."
-                : "I build resilient software with clear business impact: scalable Next.js and TypeScript architectures, combined with automated pipelines designed to eliminate operational friction."}
-            </p>
+            <div className="space-y-2.5 font-serif-book text-[12.5px] text-[#3d2719] leading-relaxed pl-3 border-l-2 border-[#8c6d46]/40">
+              <p>
+                {isEs
+                  ? "Entiendo el desarrollo como una herramienta para resolver problemas reales: cada línea de código y cada flujo automatizado tiene que simplificar procesos, ahorrar tiempo o potenciar un objetivo claro de negocio."
+                  : "I approach software development as a practical tool to solve real problems: every line of code and automated workflow should streamline operations, save time, or drive clear business outcomes."}
+              </p>
+              <p>
+                {isEs
+                  ? "Si estás buscando a alguien para sumar a tu equipo, encarar un desarrollo desde cero o automatizar operaciones que hoy te quitan horas, me encantaría conocer tu propuesta."
+                  : "If you are looking for a developer to join your engineering team, build a new product from the ground up, or automate manual operations, I would love to hear from you."}
+              </p>
+            </div>
 
-            {/* Profile Summary Box */}
+            {/* Next Step Box */}
             <div className="p-3.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/35 shadow-xs space-y-2">
-              <span className="font-typewriter text-[9px] uppercase tracking-wider text-[#8c6e54] font-bold block border-b border-[#8c6d46]/20 pb-1">
-                {isEs ? "Ficha de Perfil" : "Profile Summary"}
-              </span>
-
-              <div className="grid grid-cols-2 gap-2 text-xs font-serif-book">
-                <div>
-                  <span className="font-typewriter text-[8.5px] uppercase text-[#6a4f3b] block">
-                    {isEs ? "Enfoque" : "Core Focus"}
-                  </span>
-                  <p className="font-bold text-[#22140c] text-[11px] leading-tight">
-                    Full Stack & Auto.
-                  </p>
-                </div>
-
-                <div>
-                  <span className="font-typewriter text-[8.5px] uppercase text-[#6a4f3b] block">
-                    {isEs ? "Disponibilidad" : "Availability"}
-                  </span>
-                  <p className="font-bold text-[#22140c] text-[11px] leading-tight">
-                    {isEs ? "Inmediata" : "Immediate"}
-                  </p>
-                </div>
-
-                <div>
-                  <span className="font-typewriter text-[8.5px] uppercase text-[#6a4f3b] block">
-                    {isEs ? "Modalidad" : "Work Mode"}
-                  </span>
-                  <p className="font-bold text-[#22140c] text-[11px] leading-tight">
-                    {isEs ? "Remoto / Híbrido" : "Remote / Hybrid"}
-                  </p>
-                </div>
-
-                <div>
-                  <span className="font-typewriter text-[8.5px] uppercase text-[#6a4f3b] block">
-                    {isEs ? "Ubicación" : "Location"}
-                  </span>
-                  <p className="font-bold text-[#22140c] text-[11px] leading-tight">
-                    Buenos Aires, AR
-                  </p>
-                </div>
+              <div className="flex items-center gap-1.5 text-[#22140c]">
+                <Sparkles className="w-3.5 h-3.5 text-[#94631d] shrink-0" />
+                <span className="font-typewriter text-[9.5px] uppercase tracking-wider text-[#6a4f3b] font-bold">
+                  {isEs ? "Próximo paso" : "Next Step"}
+                </span>
+              </div>
+              <p className="font-serif-book text-xs text-[#452f20] leading-relaxed">
+                {isEs
+                  ? "Una breve conversación suele ser la mejor manera de ver si hacemos buen fit y explorar cómo puedo aportar valor a tu equipo."
+                  : "A brief conversation is usually the best way to see if we are a great fit and explore how I can bring value to your team."}
+              </p>
+              <div className="pt-1.5 flex items-center justify-between border-t border-[#8c6d46]/20 text-xs">
+                <a
+                  href="mailto:tomireyes.tr@gmail.com"
+                  className="inline-flex items-center gap-1.5 font-typewriter text-[10.5px] uppercase tracking-wider font-bold text-[#882b2b] hover:underline"
+                >
+                  <span>{isEs ? "Escribime un correo" : "Send an email"}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+                <span className="font-serif-book text-[11px] text-[#6a4f3b] italic">
+                  {isEs ? "Respuesta en el día" : "Same-day reply"}
+                </span>
               </div>
             </div>
 
