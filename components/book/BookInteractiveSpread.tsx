@@ -120,8 +120,8 @@ export default function BookInteractiveSpread({
       },
       {
         id: "contact",
-        leftTitle: isEs ? "Contacto Directo" : "Direct Contact",
-        rightTitle: isEs ? "Construyamos Juntos" : "Let's Build Together",
+        leftTitle: isEs ? "Redes & Perfiles" : "Networks & Profiles",
+        rightTitle: isEs ? "Hablemos" : "Let's Connect",
         leftNum: "11",
         rightNum: "12",
         leftContent: <ContactLeftPage />,

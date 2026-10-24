@@ -24,7 +24,9 @@ import {
   Code2,
   ChevronUp,
   ArrowUpRight,
+  Send,
 } from "lucide-react";
+import emailjs from "@emailjs/browser";
 import { useLanguage } from "@/context/LanguageContext";
 import { useBook } from "@/context/BookContext";
 import { projects } from "@/src/projects";
@@ -51,6 +53,42 @@ export default function MobilePortfolio() {
   const [filter, setFilter] = useState<ProjectCategoryFilter>("all");
   const [activeSection, setActiveSection] = useState<string>("sobre-mi");
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [msgStatus, setMsgStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [msgData, setMsgData] = useState({ name: "", email: "", message: "" });
+  const msgFormRef = useRef<HTMLFormElement>(null);
+
+  // Send message via EmailJS
+  const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!msgFormRef.current) return;
+    setMsgStatus("sending");
+
+    emailjs
+      .sendForm(
+        "service_qph1s2d",
+        "template_n1yn4sw",
+        msgFormRef.current,
+        {
+          publicKey: "SdG0xE3GxYiYdOXRm",
+        }
+      )
+      .then(() => {
+        setMsgStatus("success");
+        setMsgData({ name: "", email: "", message: "" });
+      })
+      .catch((err) => {
+        console.error("EmailJS mobile error:", err);
+        setMsgStatus("error");
+      });
+  };
+
+  const mailtoFallback = `mailto:tomireyes.tr@gmail.com?subject=${encodeURIComponent(
+    msgData.name ? `Contacto Portfolio - ${msgData.name}` : "Contacto desde Portfolio"
+  )}&body=${encodeURIComponent(
+    msgData.message
+      ? `${msgData.message}\n\nDe: ${msgData.name} (${msgData.email})`
+      : "Hola Tomás, me contacto desde tu portfolio."
+  )}`;
 
   // Copy email handler with feedback
   const handleCopyEmail = () => {
@@ -675,7 +713,7 @@ export default function MobilePortfolio() {
         </section>
 
         {/* ============================================================ */}
-        {/* SECTION 5: CONTACTO & NOTAS FINALES                           */}
+        {/* SECTION 5: REDES & CONTACTO                                  */}
         {/* ============================================================ */}
         <section id="contacto" className="scroll-mt-24 space-y-4">
           <div className="border-b border-[#c89d45]/25 pb-2">
@@ -683,164 +721,226 @@ export default function MobilePortfolio() {
               {isEs ? "Cierre & Conexión" : "Closing & Connection"}
             </span>
             <h2 className="font-serif-book text-2xl font-bold text-[#f5ebd6]">
-              {isEs ? "Contacto Directo" : "Direct Contact"}
+              {isEs ? "Contacto & Redes" : "Contact & Profiles"}
             </h2>
           </div>
 
-          {/* Direct Email & Socials Card */}
+          {/* Card 1: Social Profiles with Prominent Logos */}
           <div className="parchment-page-left p-4.5 rounded-lg border border-[#8c6d46]/35 shadow-md space-y-3.5">
-            {/* Email Card with Copy button */}
-            <div className="p-3.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/35 shadow-xs">
-              <div className="flex items-center gap-2.5 mb-2.5 text-[#22140c]">
-                <div className="w-8 h-8 rounded-xs bg-[#882b2b]/10 border border-[#882b2b]/25 flex items-center justify-center shrink-0">
-                  <Mail className="w-4 h-4 text-[#882b2b]" />
-                </div>
-                <div className="overflow-hidden">
-                  <span className="font-typewriter text-[9.5px] uppercase tracking-wider text-[#6a4f3b] block">
-                    {isEs ? "Correo Electrónico" : "Email Address"}
-                  </span>
-                  <span className="font-typewriter text-xs sm:text-sm font-bold truncate select-all block text-[#22140c]">
-                    tomireyes.tr@gmail.com
-                  </span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#8c6d46]/20">
-                <button
-                  onClick={handleCopyEmail}
-                  type="button"
-                  className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-xs font-typewriter text-xs font-bold transition-all cursor-pointer ${
-                    copied
-                      ? "bg-[#265538] text-[#f5ebd6]"
-                      : "bg-[#24150d] hover:bg-[#382014] text-[#dfcdad]"
-                  }`}
-                >
-                  {copied ? (
-                    <>
-                      <Check className="w-3.5 h-3.5" />
-                      <span>{isEs ? "¡Copiado!" : "Copied!"}</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5" />
-                      <span>{isEs ? "Copiar" : "Copy"}</span>
-                    </>
-                  )}
-                </button>
-
-                <a
-                  href="mailto:tomireyes.tr@gmail.com"
-                  className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xs bg-[#882b2b] hover:bg-[#6e1e1e] text-[#f5ebd6] font-typewriter text-xs font-bold transition-colors"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  <span>{isEs ? "Redactar" : "Write"}</span>
-                </a>
-              </div>
+            <div>
+              <span className="font-typewriter text-[9px] uppercase tracking-widest text-[#8c6d46] block font-bold mb-0.5">
+                {isEs ? "Redes & Perfiles" : "Profiles & Social"}
+              </span>
+              <h3 className="font-serif-book text-xl font-bold text-[#22140c]">
+                {isEs ? "Redes y Código" : "Profiles & Code"}
+              </h3>
+              <p className="font-serif-book text-xs text-[#452f20] mt-1 leading-relaxed">
+                {isEs
+                  ? "Para conocer más sobre mi trayectoria o explorar los repositorios de mis proyectos:"
+                  : "To learn more about my professional journey or explore my project repositories:"}
+              </p>
             </div>
 
-            {/* Social Links */}
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="space-y-2.5">
+              {/* LinkedIn */}
+              <a
+                href="https://www.linkedin.com/in/tomasreyes1/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-between p-3.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/35 hover:border-[#265538] shadow-xs hover:shadow-md transition-all"
+              >
+                <div className="flex items-center gap-3 overflow-hidden">
+                  <div className="w-11 h-11 rounded-xs bg-[#265538]/10 border border-[#265538]/30 flex items-center justify-center text-[#265538] shrink-0 group-hover:scale-105 transition-transform">
+                    <Linkedin className="w-5 h-5 stroke-[1.8]" />
+                  </div>
+                  <div>
+                    <span className="font-serif-book text-sm font-bold text-[#22140c] block">
+                      LinkedIn
+                    </span>
+                    <span className="font-typewriter text-[11px] text-[#265538] font-semibold block mt-0.5">
+                      linkedin.com/in/tomasreyes1
+                    </span>
+                  </div>
+                </div>
+                <ArrowUpRight className="w-4 h-4 text-[#265538] opacity-60 group-hover:opacity-100 transition-opacity shrink-0 ml-2" />
+              </a>
+
+              {/* GitHub */}
               <a
                 href="https://github.com/tomireyes28"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/35 flex items-center justify-between hover:border-[#882b2b] transition-all"
+                className="group flex items-center justify-between p-3.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/35 hover:border-[#22140c] shadow-xs hover:shadow-md transition-all"
               >
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-xs bg-[#24150d]/10 flex items-center justify-center text-[#24150d]">
-                    <Github className="w-4 h-4" />
+                <div className="flex items-center gap-3 overflow-hidden">
+                  <div className="w-11 h-11 rounded-xs bg-[#22140c]/5 border border-[#22140c]/20 flex items-center justify-center text-[#22140c] shrink-0 group-hover:scale-105 transition-transform">
+                    <Github className="w-5 h-5 stroke-[1.8]" />
                   </div>
                   <div>
-                    <span className="font-typewriter text-xs font-bold block text-[#22140c]">
+                    <span className="font-serif-book text-sm font-bold text-[#22140c] block">
                       GitHub
                     </span>
-                    <span className="font-typewriter text-[9.5px] text-[#8c6e54] block">
-                      @tomireyes28
+                    <span className="font-typewriter text-[11px] text-[#6a4f3b] font-semibold block mt-0.5">
+                      github.com/tomireyes28
                     </span>
                   </div>
                 </div>
-                <ExternalLink className="w-3 h-3 text-[#6a4f3b]" />
+                <ArrowUpRight className="w-4 h-4 text-[#8c6e54] opacity-60 group-hover:opacity-100 transition-opacity shrink-0 ml-2" />
               </a>
+            </div>
 
-              <a
-                href="https://linkedin.com/in/tomasreyes1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/35 flex items-center justify-between hover:border-[#265538] transition-all"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-xs bg-[#265538]/10 flex items-center justify-center text-[#265538]">
-                    <Linkedin className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <span className="font-typewriter text-xs font-bold block text-[#22140c]">
-                      LinkedIn
-                    </span>
-                    <span className="font-typewriter text-[9.5px] text-[#265538] block">
-                      /in/tomasreyes1
-                    </span>
-                  </div>
-                </div>
-                <ExternalLink className="w-3 h-3 text-[#265538]" />
-              </a>
+            {/* Footer Location & Modality */}
+            <div className="pt-2 border-t border-[#8c6d46]/25 flex items-center justify-between text-xs">
+              <span className="font-serif-book text-[#6a4f3b] italic">
+                Buenos Aires, Argentina
+              </span>
+              <span className="font-typewriter text-[9.5px] text-[#6a4f3b] font-semibold uppercase tracking-wider">
+                {isEs ? "Remoto / Híbrido" : "Remote / Hybrid"}
+              </span>
             </div>
           </div>
 
-          {/* Closing & Direct Invitation Card */}
-          <div className="parchment-page-right p-4.5 rounded-lg border border-[#8c6d46]/35 shadow-md space-y-4">
+          {/* Card 2: Interactive Contact Form & Signature */}
+          <div className="parchment-page-right p-4.5 rounded-lg border border-[#8c6d46]/35 shadow-md space-y-3.5">
             <div className="border-b border-[#8c6d46]/25 pb-2">
               <span className="font-typewriter text-[9px] uppercase tracking-widest text-[#8c6d46] block font-bold mb-0.5">
-                {isEs ? "Hablemos" : "Let's Talk"}
+                {isEs ? "Contacto Directo" : "Direct Contact"}
               </span>
               <h3 className="font-serif-book text-xl font-bold text-[#22140c]">
-                {isEs ? "Construyamos juntos" : "Let's Build Together"}
+                {isEs ? "Hablemos" : "Let's Connect"}
               </h3>
             </div>
 
-            <div className="space-y-2.5 font-serif-book text-[12.5px] text-[#3d2719] leading-relaxed pl-3 border-l-2 border-[#8c6d46]/40">
-              <p>
-                {isEs
-                  ? "Entiendo el desarrollo como una herramienta para resolver problemas reales: cada línea de código y cada flujo automatizado tiene que simplificar procesos, ahorrar tiempo o potenciar un objetivo claro de negocio."
-                  : "I approach software development as a practical tool to solve real problems: every line of code and automated workflow should streamline operations, save time, or drive clear business outcomes."}
-              </p>
-              <p>
-                {isEs
-                  ? "Si estás buscando a alguien para sumar a tu equipo, encarar un desarrollo desde cero o automatizar operaciones que hoy te quitan horas, me encantaría conocer tu propuesta."
-                  : "If you are looking for a developer to join your engineering team, build a new product from the ground up, or automate manual operations, I would love to hear from you."}
-              </p>
-            </div>
+            <p className="font-serif-book text-[12.5px] text-[#3d2719] leading-relaxed pl-3 border-l-2 border-[#8c6d46]/40">
+              {isEs
+                ? "Si te interesó lo que viste, tenés un proyecto en mente o querés charlar sobre alguna oportunidad para sumar a tu equipo, escribime directamente. Suelo responder en el día."
+                : "If you found my work interesting, have a project in mind, or want to discuss an opportunity to join your team, feel free to reach out directly. I usually reply within the day."}
+            </p>
 
-            {/* Next Step Box */}
-            <div className="p-3.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/35 shadow-xs space-y-2">
-              <div className="flex items-center gap-1.5 text-[#22140c]">
-                <Sparkles className="w-3.5 h-3.5 text-[#94631d] shrink-0" />
-                <span className="font-typewriter text-[9.5px] uppercase tracking-wider text-[#6a4f3b] font-bold">
-                  {isEs ? "Próximo paso" : "Next Step"}
-                </span>
-              </div>
-              <p className="font-serif-book text-xs text-[#452f20] leading-relaxed">
-                {isEs
-                  ? "Una breve conversación suele ser la mejor manera de ver si hacemos buen fit y explorar cómo puedo aportar valor a tu equipo."
-                  : "A brief conversation is usually the best way to see if we are a great fit and explore how I can bring value to your team."}
-              </p>
-              <div className="pt-1.5 flex items-center justify-between border-t border-[#8c6d46]/20 text-xs">
-                <a
-                  href="mailto:tomireyes.tr@gmail.com"
-                  className="inline-flex items-center gap-1.5 font-typewriter text-[10.5px] uppercase tracking-wider font-bold text-[#882b2b] hover:underline"
+            {/* Interactive Form or Success State */}
+            {msgStatus === "success" ? (
+              <div className="p-4 rounded-xs bg-[#265538]/10 border border-[#265538]/40 text-center space-y-2">
+                <div className="w-9 h-9 rounded-full bg-[#265538]/15 text-[#265538] flex items-center justify-center mx-auto">
+                  <Check className="w-5 h-5 stroke-[2.5]" />
+                </div>
+                <h4 className="font-serif-book text-base font-bold text-[#22140c]">
+                  {isEs ? "¡Mensaje Enviado!" : "Message Sent!"}
+                </h4>
+                <p className="font-serif-book text-xs text-[#452f20] leading-relaxed">
+                  {isEs
+                    ? "Gracias por escribirme. El mensaje llegó a mi casilla y te responderé pronto."
+                    : "Thank you for reaching out. Your message arrived in my inbox and I will reply soon."}
+                </p>
+                <button
+                  onClick={() => setMsgStatus("idle")}
+                  type="button"
+                  className="mt-2 inline-flex items-center gap-1 font-typewriter text-[10.5px] uppercase font-bold text-[#265538] hover:underline cursor-pointer"
                 >
-                  <span>{isEs ? "Escribime un correo" : "Send an email"}</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
-                <span className="font-serif-book text-[11px] text-[#6a4f3b] italic">
-                  {isEs ? "Respuesta en el día" : "Same-day reply"}
-                </span>
+                  <span>{isEs ? "Enviar otro mensaje" : "Send another message"}</span>
+                </button>
               </div>
-            </div>
+            ) : (
+              <form ref={msgFormRef} onSubmit={handleSendMessage} className="space-y-2.5">
+                {msgStatus === "error" && (
+                  <div className="p-2.5 rounded-xs bg-[#882b2b]/10 border border-[#882b2b]/35 text-[#882b2b] text-xs font-serif-book flex items-center justify-between gap-2">
+                    <span>
+                      {isEs
+                        ? "Error de conexión al enviar."
+                        : "Connection error while sending."}
+                    </span>
+                    <a
+                      href={mailtoFallback}
+                      className="font-typewriter text-[10px] font-bold underline shrink-0"
+                    >
+                      {isEs ? "Abrir correo" : "Open email"}
+                    </a>
+                  </div>
+                )}
 
-            {/* Signature & Location */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div>
+                    <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
+                      {isEs ? "Nombre" : "Name"}
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      required
+                      value={msgData.name}
+                      onChange={(e) => setMsgData({ ...msgData, name: e.target.value })}
+                      placeholder={isEs ? "Tu nombre" : "Your name"}
+                      className="w-full px-2.5 py-1.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/40 text-[#22140c] placeholder:text-[#8c6e54]/50 font-serif-book text-xs focus:outline-none focus:border-[#265538] focus:ring-1 focus:ring-[#265538]/30 transition-all shadow-2xs"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
+                      {isEs ? "Correo" : "Email"}
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      value={msgData.email}
+                      onChange={(e) => setMsgData({ ...msgData, email: e.target.value })}
+                      placeholder={isEs ? "tu@email.com" : "you@email.com"}
+                      className="w-full px-2.5 py-1.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/40 text-[#22140c] placeholder:text-[#8c6e54]/50 font-serif-book text-xs focus:outline-none focus:border-[#265538] focus:ring-1 focus:ring-[#265538]/30 transition-all shadow-2xs"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
+                    {isEs ? "Mensaje" : "Message"}
+                  </label>
+                  <textarea
+                    name="message"
+                    required
+                    rows={3}
+                    value={msgData.message}
+                    onChange={(e) => setMsgData({ ...msgData, message: e.target.value })}
+                    placeholder={
+                      isEs
+                        ? "Contame sobre tu propuesta, proyecto o vacante..."
+                        : "Tell me about your project, proposal, or open role..."
+                    }
+                    className="w-full px-2.5 py-1.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/40 text-[#22140c] placeholder:text-[#8c6e54]/50 font-serif-book text-xs resize-none focus:outline-none focus:border-[#265538] focus:ring-1 focus:ring-[#265538]/30 transition-all shadow-2xs"
+                  />
+                </div>
+
+                <div className="flex flex-wrap items-center justify-between pt-1 gap-2">
+                  <button
+                    type="submit"
+                    disabled={msgStatus === "sending"}
+                    className="flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xs bg-[#22140c] hover:bg-[#3d2416] text-[#f5ebd6] font-typewriter text-[11px] font-bold uppercase tracking-wider transition-all shadow-xs cursor-pointer disabled:opacity-50"
+                  >
+                    <Send className="w-3.5 h-3.5 text-[#e2be6b]" />
+                    <span>
+                      {msgStatus === "sending"
+                        ? isEs
+                          ? "Enviando..."
+                          : "Sending..."
+                        : isEs
+                        ? "Enviar Mensaje"
+                        : "Send Message"}
+                    </span>
+                  </button>
+
+                  <a
+                    href={mailtoFallback}
+                    className="font-serif-book text-xs text-[#6a4f3b] hover:text-[#22140c] underline flex items-center gap-1 transition-colors"
+                  >
+                    <span>{isEs ? "O vía tu correo" : "Or via email"}</span>
+                    <ArrowUpRight className="w-3 h-3" />
+                  </a>
+                </div>
+              </form>
+            )}
+
+            {/* Signature & Availability Footer */}
             <div className="pt-3 border-t border-[#8c6d46]/25 flex items-center justify-between text-xs">
-              <span className="font-serif-book text-xs text-[#6a4f3b] italic">
-                Buenos Aires, Argentina
+              <span className="font-typewriter text-[10px] text-[#265538] font-bold uppercase tracking-wider">
+                {isEs ? "Disponibilidad inmediata" : "Immediate availability"}
               </span>
               <span className="font-handwriting text-2xl text-[#22140c] transform -rotate-1">
                 Tomás Reyes
