@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Lora, Caveat, Courier_Prime } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
@@ -29,7 +29,17 @@ const courierPrime = Courier_Prime({
   variable: "--font-courier",
 });
 
+export const viewport: Viewport = {
+  themeColor: "#16100b",
+  colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://tomasreyes.dev"
+  ),
   title: "Tomás Reyes | Desarrollador Full Stack & Automatizaciones",
   description:
     "Portfolio de Tomás Reyes — Desarrollador Full Stack especializado en Next.js, React, Node.js, TypeScript y automatización de procesos (Make, n8n).",
@@ -52,18 +62,35 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Tomás Reyes" }],
   creator: "Tomás Reyes",
+  icons: {
+    icon: [
+      { url: "/icon.png", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [{ url: "/icon.png" }],
+    shortcut: "/icon.png",
+  },
   openGraph: {
     title: "Tomás Reyes | Desarrollador Full Stack & Automatizaciones",
     description:
       "Portfolio de Tomás Reyes. Proyectos de desarrollo web, arquitectura de software y automatización de flujos de trabajo.",
     type: "website",
     locale: "es_AR",
+    images: [
+      {
+        url: "/logo.png",
+        width: 512,
+        height: 512,
+        alt: "Tomás Reyes - Full Stack & Automatizaciones",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Tomás Reyes | Desarrollador Full Stack & Automatizaciones",
     description:
       "Portfolio de Tomás Reyes. Proyectos web, arquitectura y automatizaciones.",
+    images: ["/logo.png"],
   },
 };
 

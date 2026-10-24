@@ -119,8 +119,12 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
         <div className="relative z-10 pl-5 md:pl-6 my-auto flex flex-col items-center text-center">
           <div className="relative mb-3 flex items-center justify-center">
             <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border border-[#c89d45]/50 bg-[#1f120b]/85 flex items-center justify-center shadow-[inset_0_0_20px_rgba(0,0,0,0.85),0_0_25px_rgba(200,157,69,0.2)] group-hover:scale-105 transition-transform duration-500">
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-dashed border-[#c89d45]/40 flex items-center justify-center">
-                <Compass className="w-9 h-9 md:w-11 md:h-11 text-[#e2be6b] transition-transform duration-700 group-hover:rotate-45" />
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-dashed border-[#c89d45]/40 flex items-center justify-center p-2">
+                <img
+                  src="/logo.png"
+                  alt="Tomás Reyes Logo"
+                  className="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-[0_0_10px_rgba(56,189,248,0.35)] transition-transform duration-500 group-hover:scale-110"
+                />
               </div>
             </div>
           </div>

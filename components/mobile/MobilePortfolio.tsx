@@ -145,9 +145,13 @@ export default function MobilePortfolio() {
         <div className="flex items-center justify-between px-3.5 py-2.5">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex items-center gap-1.5 text-[#e2be6b] hover:text-[#fdf5e2] transition-colors cursor-pointer"
+            className="flex items-center gap-2 text-[#e2be6b] hover:text-[#fdf5e2] transition-colors cursor-pointer"
           >
-            <Compass className="w-4 h-4 text-[#c89d45]" />
+            <img
+              src="/logo.png"
+              alt="Tomás Reyes Logo"
+              className="h-5.5 w-auto object-contain drop-shadow-[0_0_8px_rgba(56,189,248,0.25)]"
+            />
             <span className="font-serif-book font-bold text-sm tracking-wide text-[#f5ebd6]">
               Tomás Reyes
             </span>
