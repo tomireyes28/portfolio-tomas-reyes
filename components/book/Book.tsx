@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { BookMarked, FileDown, Globe, Compass } from "lucide-react";
 import { useBook } from "@/context/BookContext";
 import { useLanguage } from "@/context/LanguageContext";
 import BookCover from "./BookCover";
@@ -12,7 +11,7 @@ import { ProjectCategoryFilter } from "@/components/pages/ProjectsPage";
 
 export default function Book() {
   const { isOpen, openBook, closeBook } = useBook();
-  const { language, toggleLanguage, t } = useLanguage();
+  const { language } = useLanguage();
 
   const [projectFilter, setProjectFilter] =
     useState<ProjectCategoryFilter>("all");
@@ -31,56 +30,9 @@ export default function Book() {
   const isEs = language === "es";
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden expedition-desk flex flex-col justify-between select-none">
-      {/* EXPEDITION DESK TOP BAR */}
-      <header className="relative z-40 flex items-center justify-between px-4 md:px-8 py-2 bg-[#090f1b]/85 border-b border-[#c89d45]/20 backdrop-blur-xs shrink-0">
-        {/* Left: Brand Identity & Close Book Button */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 text-[#e2be6b]">
-            <Compass className="w-4 h-4 text-[#c89d45]" />
-            <span className="font-serif-book text-xs md:text-sm tracking-wider text-[#e8dcc4] font-medium">
-              Tomás Reyes
-            </span>
-          </div>
-
-          {isOpen && (
-            <button
-              onClick={closeBook}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-[#24150d] hover:bg-[#352014] text-[#dfcdad] border border-[#c89d45]/30 font-serif-book text-xs italic transition-colors cursor-pointer"
-              title={isEs ? "Cerrar libro y volver a la portada" : "Close book"}
-            >
-              <BookMarked className="w-3.5 h-3.5 text-[#c89d45]" />
-              <span className="hidden sm:inline">
-                {isEs ? "Cerrar libro" : "Close book"}
-              </span>
-            </button>
-          )}
-        </div>
-
-        {/* Right: CV Download Stamp & Language Toggle */}
-        <div className="flex items-center gap-2.5">
-          <a
-            href="/projects/Tomas%20Reyes%20CV.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1 rounded-xs bg-[#265538]/90 hover:bg-[#265538] text-[#f5ebd6] border border-[#e2be6b]/30 font-typewriter text-[11px] uppercase tracking-wider transition-all shadow-xs"
-          >
-            <FileDown className="w-3.5 h-3.5" />
-            <span>{t.nav.cv}</span>
-          </a>
-
-          <button
-            onClick={toggleLanguage}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-[#24150d] hover:bg-[#352014] text-[#e2be6b] border border-[#c89d45]/35 font-typewriter text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
-          >
-            <Globe className="w-3.5 h-3.5" />
-            <span>{language.toUpperCase()}</span>
-          </button>
-        </div>
-      </header>
-
+    <div className="relative w-screen h-screen overflow-hidden expedition-desk flex items-center justify-center select-none">
       {/* MAIN VIEWPORT STAGE */}
-      <div className="relative flex-1 w-full flex items-center justify-center px-2 sm:px-6 md:px-10 py-1.5 md:py-3.5 perspective-book select-none overflow-hidden">
+      <div className="relative w-full h-full flex items-center justify-center px-2 sm:px-6 md:px-10 py-3 md:py-6 perspective-book select-none overflow-hidden">
         {/* ============================================================== */}
         {/* UNIFIED 3D BOOK RIG (Fixed size: same dimensions open and closed. */}
         {/* Shifts to center on open via GPU translateX. Zero resizing stutter!) */}
@@ -95,7 +47,7 @@ export default function Book() {
             ease: [0.25, 0.1, 0.25, 1],
           }}
           style={{ transformStyle: "preserve-3d" }}
-          className="relative w-full max-w-[1280px] h-full max-h-[815px] flex flex-col md:flex-row items-stretch md:items-center justify-center z-10"
+          className="relative w-full max-w-[1280px] h-full max-h-[830px] flex flex-col md:flex-row items-stretch md:items-center justify-center z-10"
         >
           {/* 1. DEEP REALISTIC DESK CAST SHADOWS */}
           <div
@@ -139,6 +91,33 @@ export default function Book() {
             >
               <div className="w-1.5 h-1.5 rounded-full bg-[#1b0e06] border border-[#d4a74a]/70 shadow-inner" />
             </div>
+
+            {/* Silk Ribbon Bookmark (Hangs over top spine when open to close book) */}
+            {isOpen && (
+              <button
+                type="button"
+                onClick={closeBook}
+                title={isEs ? "Cerrar libro (Tirar de la cinta)" : "Close book (Pull ribbon)"}
+                className="group absolute -top-3.5 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center cursor-pointer select-none"
+              >
+                {/* Brass Ribbon Clamp */}
+                <div className="w-8 h-2 rounded-t-xs bg-gradient-to-r from-[#b3832d] via-[#f3d37a] to-[#996a1e] border-t border-x border-[#f3d37a] shadow-xs" />
+                {/* Crimson Silk Ribbon Body */}
+                <div className="relative w-6 h-12 bg-gradient-to-b from-[#882b2b] via-[#9e3333] to-[#732323] border-x border-[#c89d45]/30 shadow-[0_4px_12px_rgba(0,0,0,0.6)] flex items-center justify-center group-hover:h-14 transition-all duration-300">
+                  <div className="w-0.5 h-full bg-[#f3d37a]/40" />
+                  <span className="absolute -bottom-6 opacity-0 group-hover:opacity-100 transition-opacity bg-[#1b0e06] text-[#e2be6b] font-typewriter text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-xs border border-[#c89d45]/40 whitespace-nowrap shadow-md pointer-events-none">
+                    {isEs ? "Cerrar libro" : "Close book"}
+                  </span>
+                </div>
+                {/* Triangular Notch at Ribbon Tail */}
+                <div
+                  className="w-6 h-3 bg-gradient-to-b from-[#732323] to-[#591b1b] -mt-px"
+                  style={{
+                    clipPath: "polygon(0 0, 100% 0, 50% 100%)",
+                  }}
+                />
+              </button>
+            )}
 
             {/* Left Stacked Paper Block */}
             <div

@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Compass, BookOpen, Sparkles } from "lucide-react";
+import { Compass, BookOpen, Sparkles, FileDown, Check } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import BookPage from "./BookPage";
 import { AboutLeftPage } from "@/components/pages/AboutPage";
+import LanguageStamp from "@/components/ui/LanguageStamp";
 
 interface BookCoverProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
   // When fully open, unmount this overlay so it NEVER blocks other portfolio sections!
   const [isFullyOpen, setIsFullyOpen] = useState(isOpen);
   const wasOpenRef = useRef(isOpen);
+  const [downloadingCv, setDownloadingCv] = useState(false);
 
   useEffect(() => {
     if (!isOpen) {
@@ -26,6 +28,23 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
       wasOpenRef.current = false;
     }
   }, [isOpen]);
+
+  const handleDownloadCv = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setDownloadingCv(true);
+
+    const link = document.createElement("a");
+    link.href = "/projects/Tomas%20Reyes%20CV.pdf";
+    link.download = "Tomas_Reyes_CV.pdf";
+    link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setTimeout(() => {
+      setDownloadingCv(false);
+    }, 2500);
+  };
 
   if (isFullyOpen && isOpen) {
     return null;
@@ -104,29 +123,43 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
           }}
         />
 
-        {/* TOP HEADER */}
-        <div className="relative z-10 pl-5 md:pl-6 flex items-center justify-between">
+        {/* TOP HEADER: Portafolio Badge & Travel Language Stamp */}
+        <div className="relative z-10 pl-5 md:pl-6 flex items-center justify-between gap-2">
           <span className="font-typewriter text-[10px] md:text-[11px] tracking-[0.2em] uppercase text-[#e2be6b]/85 border border-[#c89d45]/35 px-2.5 py-1 rounded-xs bg-[#1b0f08]/60">
             {isEs ? "PORTAFOLIO 2026" : "PORTFOLIO // 2026"}
           </span>
-          <span className="font-typewriter text-[10px] md:text-[11px] text-[#c89d45]/80 flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#c89d45]/60" />
-            {isEs ? "BUENOS AIRES, ARGENTINA" : "BUENOS AIRES, AR"}
-          </span>
+
+          <div className="flex items-center gap-3">
+            <span className="font-typewriter text-[10px] md:text-[11px] text-[#c89d45]/80 hidden sm:flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#c89d45]/60" />
+              {isEs ? "BUENOS AIRES" : "BUENOS AIRES, AR"}
+            </span>
+            <LanguageStamp />
+          </div>
         </div>
 
         {/* CENTER MEDALLION & TITLE */}
         <div className="relative z-10 pl-5 md:pl-6 my-auto flex flex-col items-center text-center">
+          {/* Logo Medallion with Golden Shimmer Beam & Sparkle */}
           <div className="relative mb-3 flex items-center justify-center">
-            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border border-[#c89d45]/50 bg-[#1f120b]/85 flex items-center justify-center shadow-[inset_0_0_20px_rgba(0,0,0,0.85),0_0_25px_rgba(200,157,69,0.2)] group-hover:scale-105 transition-transform duration-500">
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-dashed border-[#c89d45]/40 flex items-center justify-center p-2">
+            {/* Ambient Animated Gold Glow Ring */}
+            <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-[#e2be6b]/60 bg-[#1f120b]/90 flex items-center justify-center animate-gold-aura group-hover:scale-105 transition-transform duration-500 overflow-hidden">
+              {/* Periodic Light Sweep Shimmer across the medallion */}
+              <div className="pointer-events-none absolute -inset-full bg-gradient-to-r from-transparent via-white/20 via-[#f3d37a]/30 to-transparent animate-book-shimmer" />
+
+              <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full border border-dashed border-[#c89d45]/60 flex items-center justify-center p-2">
                 <img
                   src="/logo.png"
                   alt="Tomás Reyes Logo"
-                  className="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-[0_0_10px_rgba(56,189,248,0.35)] transition-transform duration-500 group-hover:scale-110"
+                  className="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-[0_0_12px_rgba(56,189,248,0.5)] transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
             </div>
+
+            {/* Little Glint Star on the Medallion Rim */}
+            <span className="absolute -top-1 -right-1 text-[#f3d37a] text-sm animate-glint pointer-events-none drop-shadow-[0_0_6px_#f3d37a]">
+              ✦
+            </span>
           </div>
 
           <h1
@@ -150,8 +183,8 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
             </p>
           </div>
 
-          {/* Tech Stack Chips (Alternativa A) */}
-          <div className="mt-4 flex flex-wrap justify-center gap-1.5 max-w-xs px-1">
+          {/* Tech Stack Chips */}
+          <div className="mt-3 flex flex-wrap justify-center gap-1.5 max-w-xs px-1">
             {[
               "Next.js",
               "TypeScript",
@@ -170,16 +203,75 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
               </span>
             ))}
           </div>
+
+          {/* Interactive CV Document Card with Brass Paperclip & Click Feedback */}
+          <div className="mt-3.5 relative z-20">
+            <button
+              type="button"
+              onClick={handleDownloadCv}
+              title={isEs ? "Descargar Currículum Vitae (PDF)" : "Download Resume / CV (PDF)"}
+              className={`group/cv relative inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-xs border transition-all cursor-pointer transform -rotate-1 hover:rotate-0 hover:scale-105 active:scale-95 ${
+                downloadingCv
+                  ? "bg-[#265538] border-[#a3e635] text-[#f5ebd6] shadow-[0_0_15px_rgba(74,222,128,0.5)]"
+                  : "bg-[#24150d]/95 hover:bg-[#341d11] text-[#e2be6b] border-[#c89d45]/60 shadow-[3px_5px_15px_rgba(0,0,0,0.7)]"
+              }`}
+            >
+              {/* Realistic Brass Paperclip SVG */}
+              <div className="absolute -top-3 left-3 pointer-events-none drop-shadow-xs">
+                <svg width="12" height="24" viewBox="0 0 12 24" fill="none">
+                  <path
+                    d="M3 5V18C3 19.6569 4.34315 21 6 21C7.65685 21 9 19.6569 9 18V3C9 1.89543 8.10457 1 7 1C5.89543 1 5 1.89543 5 3V16C5 16.5523 5.44772 17 6 17C6.55228 17 7 16.5523 7 16V6"
+                    stroke="#e2be6b"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
+
+              {downloadingCv ? (
+                <Check className="w-3.5 h-3.5 text-[#a3e635] ml-2 shrink-0 animate-bounce" />
+              ) : (
+                <FileDown className="w-3.5 h-3.5 text-[#c89d45] ml-2 shrink-0 group-hover/cv:scale-110 transition-transform" />
+              )}
+
+              <div className="flex flex-col text-left leading-tight">
+                <span className="font-typewriter text-[11px] font-bold uppercase tracking-wider text-[#f5ebd6]">
+                  {downloadingCv
+                    ? isEs
+                      ? "✓ Descargando..."
+                      : "✓ Downloading..."
+                    : isEs
+                    ? "Curriculum Vitae"
+                    : "Resume / CV"}
+                </span>
+                <span className="font-typewriter text-[8.5px] text-[#c89d45]/85">
+                  {isEs ? "PDF • Descarga directa" : "PDF • Direct Download"}
+                </span>
+              </div>
+            </button>
+          </div>
         </div>
 
-        {/* Antique Brass & Leather Clasp Tab on Right Edge */}
+        {/* ============================================================== */}
+        {/* INTERACTIVE SHIMMERING BRASS CLASP (Click to open journal)       */}
+        {/* ============================================================== */}
         <div
-          className="pointer-events-none absolute -right-3.5 top-1/2 -translate-y-1/2 z-30 hidden sm:flex items-center justify-center py-4 px-1 rounded-r-md border-y-2 border-r-2 border-[#e2be6b]/70 bg-gradient-to-r from-[#24140b] to-[#3a2012] shadow-xl group-hover:translate-x-1 transition-transform duration-300"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (!isOpen) onOpen();
+          }}
+          className="absolute -right-4 md:-right-5 top-1/2 -translate-y-1/2 z-30 flex items-center py-4 px-2 rounded-r-lg border-y-2 border-r-2 border-[#f3d37a] bg-gradient-to-r from-[#24140b] via-[#3a2012] to-[#4a2b19] shadow-[6px_8px_20px_rgba(0,0,0,0.85)] cursor-pointer group-hover:translate-x-1.5 transition-all duration-300 overflow-hidden animate-gold-aura"
+          title={isEs ? "Abrir diario de portfolio" : "Open portfolio journal"}
         >
-          <div className="flex flex-col items-center gap-1.5 text-[#e2be6b]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#e2be6b] shadow-xs" />
-            <span className="w-1 h-3 rounded-full bg-[#c89d45]/60" />
-            <span className="w-1.5 h-1.5 rounded-full bg-[#e2be6b] shadow-xs" />
+          {/* Shimmer sweep over the clasp */}
+          <div className="pointer-events-none absolute -inset-full bg-gradient-to-r from-transparent via-[#f3d37a]/35 to-transparent animate-book-shimmer" />
+
+          <div className="relative flex flex-col items-center gap-1.5 text-[#f3d37a]">
+            <span className="w-2 h-2 rounded-full bg-[#f3d37a] shadow-[0_0_8px_#f3d37a]" />
+            <span className="font-typewriter text-[9px] font-bold uppercase tracking-widest text-[#f5ebd6] [writing-mode:vertical-lr] rotate-180 py-1">
+              {isEs ? "ABRIR" : "OPEN"}
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#c89d45]" />
           </div>
         </div>
       </div>

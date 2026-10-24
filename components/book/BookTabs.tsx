@@ -2,9 +2,10 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Compass, MapPin, Wrench, Award, Mail } from "lucide-react";
+import { Compass, MapPin, Wrench, Award, Mail, BookMarked } from "lucide-react";
 import { useBook, BookSectionId } from "@/context/BookContext";
 import { useLanguage } from "@/context/LanguageContext";
+import LanguageStamp from "@/components/ui/LanguageStamp";
 
 interface TabItem {
   id: BookSectionId;
@@ -59,7 +60,7 @@ const TABS: TabItem[] = [
 ];
 
 export default function BookTabs() {
-  const { activeSection, goToSection } = useBook();
+  const { activeSection, goToSection, closeBook } = useBook();
   const { language } = useLanguage();
 
   return (
@@ -67,8 +68,25 @@ export default function BookTabs() {
       {/* DESKTOP RIGHT-EDGE BOOKMARK TABS */}
       <nav
         aria-label="Secciones del portfolio"
-        className="hidden md:flex flex-col justify-center gap-2.5 py-8 z-30 -ml-1 select-none shrink-0"
+        className="hidden md:flex flex-col justify-center gap-2.5 py-6 z-30 -ml-1 select-none shrink-0"
       >
+        {/* Cover Tab: Close Book (Desktop) */}
+        <motion.button
+          onClick={closeBook}
+          whileHover={{ x: 5 }}
+          whileTap={{ scale: 0.97 }}
+          title={language === "es" ? "Cerrar libro y volver a la portada" : "Close book to cover"}
+          className="group relative flex flex-col items-center justify-center w-20 lg:w-22 py-2 px-2 rounded-r-lg border-y border-r border-[#8c2d2d]/50 bg-[#25150d] hover:bg-[#381e13] text-[#e8dcc4] shadow-[4px_3px_10px_rgba(0,0,0,0.45)] transition-all cursor-pointer mb-1"
+        >
+          <span className="absolute left-0 inset-y-1.5 w-1.5 rounded-r-xs bg-[#8c2d2d]" />
+          <div className="p-1 rounded-full text-[#c89d45] group-hover:scale-110 transition-transform">
+            <BookMarked className="w-3.5 h-3.5" />
+          </div>
+          <span className="font-handwriting text-sm leading-tight text-center text-[#e2be6b]">
+            {language === "es" ? "Portada" : "Cover"}
+          </span>
+        </motion.button>
+
         {TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive =
@@ -129,6 +147,11 @@ export default function BookTabs() {
             </motion.button>
           );
         })}
+
+        {/* Language Stickers stacked vertically below tabs */}
+        <div className="pt-2.5 mt-1 border-t border-[#8c6d46]/35 flex flex-col items-center">
+          <LanguageStamp orientation="vertical" />
+        </div>
       </nav>
 
       {/* MOBILE BOTTOM TABS */}
@@ -136,6 +159,17 @@ export default function BookTabs() {
         aria-label="Secciones del portfolio (móvil)"
         className="flex md:hidden items-center justify-around bg-[#2a190f] border-t border-[#8c6d46]/40 px-2 py-1.5 z-40 shrink-0"
       >
+        {/* Cover Tab: Close Book (Mobile) */}
+        <button
+          onClick={closeBook}
+          className="flex flex-col items-center gap-0.5 px-2 py-1 rounded-md text-[#cdb894]/75 hover:text-[#e8dcc4] transition-all cursor-pointer"
+        >
+          <BookMarked className="w-4 h-4 text-[#c89d45]" />
+          <span className="font-serif-book text-[10.5px] leading-none">
+            {language === "es" ? "Portada" : "Cover"}
+          </span>
+        </button>
+
         {TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive =
