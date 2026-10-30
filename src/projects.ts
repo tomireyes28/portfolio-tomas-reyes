@@ -2,6 +2,32 @@ import { Project } from "@/types/Project";
 
 export const projects: Project[] = [
   {
+    id: "plastic-who",
+    title: {
+      es: "Plastic Who? — Auditoría Textil y Transparencia en Moda",
+      en: "Plastic Who? — Textile Audit & Sustainable Fashion Transparency",
+    },
+    shortDescription: {
+      es: "Plataforma Full Stack contra el greenwashing que audita la composición real de prendas en marcas de moda argentinas (+4.600 productos). Implementa un pipeline de web scraping resiliente con evasión de rate-limits y un motor de tokenización NLP/Regex con diccionario canónico que segmenta tela base de forrerías y ribetes para clasificar la pureza textil mediante un semáforo normativo. Frontend de alto rendimiento con Server Components y visualización de trama (WeaveBar).",
+      en: "Full Stack platform countering greenwashing by auditing the actual fiber composition of Argentine fashion brands (4,600+ garments). Features a resilient web scraping pipeline with rate-limit evasion and an NLP/Regex tokenizing engine with a canonical dictionary that isolates base fabrics from linings and trims to classify material purity via a textile traffic-light system. High-performance frontend with Server Components and a custom textile weave visualization (WeaveBar).",
+    },
+    techStack: [
+      "Next.js",
+      "NestJS",
+      "TypeScript",
+      "PostgreSQL",
+      "Prisma",
+      "TailwindCSS",
+      "Supabase",
+      "Jest",
+    ],
+    category: "fullstack",
+    featured: true,
+    demoUrl: "https://plasticwho.com/",
+    repoUrl: "https://github.com/tomireyes28/plastic-who",
+    image: "/projects/plastic-who.png",
+  },
+  {
     id: "aberturas-nyl",
     title: {
       es: "Aberturas N&L — Landing Page Comercial",
