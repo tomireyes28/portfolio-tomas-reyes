@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { siteUrl, siteTitle, siteDescription } from "@/lib/site";
 import { Inter, Lora, Caveat, Courier_Prime } from "next/font/google";
 import "./globals.css";
 import { ContactProvider } from "@/context/ContactContext";
@@ -39,60 +40,27 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://tomasreyes.dev"
-  ),
-  title: "Tomás Reyes | Desarrollador Full Stack & Automatizaciones",
-  description:
-    "Portfolio de Tomás Reyes — Desarrollador Full Stack especializado en Next.js, React, Node.js, TypeScript y automatización de procesos (Make, n8n).",
-  keywords: [
-    "Tomás Reyes",
-    "Desarrollador Full Stack",
-    "Full Stack Developer",
-    "Automatizaciones",
-    "Make",
-    "n8n",
-    "Next.js",
-    "React",
-    "TypeScript",
-    "Node.js",
-    "PostgreSQL",
-    "Tailwind CSS",
-    "Portfolio Web",
-    "Buenos Aires",
-    "Argentina",
-  ],
-  authors: [{ name: "Tomás Reyes" }],
+  metadataBase: new URL(siteUrl),
+  title: siteTitle,
+  description: siteDescription,
+  alternates: { canonical: "/" },
+  authors: [{ name: "Tomás Reyes", url: siteUrl }],
   creator: "Tomás Reyes",
-  icons: {
-    icon: [
-      { url: "/icon.png", type: "image/png" },
-      { url: "/favicon.ico", sizes: "any" },
-    ],
-    apple: [{ url: "/icon.png" }],
-    shortcut: "/icon.png",
-  },
+  robots: { index: true, follow: true },
+  icons: { apple: "/icon.png" },
   openGraph: {
-    title: "Tomás Reyes | Desarrollador Full Stack & Automatizaciones",
-    description:
-      "Portfolio de Tomás Reyes. Proyectos de desarrollo web, arquitectura de software y automatización de flujos de trabajo.",
+    title: siteTitle,
+    description: siteDescription,
+    url: "/",
+    siteName: "Tomás Reyes · Portfolio",
     type: "website",
     locale: "es_AR",
-    images: [
-      {
-        url: "/logo.png",
-        width: 512,
-        height: 512,
-        alt: "Tomás Reyes - Full Stack & Automatizaciones",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tomás Reyes | Desarrollador Full Stack & Automatizaciones",
-    description:
-      "Portfolio de Tomás Reyes. Proyectos web, arquitectura y automatizaciones.",
-    images: ["/logo.png"],
+    title: siteTitle,
+    description: siteDescription,
+    images: ["/opengraph-image"],
   },
 };
 

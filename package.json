@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test:navigation": "node --test tests/book-navigation.test.mjs",
     "test:motion": "node --test tests/page-turn.test.mjs",
-    "images:optimize": "node scripts/optimize-project-images.mjs"
+    "images:optimize": "node scripts/optimize-project-images.mjs",
+    "test:metadata": "node --test tests/metadata.test.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
