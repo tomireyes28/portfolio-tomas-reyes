@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio de Tomás Reyes
 
-## Getting Started
+Portfolio bilingüe (ES/EN) con un libro interactivo en pantallas amplias y lectura continua en móvil, tablet vertical y ventanas de poca altura.
 
-First, run the development server:
+Producción: https://portfolio-tomas-reyes.vercel.app/
 
-```bash
+## Desarrollo
+
+```sh
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Requiere Node.js 20.9 o posterior, compatible con Next.js 16. La instalación incluye Sharp a través de Next.js.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Comprobaciones
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sh
+npm run lint
+npm run test:navigation
+npm run test:motion
+npm run build
+npm run test:metadata
+npm audit --omit=dev
+```
 
-## Learn More
+Las pruebas de metadatos inspeccionan los archivos generados por el build. Para revisar ese build en el navegador: `npm run start`.
 
-To learn more about Next.js, take a look at the following resources:
+## Imágenes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Los ocho proyectos activos usan WebP de hasta 1600 px y `next/image` para servir variantes responsive y diferir las capturas fuera de pantalla. Los originales se conservan en `public/projects`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```sh
+npm run images:optimize
+```
 
-## Deploy on Vercel
+Ese comando regenera `public/projects/optimized` y las dimensiones de `src/projectImages.ts`. Utiliza Sharp instalado por Next.js, sin una dependencia adicional. El encuadre visual se controla en las tarjetas; la ficha conserva la captura completa.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Metadatos y dominio
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+El origen de producción está centralizado en `lib/site.ts`. `NEXT_PUBLIC_SITE_URL` permite reemplazarlo si cambia el dominio; el valor debe ser una URL absoluta. No debe apuntar a localhost ni a un despliegue temporal en producción. El canonical, Open Graph, robots y sitemap usan ese mismo origen.
+
+La tarjeta social de 1200×630 se genera en `app/opengraph-image.tsx`. El idioma de lectura se guarda localmente; la página canónica y los metadatos públicos permanecen en español. No se anuncian rutas de idiomas que no existen.
+
+## Estructura
+
+- `components/PortfolioViewport.tsx`: monta una sola composición según la consulta compartida de `lib/bookViewport.ts`; el libro se carga por separado.
+- `components/book` y `context/bookNavigation.ts`: libro y navegación atómica.
+- `components/mobile`: lectura continua, prerenderizada en el servidor.
+- `components/ui/ContactForm.tsx` y `context/ContactContext.tsx`: formulario compartido; mantiene el borrador al cambiar de composición y carga EmailJS únicamente al enviar.
+- `src/projects.ts` y `data/translations.ts`: contenido y traducciones.
+- `ETAPA_*.md`: cambios y validación de las seis etapas de la auditoría.
+
+La preferencia de movimiento reducido elimina los giros. El cambio de composición cancela cualquier giro en curso y mantiene accesible la ficha abierta.
