@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { translations } from "../data/translations"; // Importamos tu diccionario
 
 // Definimos los tipos para que TypeScript no se queje
@@ -23,6 +23,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const toggleLanguage = () => {
     setLanguage((prev) => (prev === "es" ? "en" : "es"));
   };
+
+  useEffect(() => { document.documentElement.lang = language; }, [language]);
 
   // Seleccionamos el diccionario correcto según el idioma actual
   const t = translations[language];

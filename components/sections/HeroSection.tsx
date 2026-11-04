@@ -70,7 +70,7 @@ export default function HeroSection() {
             >
               <h1 className="text-4xl font-black tracking-tight text-white sm:text-6xl md:text-7xl leading-[1.05]">
                 ENGINEERED <br />
-                <span className="text-[#d4ff00] font-mono">//</span> FOR SPEED. <br />
+                <span className="text-[#d4ff00] font-mono">{"//"}</span> FOR SPEED. <br />
                 <span className="text-zinc-400">BUILT FOR PRODUCTS.</span>
               </h1>
               <p className="max-w-xl text-base text-zinc-400 sm:text-lg leading-relaxed pt-1">

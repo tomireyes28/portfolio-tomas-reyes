@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Lora, Caveat, Courier_Prime } from "next/font/google";
 import "./globals.css";
+import MotionPreferences from "@/components/ui/MotionPreferences";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { BookProvider } from "@/context/BookContext";
 
@@ -106,7 +107,7 @@ export default function RootLayout({
     >
       <body className="relative h-screen w-screen overflow-hidden bg-[#16100b] font-sans text-[#2c1810] antialiased selection:bg-[#c9a84c] selection:text-[#1a1209]">
         <LanguageProvider>
-          <BookProvider>{children}</BookProvider>
+          <MotionPreferences><BookProvider>{children}</BookProvider></MotionPreferences>
         </LanguageProvider>
       </body>
     </html>

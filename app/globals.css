@@ -384,3 +384,19 @@
 .animate-glint {
   animation: glintTwinkle 2.2s ease-in-out infinite;
 }
+
+
+/* A consistent keyboard focus indicator on paper and on the dark desk. */
+:where(button, a, input, textarea, select, [tabindex]):focus-visible {
+  outline: 3px solid #882b2b;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px #fff8e9;
+}
+dialog::backdrop { background: transparent; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,38 +1,71 @@
 "use client";
 
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, Github, X, Layers, Code2, Sparkles } from "lucide-react";
+import React, { useLayoutEffect, useRef } from "react";
+import { Project } from "@/types/Project";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { ExternalLink, Github, X, Layers, Code2 } from "lucide-react";
 import { useBook } from "@/context/BookContext";
 import { useLanguage } from "@/context/LanguageContext";
 import TechBadge from "@/components/ui/TechBadge";
 
-export default function ScrollDetail() {
-  const { selectedProject, setSelectedProject } = useBook();
+function ProjectDialog({ project }: { project: Project }) {
+  const { setSelectedProject } = useBook();
   const { language, t } = useLanguage();
 
   const isEs = language === "es";
+  const reducedMotion = useReducedMotion();
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const trapTab = (event: React.KeyboardEvent<HTMLDialogElement>) => {
+    if (event.key !== "Tab") return;
+    const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>(
+      'a[href],button:not(:disabled),input:not(:disabled),textarea:not(:disabled),select:not(:disabled),[tabindex]:not([tabindex="-1"])'
+    )).filter((element) => element.getClientRects().length > 0 && !element.closest("[inert]"));
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (!first) { event.preventDefault(); return; }
+    if (event.shiftKey && (document.activeElement === first || document.activeElement === event.currentTarget)) {
+      event.preventDefault(); last.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || document.activeElement === event.currentTarget)) {
+      event.preventDefault(); first.focus();
+    }
+  };
+  useLayoutEffect(() => {
+    const dialog = dialogRef.current;
+    const trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const overflow = document.body.style.overflow;
+    dialog?.showModal();
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus({ preventScroll: true });
+    return () => {
+      dialog?.close();
+      document.body.style.overflow = overflow;
+      if (trigger?.isConnected && !trigger.closest("[inert]")) trigger.focus({ preventScroll: true });
+    };
+  }, []);
 
   return (
-    <AnimatePresence>
-      {selectedProject && (
-        <motion.div
-          key="scroll-backdrop"
+        <motion.dialog
+          ref={dialogRef}
+          aria-labelledby="project-dialog-title"
+          aria-modal="true"
+          onKeyDown={trapTab}
+          onCancel={(e) => { e.preventDefault(); setSelectedProject(null); }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={() => setSelectedProject(null)}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-xs p-3 sm:p-6 select-text"
+          onClick={(e) => { if (e.target === e.currentTarget) setSelectedProject(null); }}
+          className="fixed inset-0 m-0 w-screen h-dvh max-w-none max-h-none border-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-xs p-3 sm:p-6 select-text"
         >
           {/* Unrolling Parchment Scroll Container */}
           <motion.div
-            initial={{ scaleY: 0.08, opacity: 0, y: -30 }}
+            initial={reducedMotion ? false : { scaleY: 0.08, opacity: 0, y: -30 }}
             animate={{
               scaleY: 1,
               opacity: 1,
               y: 0,
               transition: {
-                duration: 0.48,
+                duration: reducedMotion ? 0 : 0.48,
                 ease: [0.22, 1, 0.36, 1],
               },
             }}
@@ -40,7 +73,7 @@ export default function ScrollDetail() {
               scaleY: 0.08,
               opacity: 0,
               y: -20,
-              transition: { duration: 0.3, ease: "easeIn" },
+              transition: { duration: reducedMotion ? 0 : 0.3, ease: "easeIn" },
             }}
             style={{ transformOrigin: "top center" }}
             onClick={(e) => e.stopPropagation()}
@@ -71,13 +104,15 @@ export default function ScrollDetail() {
             >
               {/* Top Title & Close Button */}
               <div className="flex items-start justify-between gap-4 border-b border-[#8c6d46]/35 pb-2.5 mb-4">
-                <h2 className="font-serif-book text-xl sm:text-2xl font-bold text-[#25160e] leading-snug">
-                  {typeof selectedProject.title === "string"
-                    ? selectedProject.title
-                    : selectedProject.title[language]}
+                <h2 id="project-dialog-title" className="font-serif-book text-xl sm:text-2xl font-bold text-[#25160e] leading-snug">
+                  {typeof project.title === "string"
+                    ? project.title
+                    : project.title[language]}
                 </h2>
 
                 <button
+                  ref={closeRef}
+                  type="button"
                   onClick={() => setSelectedProject(null)}
                   className="w-8 h-8 rounded-full bg-[#3d2416] hover:bg-[#882b2b] text-[#f5ebd6] border border-[#8c6d46]/70 shadow-md flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
                   title={t.projects.modal.close}
@@ -93,11 +128,11 @@ export default function ScrollDetail() {
                 <div className="washi-tape absolute -top-2.5 right-8 w-20 h-5 rotate-2" />
                 <div className="aspect-video w-full overflow-hidden rounded-xs border border-[#8c6d46]/40 bg-[#1a120b]">
                   <img
-                    src={selectedProject.image}
+                    src={project.image}
                     alt={
-                      typeof selectedProject.title === "string"
-                        ? selectedProject.title
-                        : selectedProject.title[language]
+                      typeof project.title === "string"
+                        ? project.title
+                        : project.title[language]
                     }
                     className="w-full h-full object-cover"
                   />
@@ -111,20 +146,20 @@ export default function ScrollDetail() {
                   <span>{t.projects.modal.detailsTitle}</span>
                 </div>
                 <p className="font-serif-book text-sm text-[#25160e] leading-relaxed">
-                  {typeof selectedProject.shortDescription === "string"
-                    ? selectedProject.shortDescription
-                    : selectedProject.shortDescription[language]}
+                  {typeof project.shortDescription === "string"
+                    ? project.shortDescription
+                    : project.shortDescription[language]}
                 </p>
-                {selectedProject.demoCredentials && (
+                {project.demoCredentials && (
                   <div className="mt-3 pt-2.5 border-t border-[#8c6d46]/30 flex flex-wrap items-center gap-2 font-typewriter text-xs text-[#5a3e22]">
                     <span className="font-bold text-[#8c2d2d] uppercase text-[11px]">
                       {isEs ? "Acceso de prueba:" : "Test credentials:"}
                     </span>
                     <span className="bg-[#e8dcc4] px-2 py-0.5 rounded-xs border border-[#8c6d46]/40 text-[11px]">
-                      <strong>User:</strong> {selectedProject.demoCredentials.user}
+                      <strong>User:</strong> {project.demoCredentials.user}
                     </span>
                     <span className="bg-[#e8dcc4] px-2 py-0.5 rounded-xs border border-[#8c6d46]/40 text-[11px]">
-                      <strong>Pass:</strong> {selectedProject.demoCredentials.pass}
+                      <strong>Pass:</strong> {project.demoCredentials.pass}
                     </span>
                   </div>
                 )}
@@ -137,7 +172,7 @@ export default function ScrollDetail() {
                   <span>{t.projects.modal.stackTitle}</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {selectedProject.techStack.map((tech) => (
+                  {project.techStack.map((tech) => (
                     <TechBadge key={tech} name={tech} />
                   ))}
                 </div>
@@ -146,9 +181,9 @@ export default function ScrollDetail() {
               {/* Action Buttons (Live Demo & Source Code) */}
               <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[#8c6d46]/40">
                 <div className="flex flex-wrap items-center gap-3">
-                  {selectedProject.demoUrl && (
+                  {project.demoUrl && (
                     <a
-                      href={selectedProject.demoUrl}
+                      href={project.demoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2 bg-[#2b583c] hover:bg-[#1f422c] text-[#f5e8c7] font-typewriter text-xs font-bold uppercase tracking-wider rounded-xs shadow-sm transition-colors"
@@ -158,9 +193,9 @@ export default function ScrollDetail() {
                     </a>
                   )}
 
-                  {selectedProject.repoUrl && (
+                  {project.repoUrl && (
                     <a
-                      href={selectedProject.repoUrl}
+                      href={project.repoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2 bg-[#f5ebd6] hover:bg-[#d9c8a9] text-[#25160e] border border-[#5a4232] font-typewriter text-xs font-bold uppercase tracking-wider rounded-xs transition-colors"
@@ -195,8 +230,12 @@ export default function ScrollDetail() {
               <div className="w-6 h-6 -mr-2 rounded-sm bg-gradient-to-b from-[#e2be6b] via-[#b8860b] to-[#6e4e08] border border-[#3b2212] shadow-md" />
             </div>
           </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        </motion.dialog>
   );
+}
+
+
+export default function ScrollDetail() {
+  const { selectedProject } = useBook();
+  return <AnimatePresence>{selectedProject && <ProjectDialog key={selectedProject.id} project={selectedProject} />}</AnimatePresence>;
 }

@@ -34,7 +34,6 @@ export default function Polaroid({ project, index }: PolaroidProps) {
     <motion.div
       whileHover={{ scale: 1.02, rotate: 0, y: -2 }}
       transition={{ type: "spring", stiffness: 320, damping: 22 }}
-      onClick={() => setSelectedProject(project)}
       className={`group relative polaroid-card p-2.5 pb-2.5 rounded-xs border border-[#bfa984] cursor-pointer flex flex-col justify-between w-full max-w-[340px] mx-auto shadow-md ${tiltClass}`}
     >
       {/* Top Pushpin */}
@@ -45,7 +44,13 @@ export default function Polaroid({ project, index }: PolaroidProps) {
       </div>
 
       {/* Screenshot Frame */}
-      <div>
+      <button
+        type="button"
+        aria-label={`${language === "es" ? "Ver proyecto" : "View project"}: ${title}`}
+        aria-haspopup="dialog"
+        onClick={() => setSelectedProject(project)}
+        className="block w-full text-left cursor-pointer"
+      >
         <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#25160e] rounded-xs border border-[#8c6d46]/40 shadow-inner">
           <img
             src={project.image}
@@ -63,11 +68,12 @@ export default function Polaroid({ project, index }: PolaroidProps) {
 
         </div>
 
-        {/* Caption Title - Clean handwritten label */}
-        <h3 className="font-handwriting text-[17px] sm:text-xl font-bold text-[#25160e] mt-2 leading-snug group-hover:text-[#8c2d2d] transition-colors line-clamp-1">
-          {title}
-        </h3>
-      </div>
+      </button>
+
+      {/* Caption Title - Clean handwritten label */}
+      <h3 className="font-handwriting text-[17px] sm:text-xl font-bold text-[#25160e] mt-2 leading-snug group-hover:text-[#8c2d2d] transition-colors line-clamp-1">
+        {title}
+      </h3>
 
       {/* Action Links */}
       <div className="mt-2 pt-1.5 border-t border-[#8c6d46]/25 flex items-center justify-between gap-1">
@@ -96,7 +102,7 @@ export default function Polaroid({ project, index }: PolaroidProps) {
               className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-xs bg-[#452f20]/10 hover:bg-[#452f20] text-[#452f20] hover:text-[#f5ebd6] border border-[#452f20]/30 font-typewriter text-[9.5px] font-bold tracking-wider transition-colors"
             >
               <Github className="w-2.5 h-2.5" />
-              <span>Código</span>
+              <span>{t.projects.card.code}</span>
             </a>
           )}
         </div>

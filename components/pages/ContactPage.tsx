@@ -12,6 +12,7 @@ import {
   Send,
 } from "lucide-react";
 import emailjs from "@emailjs/browser";
+import FormStatus from "@/components/ui/FormStatus";
 import { useLanguage } from "@/context/LanguageContext";
 
 export function ContactLeftPage() {
@@ -167,6 +168,7 @@ export function ContactRightPage() {
         </p>
       </div>
 
+      <FormStatus status={status} language={language} />
       {/* Interactive Form or Success State */}
       {status === "success" ? (
         <div className="my-auto p-4 rounded-xs bg-[#265538]/10 border border-[#265538]/40 text-center space-y-2">
@@ -190,7 +192,7 @@ export function ContactRightPage() {
           </button>
         </div>
       ) : (
-        <form ref={formRef} onSubmit={handleSubmit} className="space-y-2 my-auto">
+        <form ref={formRef} aria-busy={status === "sending"} onSubmit={handleSubmit} className="space-y-2 my-auto">
           {status === "error" && (
             <div className="p-2 rounded-xs bg-[#882b2b]/10 border border-[#882b2b]/35 text-[#882b2b] text-[11.5px] font-serif-book flex items-center justify-between gap-2">
               <span>
@@ -209,12 +211,14 @@ export function ContactRightPage() {
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
+              <label htmlFor="desktop-contact-name" className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
                 {isEs ? "Nombre" : "Name"}
               </label>
               <input
                 type="text"
+                id="desktop-contact-name"
                 name="name"
+                autoComplete="name"
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -224,12 +228,14 @@ export function ContactRightPage() {
             </div>
 
             <div>
-              <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
+              <label htmlFor="desktop-contact-email" className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
                 {isEs ? "Correo" : "Email"}
               </label>
               <input
                 type="email"
+                id="desktop-contact-email"
                 name="email"
+                autoComplete="email"
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -240,11 +246,12 @@ export function ContactRightPage() {
           </div>
 
           <div>
-            <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
+            <label htmlFor="desktop-contact-message" className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
               {isEs ? "Mensaje" : "Message"}
             </label>
             <textarea
-              name="message"
+              id="desktop-contact-message"
+                name="message"
               required
               rows={3}
               value={formData.message}

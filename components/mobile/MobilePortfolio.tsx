@@ -27,12 +27,15 @@ import {
   Send,
 } from "lucide-react";
 import emailjs from "@emailjs/browser";
+import FormStatus from "@/components/ui/FormStatus";
 import { useLanguage } from "@/context/LanguageContext";
 import { useBook } from "@/context/BookContext";
 import { projects } from "@/src/projects";
 import { skills } from "@/src/skills";
 import { Project } from "@/types/Project";
 import { ProjectCategoryFilter } from "@/components/pages/ProjectsPage";
+
+const preferredScrollBehavior = (): ScrollBehavior => window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth";
 
 const principleIcons: Record<
   string,
@@ -109,7 +112,7 @@ export default function MobilePortfolio() {
     if (el) {
       const yOffset = -90; // offset for sticky nav
       const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
+      window.scrollTo({ top: y, behavior: preferredScrollBehavior() });
     }
   };
 
@@ -144,7 +147,7 @@ export default function MobilePortfolio() {
         {/* Top brand row */}
         <div className="flex items-center justify-between px-3.5 py-2.5">
           <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() => window.scrollTo({ top: 0, behavior: preferredScrollBehavior() })}
             className="flex items-center gap-2 text-[#e2be6b] hover:text-[#fdf5e2] transition-colors cursor-pointer"
           >
             <img
@@ -469,6 +472,8 @@ export default function MobilePortfolio() {
 
                     <button
                       onClick={() => setSelectedProject(project)}
+                      aria-haspopup="dialog"
+                      aria-label={`${isEs ? "Ver proyecto" : "View project"}: ${projectTitle}`}
                       type="button"
                       className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xs bg-[#f4ebd9] hover:bg-[#ebdcc3] text-[#452f20] border border-[#8c6d46]/40 font-typewriter text-[10.5px] font-bold tracking-wider transition-colors cursor-pointer"
                     >
@@ -822,6 +827,7 @@ export default function MobilePortfolio() {
             </p>
 
             {/* Interactive Form or Success State */}
+            <FormStatus status={msgStatus} language={language} />
             {msgStatus === "success" ? (
               <div className="p-4 rounded-xs bg-[#265538]/10 border border-[#265538]/40 text-center space-y-2">
                 <div className="w-9 h-9 rounded-full bg-[#265538]/15 text-[#265538] flex items-center justify-center mx-auto">
@@ -844,7 +850,7 @@ export default function MobilePortfolio() {
                 </button>
               </div>
             ) : (
-              <form ref={msgFormRef} onSubmit={handleSendMessage} className="space-y-2.5">
+              <form ref={msgFormRef} aria-busy={msgStatus === "sending"} onSubmit={handleSendMessage} className="space-y-2.5">
                 {msgStatus === "error" && (
                   <div className="p-2.5 rounded-xs bg-[#882b2b]/10 border border-[#882b2b]/35 text-[#882b2b] text-xs font-serif-book flex items-center justify-between gap-2">
                     <span>
@@ -863,12 +869,14 @@ export default function MobilePortfolio() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <div>
-                    <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
+                    <label htmlFor="mobile-contact-name" className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
                       {isEs ? "Nombre" : "Name"}
                     </label>
                     <input
                       type="text"
+                      id="mobile-contact-name"
                       name="name"
+                      autoComplete="name"
                       required
                       value={msgData.name}
                       onChange={(e) => setMsgData({ ...msgData, name: e.target.value })}
@@ -878,12 +886,14 @@ export default function MobilePortfolio() {
                   </div>
 
                   <div>
-                    <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
+                    <label htmlFor="mobile-contact-email" className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
                       {isEs ? "Correo" : "Email"}
                     </label>
                     <input
                       type="email"
+                      id="mobile-contact-email"
                       name="email"
+                      autoComplete="email"
                       required
                       value={msgData.email}
                       onChange={(e) => setMsgData({ ...msgData, email: e.target.value })}
@@ -894,11 +904,12 @@ export default function MobilePortfolio() {
                 </div>
 
                 <div>
-                  <label className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
+                  <label htmlFor="mobile-contact-message" className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
                     {isEs ? "Mensaje" : "Message"}
                   </label>
                   <textarea
-                    name="message"
+                    id="mobile-contact-message"
+                      name="message"
                     required
                     rows={3}
                     value={msgData.message}
@@ -960,7 +971,7 @@ export default function MobilePortfolio() {
       {/* ============================================================== */}
       {showBackToTop && (
         <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          onClick={() => window.scrollTo({ top: 0, behavior: preferredScrollBehavior() })}
           type="button"
           aria-label={isEs ? "Volver al inicio" : "Back to top"}
           className="fixed bottom-4 right-4 z-40 w-10 h-10 rounded-full bg-[#882b2b] text-[#f5ebd6] border border-[#c89d45] flex items-center justify-center shadow-xl active:scale-95 transition-all cursor-pointer"
