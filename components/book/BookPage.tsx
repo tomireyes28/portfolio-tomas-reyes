@@ -188,7 +188,7 @@ export default function BookPage({
 
   return (
     <div
-      className={`relative flex-1 h-full flex flex-col justify-between overflow-hidden select-text ${
+      className={`book-page relative flex-1 min-h-0 h-full flex flex-col justify-between overflow-hidden select-text ${
         isLeft
           ? "parchment-page-left rounded-l-md border-l border-y border-[#9c825b]/50"
           : "parchment-page-right rounded-r-md border-r border-y border-[#9c825b]/50"
@@ -212,7 +212,7 @@ export default function BookPage({
 
       {/* Natural Book Folio Header */}
       <header
-        className={`relative z-10 flex items-center justify-between pt-4 pb-2 border-b border-[#8c6d46]/20 mx-4 sm:mx-6 ${
+        className={`relative z-10 shrink-0 flex items-center justify-between pt-4 pb-2 border-b border-[#8c6d46]/20 mx-4 sm:mx-6 ${
           isLeft
             ? "flex-row md:ml-4 lg:ml-5 md:mr-10 lg:mr-12"
             : "flex-row-reverse md:ml-10 lg:ml-12 md:mr-4 lg:mr-5"
@@ -229,7 +229,7 @@ export default function BookPage({
 
       {/* Main Page Content Body with Asymmetric Gutter Margins */}
       <div
-        className={`relative z-10 flex-1 overflow-y-auto book-scroll py-3 md:py-4 px-4 sm:px-6 ${
+        className={`book-page-body relative z-10 flex-1 min-h-0 overflow-y-auto book-scroll py-3 md:py-4 px-4 sm:px-6 ${
           isLeft
             ? "md:pl-5 lg:pl-6 md:pr-11 lg:pr-13"
             : "md:pl-11 lg:pl-13 md:pr-5 lg:pr-6"
@@ -240,7 +240,7 @@ export default function BookPage({
 
       {/* Natural Bottom Footer with Page Number */}
       <footer
-        className={`relative z-20 flex items-center justify-between pb-3 pt-1.5 border-t border-[#8c6d46]/15 mx-4 sm:mx-6 ${
+        className={`relative z-20 shrink-0 flex items-center justify-between pb-3 pt-1.5 border-t border-[#8c6d46]/15 mx-4 sm:mx-6 ${
           isLeft
             ? "flex-row md:ml-4 lg:ml-5 md:mr-10 lg:mr-12"
             : "flex-row-reverse md:ml-10 lg:ml-12 md:mr-4 lg:mr-5"

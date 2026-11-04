@@ -2,6 +2,7 @@
 
 import React, { useRef, useMemo, useEffect } from "react";
 import { motion, useMotionValue, useTransform, animate, useReducedMotion } from "framer-motion";
+import { BOOK_VIEWPORT_QUERY } from "@/lib/bookViewport";
 import BookPage from "./BookPage";
 import BookSpine from "./BookSpine";
 import { BOOK_SECTIONS, useBook } from "@/context/BookContext";
@@ -37,7 +38,7 @@ export default function BookInteractiveSpread() {
   useEffect(() => {
     if (!turn) return;
     let animation: { stop: () => void } | undefined;
-    const desktop = window.matchMedia("(min-width: 768px)");
+    const desktop = window.matchMedia(BOOK_VIEWPORT_QUERY);
     const onResize = () => { if (!desktop.matches) finishTurn(turn.id, false); };
     desktop.addEventListener("change", onResize);
     if (turn.mode === "drag" && (reducedMotion || !desktop.matches)) finishTurn(turn.id, false);

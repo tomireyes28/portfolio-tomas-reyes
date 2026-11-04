@@ -34,7 +34,7 @@ export default function Polaroid({ project, index }: PolaroidProps) {
     <motion.div
       whileHover={{ scale: 1.02, rotate: 0, y: -2 }}
       transition={{ type: "spring", stiffness: 320, damping: 22 }}
-      className={`group relative polaroid-card p-2.5 pb-2.5 rounded-xs border border-[#bfa984] cursor-pointer flex flex-col justify-between w-full max-w-[340px] mx-auto shadow-md ${tiltClass}`}
+      className={`project-polaroid group relative polaroid-card p-2.5 pb-2.5 rounded-xs border border-[#bfa984] cursor-pointer flex flex-col justify-between w-full max-w-[340px] mx-auto shadow-md ${tiltClass}`}
     >
       {/* Top Pushpin */}
       <div
@@ -47,11 +47,12 @@ export default function Polaroid({ project, index }: PolaroidProps) {
       <button
         type="button"
         aria-label={`${language === "es" ? "Ver proyecto" : "View project"}: ${title}`}
+        data-project-id={project.id}
         aria-haspopup="dialog"
         onClick={() => setSelectedProject(project)}
-        className="block w-full text-left cursor-pointer"
+        className="project-preview block w-full text-left cursor-pointer"
       >
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#25160e] rounded-xs border border-[#8c6d46]/40 shadow-inner">
+        <div className="project-preview-frame relative aspect-[16/9] w-full overflow-hidden bg-[#25160e] rounded-xs border border-[#8c6d46]/40 shadow-inner">
           <img
             src={project.image}
             alt={title}

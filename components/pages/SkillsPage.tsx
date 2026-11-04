@@ -71,7 +71,7 @@ function BigLogo({ skill, rotation }: BigLogoProps) {
         >
           {/* LOGO STICKER GRANDE Y PROTAGONISTA CON BORDE FINO Y SOMBRA DE RELIEVE */}
           <div
-            className="w-18 h-18 sm:w-20 sm:h-20 lg:w-[82px] lg:h-[82px] flex items-center justify-center transition-all duration-200"
+            className="skill-logo-size flex items-center justify-center transition-all duration-200"
             style={{
               filter: isHovered
                 ? "drop-shadow(0.9px 0.9px 0 #fffdfa) drop-shadow(-0.9px -0.9px 0 #fffdfa) drop-shadow(0.9px -0.9px 0 #fffdfa) drop-shadow(-0.9px 0.9px 0 #fffdfa) drop-shadow(0 10px 18px rgba(35, 20, 10, 0.4)) contrast(1.1)"
@@ -88,7 +88,7 @@ function BigLogo({ skill, rotation }: BigLogoProps) {
             ) : (
               <FallbackLogo
                 name={skill.name}
-                className="w-15 h-15 sm:w-17 sm:h-17 lg:w-18 lg:h-18 text-[#22140c]"
+                className="w-[85%] h-[85%] text-[#22140c]"
               />
             )}
           </div>
@@ -147,7 +147,7 @@ export function SkillsLeftPage() {
             <div className="h-px flex-1 bg-gradient-to-r from-[#265538]/30 to-transparent" />
           </div>
 
-          <div className="grid grid-cols-4 gap-x-2 sm:gap-x-3 gap-y-3 sm:gap-y-3.5 justify-items-center">
+          <div className="skill-logo-grid">
             {frontendSkills.map((sk, idx) => (
               <BigLogo
                 key={sk.name}
@@ -167,7 +167,7 @@ export function SkillsLeftPage() {
             <div className="h-px flex-1 bg-gradient-to-r from-[#882b2b]/30 to-transparent" />
           </div>
 
-          <div className="grid grid-cols-4 gap-x-2 sm:gap-x-3 gap-y-2 justify-items-center">
+          <div className="skill-logo-grid">
             {backendSkills.map((sk, idx) => (
               <BigLogo
                 key={sk.name}
@@ -211,7 +211,7 @@ export function SkillsRightPage() {
             <div className="h-px flex-1 bg-gradient-to-r from-[#2d4558]/30 to-transparent" />
           </div>
 
-          <div className="grid grid-cols-4 gap-x-2 sm:gap-x-3 gap-y-2 justify-items-center">
+          <div className="skill-logo-grid">
             {dbSkills.map((sk, idx) => (
               <BigLogo
                 key={sk.name}
@@ -231,7 +231,7 @@ export function SkillsRightPage() {
             <div className="h-px flex-1 bg-gradient-to-r from-[#94631d]/30 to-transparent" />
           </div>
 
-          <div className="grid grid-cols-4 gap-x-2 sm:gap-x-3 gap-y-3 sm:gap-y-3.5 justify-items-center">
+          <div className="skill-logo-grid">
             {toolSkills.map((sk, idx) => (
               <BigLogo
                 key={sk.name}

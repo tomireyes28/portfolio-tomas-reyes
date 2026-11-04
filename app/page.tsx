@@ -5,13 +5,13 @@ import ScrollDetail from "@/components/ui/ScrollDetail";
 export default function Home() {
   return (
     <main className="min-h-screen w-full">
-      {/* DESKTOP 3D EXPEDITION BOOK (Screens >= 768px / md) */}
-      <div className="hidden md:block h-screen w-screen overflow-hidden">
+      {/* DESKTOP 3D EXPEDITION BOOK (when the viewport fits two readable pages) */}
+      <div className="portfolio-book-view">
         <Book />
       </div>
 
-      {/* MOBILE INFINITE EDITORIAL SCROLL (Screens < 768px) */}
-      <div className="block md:hidden min-h-screen w-full">
+      {/* MOBILE INFINITE EDITORIAL SCROLL (compact, portrait and low-height viewports) */}
+      <div className="portfolio-scroll-view">
         <MobilePortfolio />
       </div>
 

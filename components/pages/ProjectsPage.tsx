@@ -33,7 +33,7 @@ export function ProjectsLeftPage({
   );
 
   return (
-    <div className="flex flex-col justify-between h-full space-y-2">
+    <div className="projects-page flex flex-col h-full min-h-0 gap-2">
       {/* Editorial Header */}
       {spreadIndex === 0 ? (
         <div className="border-b border-[#8c6d46]/25 pb-2">
@@ -50,7 +50,7 @@ export function ProjectsLeftPage({
       )}
 
       {/* Left 2 Large Polaroids (Stacked vertically) */}
-      <div className="flex flex-col gap-3.5 justify-center my-auto">
+      <div className="projects-page-grid">
         {leftSlice.map((project, idx) => (
           <Polaroid
             key={project.id}
@@ -77,9 +77,14 @@ export function ProjectsRightPage({
   );
 
   return (
-    <div className="flex flex-col justify-center h-full">
+    <div className="projects-page flex flex-col h-full min-h-0">
+      <div className="shrink-0 border-b border-[#8c6d46]/25 pb-2 mb-2">
+        <h2 className="font-serif-book text-xl lg:text-2xl font-bold text-[#25160e]">
+          {isEs ? "Selección" : "Selection"} {spreadIndex + 1} / 2
+        </h2>
+      </div>
       {/* Right 2 Large Polaroids (Stacked vertically) */}
-      <div className="flex flex-col gap-3.5 justify-center my-auto">
+      <div className="projects-page-grid">
         {rightSlice.length > 0 ? (
           rightSlice.map((project, idx) => (
             <Polaroid

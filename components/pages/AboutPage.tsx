@@ -11,7 +11,7 @@ export function AboutLeftPage() {
   return (
     <div className="flex flex-col items-center text-center h-full justify-between py-1">
       {/* Polaroid Profile Card */}
-      <div className="relative polaroid-card p-3 pb-4.5 rounded-xs border border-[#bfa984] transform -rotate-1.5 max-w-[250px] w-full mt-0.5 shadow-lg hover:rotate-0 transition-transform duration-300">
+      <div className="profile-polaroid relative polaroid-card p-3 pb-4.5 rounded-xs border border-[#bfa984] transform -rotate-1.5 max-w-[250px] w-full mt-0.5 shadow-lg hover:rotate-0 transition-transform duration-300">
         {/* Washi tape top */}
         <div className="washi-tape absolute -top-2.5 left-1/2 -translate-x-1/2 w-20 h-4.5 rotate-1" />
         <div className="w-full aspect-square mx-auto overflow-hidden bg-[#24140b] rounded-xs border border-[#8c6d46]/35 shadow-inner">

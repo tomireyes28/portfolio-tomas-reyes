@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, useEffect, useReducer } from "react";
+import { BOOK_VIEWPORT_QUERY } from "@/lib/bookViewport";
 import { Project } from "@/types/Project";
 import { BOOK_SECTIONS, BookSectionId, PageTurn, initialNavigation, navigationReducer } from "./bookNavigation";
 export { BOOK_SECTIONS };
@@ -43,7 +44,7 @@ export function BookProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.defaultPrevented || e.repeat || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || selectedProject ||
-        !window.matchMedia("(min-width: 768px)").matches ||
+        !window.matchMedia(BOOK_VIEWPORT_QUERY).matches ||
         (e.target instanceof HTMLElement && e.target.closest('input,textarea,select,[contenteditable]:not([contenteditable="false"]),[role="textbox"]'))) return;
       if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
         e.preventDefault();

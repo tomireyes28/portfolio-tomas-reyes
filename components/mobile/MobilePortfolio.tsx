@@ -27,6 +27,7 @@ import {
   Send,
 } from "lucide-react";
 import emailjs from "@emailjs/browser";
+import LanguageSwitch from "@/components/ui/LanguageSwitch";
 import FormStatus from "@/components/ui/FormStatus";
 import { useLanguage } from "@/context/LanguageContext";
 import { useBook } from "@/context/BookContext";
@@ -48,7 +49,7 @@ const principleIcons: Record<
 };
 
 export default function MobilePortfolio() {
-  const { language, toggleLanguage, t } = useLanguage();
+  const { language, t } = useLanguage();
   const { setSelectedProject } = useBook();
   const isEs = language === "es";
 
@@ -58,6 +59,8 @@ export default function MobilePortfolio() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [msgStatus, setMsgStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [msgData, setMsgData] = useState({ name: "", email: "", message: "" });
+  const headerRef = useRef<HTMLElement>(null);
+  const pageRef = useRef<HTMLDivElement>(null);
   const msgFormRef = useRef<HTMLFormElement>(null);
 
   // Send message via EmailJS
@@ -110,11 +113,21 @@ export default function MobilePortfolio() {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      const yOffset = -90; // offset for sticky nav
-      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: preferredScrollBehavior() });
+      el.scrollIntoView({ block: "start", behavior: preferredScrollBehavior() });
     }
   };
+
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+    const measure = () => {
+      if (header.offsetHeight) pageRef.current?.style.setProperty("--portfolio-header-height", `${header.offsetHeight}px`);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, []);
 
   // Scroll spy & Back-to-top button
   useEffect(() => {
@@ -126,7 +139,7 @@ export default function MobilePortfolio() {
         const el = document.getElementById(sectionId);
         if (el) {
           const rect = el.getBoundingClientRect();
-          if (rect.top <= 140 && rect.bottom >= 140) {
+          if (rect.top <= (headerRef.current?.offsetHeight ?? 100) + 24 && rect.bottom >= (headerRef.current?.offsetHeight ?? 100) + 24) {
             setActiveSection(sectionId);
             break;
           }
@@ -134,16 +147,22 @@ export default function MobilePortfolio() {
       }
     };
 
+    const frame = window.requestAnimationFrame(handleScroll);
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen bg-[#110a05] text-[#22140c] selection:bg-[#c89d45]/30 selection:text-[#22140c] pb-16">
+    <div ref={pageRef} className="editorial-portfolio relative w-full min-h-screen bg-[#110a05] text-[#22140c] selection:bg-[#c89d45]/30 selection:text-[#22140c] pb-16">
       {/* ============================================================== */}
       {/* STICKY TOP APP BAR                                             */}
       {/* ============================================================== */}
-      <header className="sticky top-0 z-40 w-full bg-[#170e08]/95 backdrop-blur-md border-b border-[#c89d45]/25 shadow-lg">
+      <header ref={headerRef} className="editorial-header sticky top-0 z-40 w-full bg-[#170e08]/95 backdrop-blur-md border-b border-[#c89d45]/25 shadow-lg">
         {/* Top brand row */}
         <div className="flex items-center justify-between px-3.5 py-2.5">
           <button
@@ -165,27 +184,20 @@ export default function MobilePortfolio() {
               href="/projects/Tomas%20Reyes%20CV.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 px-2.5 py-1 rounded-xs bg-[#265538] hover:bg-[#1e442d] text-[#f5ebd6] border border-[#c89d45]/40 font-typewriter text-[11px] font-bold uppercase tracking-wider shadow-xs transition-colors"
+              className="flex items-center justify-center min-h-10 min-w-10 gap-1 px-2.5 py-1 rounded-xs bg-[#265538] hover:bg-[#1e442d] text-[#f5ebd6] border border-[#c89d45]/40 font-typewriter text-[11px] font-bold uppercase tracking-wider shadow-xs transition-colors"
             >
               <FileDown className="w-3.5 h-3.5" />
               <span>CV</span>
             </a>
 
-            <button
-              onClick={toggleLanguage}
-              type="button"
-              className="flex items-center gap-1 px-2 py-1 rounded-xs bg-[#24150d] hover:bg-[#382014] text-[#e2be6b] border border-[#c89d45]/30 font-typewriter text-[11px] font-bold uppercase tracking-wider transition-colors cursor-pointer"
-            >
-              <Globe className="w-3 h-3 text-[#c89d45]" />
-              <span>{language.toUpperCase()}</span>
-            </button>
+            <LanguageSwitch />
           </div>
         </div>
 
-        {/* Section Navigation Pills (Horizontal scroll) */}
-        <nav className="flex items-center gap-1.5 px-3 py-1.5 overflow-x-auto no-scrollbar border-t border-[#8c6d46]/20 bg-[#120b06]">
+        {/* Five visible chapter destinations */}
+        <nav aria-label={isEs ? "Secciones del portfolio" : "Portfolio sections"} className="editorial-nav">
           {[
-            { id: "sobre-mi", label: isEs ? "Sobre mí" : "About" },
+            { id: "sobre-mi", label: isEs ? "Perfil" : "Profile" },
             { id: "proyectos", label: isEs ? "Proyectos" : "Projects" },
             { id: "tecnologias", label: isEs ? "Stack" : "Stack" },
             { id: "trayectoria", label: isEs ? "Trayectoria" : "Journey" },
@@ -195,13 +207,10 @@ export default function MobilePortfolio() {
             return (
               <button
                 key={tab.id}
+                aria-current={isActive ? "page" : undefined}
                 onClick={() => scrollTo(tab.id)}
                 type="button"
-                className={`whitespace-nowrap px-3 py-1 rounded-full text-[11.5px] font-typewriter font-semibold tracking-wide transition-all cursor-pointer ${
-                  isActive
-                    ? "bg-[#882b2b] text-[#f5ebd6] shadow-xs border border-[#c89d45]/50"
-                    : "bg-[#24150d]/80 text-[#dfcdad]/80 hover:text-[#f5ebd6] border border-[#8c6d46]/25"
-                }`}
+                className={`editorial-nav-tab ${isActive ? "editorial-nav-active" : ""}`}
               >
                 {tab.label}
               </button>
@@ -213,7 +222,7 @@ export default function MobilePortfolio() {
       {/* ============================================================== */}
       {/* MAIN VERTICAL FEED CONTENT                                     */}
       {/* ============================================================== */}
-      <div className="w-full max-w-xl mx-auto px-3.5 sm:px-4 py-5 space-y-7">
+      <div className="w-full max-w-[760px] mx-auto px-3.5 sm:px-4 py-5 space-y-7">
 
         {/* ============================================================ */}
         {/* SECTION 1: SOBRE MÍ / HERO                                   */}
@@ -335,13 +344,13 @@ export default function MobilePortfolio() {
                 {t.projects.title}
               </h2>
             </div>
-            <span className="font-typewriter text-xs font-bold text-[#c89d45]">
+            <span className="shrink-0 whitespace-nowrap font-typewriter text-xs font-bold text-[#c89d45]">
               {filteredProjects.length} / 8
             </span>
           </div>
 
           {/* Filter Pills */}
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+          <div className="flex flex-wrap items-center gap-2 py-1">
             {[
               { id: "all", label: t.projects.filterAll },
               { id: "fullstack", label: t.projects.filterFullstack },
@@ -350,9 +359,10 @@ export default function MobilePortfolio() {
             ].map((f) => (
               <button
                 key={f.id}
+                aria-pressed={filter === f.id}
                 onClick={() => setFilter(f.id as ProjectCategoryFilter)}
                 type="button"
-                className={`px-3 py-1 rounded-full text-xs font-typewriter font-semibold tracking-wider whitespace-nowrap transition-all cursor-pointer ${
+                className={`px-3 min-h-10 py-1.5 rounded-full text-xs font-typewriter font-semibold tracking-wider whitespace-nowrap transition-all cursor-pointer ${
                   filter === f.id
                     ? "bg-[#882b2b] text-[#f5ebd6] border border-[#c89d45]/50 shadow-xs"
                     : "bg-[#24150d] text-[#dfcdad]/75 hover:text-[#f5ebd6] border border-[#8c6d46]/30"
@@ -364,7 +374,7 @@ export default function MobilePortfolio() {
           </div>
 
           {/* Project Cards (Full list, styled as tactile Polaroids) */}
-          <div className="space-y-4">
+          <div className="editorial-project-grid">
             {filteredProjects.map((project, idx) => {
               const projectTitle =
                 typeof project.title === "string"
@@ -472,6 +482,7 @@ export default function MobilePortfolio() {
 
                     <button
                       onClick={() => setSelectedProject(project)}
+                      data-project-id={project.id}
                       aria-haspopup="dialog"
                       aria-label={`${isEs ? "Ver proyecto" : "View project"}: ${projectTitle}`}
                       type="button"
@@ -659,14 +670,14 @@ export default function MobilePortfolio() {
             </div>
 
             {/* Idiomas */}
-            <div className="pt-2 border-t border-[#8c6d46]/20 flex items-center justify-between text-xs">
+            <div className="pt-2 border-t border-[#8c6d46]/20 flex flex-wrap gap-2 items-center justify-between text-xs">
               <div className="flex items-center gap-1.5">
                 <Globe className="w-3.5 h-3.5 text-[#94631d]" />
                 <span className="font-serif-book text-xs font-bold uppercase tracking-wider text-[#94631d]">
                   {t.story.languagesHeading}:
                 </span>
               </div>
-              <div className="flex items-center gap-2 font-serif-book text-xs text-[#452f20]">
+              <div className="flex flex-wrap items-center gap-2 font-serif-book text-xs text-[#452f20]">
                 {t.story.languages.map((lang, lIdx) => (
                   <span key={lIdx} className="flex items-center gap-1">
                     {lIdx > 0 && <span className="text-[#8c6d46]/50">•</span>}

@@ -1,41 +1,45 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { useBook } from "@/context/BookContext";
 import { useLanguage } from "@/context/LanguageContext";
+import { BOOK_INDEX_WIDTH } from "@/lib/bookViewport";
 import BookCover from "./BookCover";
 import BookTabs from "./BookTabs";
+import LanguageSwitch from "@/components/ui/LanguageSwitch";
 import BookInteractiveSpread from "./BookInteractiveSpread";
 
 export default function Book() {
   const { isOpen, openBook, closeBook } = useBook();
   const { language } = useLanguage();
 
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  useEffect(() => {
-    const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 768);
-    };
-    checkDesktop();
-    window.addEventListener("resize", checkDesktop);
-    return () => window.removeEventListener("resize", checkDesktop);
-  }, []);
-
   const isEs = language === "es";
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden expedition-desk flex items-center justify-center select-none">
+    <div style={{ "--book-index-width": `${BOOK_INDEX_WIDTH}px` } as React.CSSProperties} className="book-desk expedition-desk select-none">
+      <header className="book-toolbar">
+        <div className="flex items-baseline gap-3">
+          <h1 className="font-serif-book text-base font-semibold text-[#f5ebd6]">Tomás Reyes</h1>
+          <span className="font-typewriter text-[11px] tracking-wider text-[#cdb894]">PORTFOLIO / 2026</span>
+        </div>
+        <div className="flex items-center gap-4">
+          <button type="button" onClick={closeBook} disabled={!isOpen} className="min-h-10 px-3 text-sm font-serif-book text-[#e8dcc4] hover:text-white disabled:opacity-40 cursor-pointer disabled:cursor-default">
+            {isEs ? "Portada" : "Cover"}
+          </button>
+          <LanguageSwitch />
+        </div>
+      </header>
       {/* MAIN VIEWPORT STAGE */}
-      <div className="relative w-full h-full flex items-center justify-center px-2 sm:px-6 md:px-10 py-3 md:py-6 perspective-book select-none overflow-hidden">
+      <div className="book-stage perspective-book">
         {/* ============================================================== */}
         {/* UNIFIED 3D BOOK RIG (Fixed size: same dimensions open and closed. */}
         {/* Shifts to center on open via GPU translateX. Zero resizing stutter!) */}
         {/* ============================================================== */}
         <motion.div
           animate={{
-            x: isOpen ? 0 : isDesktop ? "-25%" : 0,
+            // Account for the reserved index and half the paper inset when centering the cover.
+            x: isOpen ? "calc(0% + 0px)" : `calc(-25% + ${BOOK_INDEX_WIDTH * 0.75 + 15}px)`,
             rotateX: isOpen ? 0 : 4,
           }}
           transition={{
@@ -43,7 +47,7 @@ export default function Book() {
             ease: [0.25, 0.1, 0.25, 1],
           }}
           style={{ transformStyle: "preserve-3d" }}
-          className="relative w-full max-w-[1280px] h-full max-h-[830px] flex flex-col md:flex-row items-stretch md:items-center justify-center z-10"
+          className="book-rig"
         >
           {/* 1. DEEP REALISTIC DESK CAST SHADOWS */}
           <div
@@ -61,7 +65,7 @@ export default function Book() {
 
           {/* 2. REALISTIC LEATHER HARDCOVER CASE (Fixed dimensions!) */}
           <div
-            className={`relative flex flex-1 w-full h-full rounded-xl p-2.5 sm:p-3.5 md:p-4.5 transition-all duration-700 ${
+            className={`relative flex flex-1 min-w-0 h-full rounded-xl p-2.5 sm:p-3.5 md:p-4.5 transition-all duration-700 ${
               isOpen ? "realistic-leather-cover shadow-2xl" : "bg-transparent"
             }`}
           >
@@ -123,7 +127,7 @@ export default function Book() {
             />
 
             {/* 3D DOUBLE-SIDED INTERACTIVE SPREAD ENGINE (Always mounted! Real pages!) */}
-            <div className="flex-1 h-full relative">
+            <div className="flex-1 min-w-0 h-full relative">
               <BookInteractiveSpread />
 
               {/* 3D FRONT COVER FLAP: Exactly matched to inner page dimensions! */}
@@ -144,7 +148,7 @@ export default function Book() {
             transition={{ duration: 0.5, delay: isOpen ? 0.35 : 0 }}
             inert={!isOpen}
             aria-hidden={!isOpen}
-            className="hidden md:block"
+            className="book-index"
           >
             <BookTabs />
           </motion.div>

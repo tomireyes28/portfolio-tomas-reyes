@@ -6,7 +6,6 @@ import { Sparkles, FileDown, Check } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import BookPage from "./BookPage";
 import { AboutLeftPage } from "@/components/pages/AboutPage";
-import LanguageStamp from "@/components/ui/LanguageStamp";
 
 interface BookCoverProps {
   isOpen: boolean;
@@ -123,7 +122,7 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
           }}
         />
 
-        {/* TOP HEADER: Portafolio Badge & Travel Language Stamp */}
+        {/* TOP HEADER: Portfolio badge & location */}
         <div className="relative z-10 pl-5 md:pl-6 flex items-center justify-between gap-2">
           <span className="font-typewriter text-[10px] md:text-[11px] tracking-[0.2em] uppercase text-[#e2be6b]/85 border border-[#c89d45]/35 px-2.5 py-1 rounded-xs bg-[#1b0f08]/60">
             {isEs ? "PORTAFOLIO 2026" : "PORTFOLIO // 2026"}
@@ -134,7 +133,6 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
               <span className="w-1.5 h-1.5 rounded-full bg-[#c89d45]/60" />
               {isEs ? "BUENOS AIRES" : "BUENOS AIRES, AR"}
             </span>
-            <LanguageStamp />
           </div>
         </div>
 
@@ -162,14 +160,14 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
             </span>
           </div>
 
-          <h1
+          <h2
             className="font-serif-book text-2xl md:text-3xl lg:text-4xl font-bold tracking-wide text-[#f5e8c7] mb-2"
             style={{
               textShadow: "0 2px 4px rgba(0,0,0,0.9), 0 0 18px rgba(200,157,69,0.3)",
             }}
           >
             TOMÁS REYES
-          </h1>
+          </h2>
 
           <div className="flex items-center gap-2.5 w-44 my-1.5">
             <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[#c89d45]/60" />

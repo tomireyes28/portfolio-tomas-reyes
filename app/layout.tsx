@@ -105,7 +105,7 @@ export default function RootLayout({
       lang="es"
       className={`${inter.variable} ${lora.variable} ${caveat.variable} ${courierPrime.variable} dark`}
     >
-      <body className="relative h-screen w-screen overflow-hidden bg-[#16100b] font-sans text-[#2c1810] antialiased selection:bg-[#c9a84c] selection:text-[#1a1209]">
+      <body className="relative min-h-dvh w-full bg-[#16100b] font-sans text-[#2c1810] antialiased selection:bg-[#c9a84c] selection:text-[#1a1209]">
         <LanguageProvider>
           <MotionPreferences><BookProvider>{children}</BookProvider></MotionPreferences>
         </LanguageProvider>
