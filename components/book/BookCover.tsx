@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { Compass, BookOpen, Sparkles, FileDown, Check } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { Sparkles, FileDown, Check } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import BookPage from "./BookPage";
 import { AboutLeftPage } from "@/components/pages/AboutPage";
@@ -17,16 +17,15 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
   const { language } = useLanguage();
   const isEs = language === "es";
 
-  // When fully open, unmount this overlay so it NEVER blocks other portfolio sections!
-  const [isFullyOpen, setIsFullyOpen] = useState(isOpen);
-  const wasOpenRef = useRef(isOpen);
+  const reducedMotion = useReducedMotion();
+  const [cover, setCover] = useState({ open: isOpen, hidden: isOpen, startOpen: isOpen });
   const [downloadingCv, setDownloadingCv] = useState(false);
-
+  const openButtonRef = useRef<HTMLButtonElement>(null);
+  if (cover.open !== isOpen) {
+    setCover({ open: isOpen, hidden: false, startOpen: cover.open });
+  }
   useEffect(() => {
-    if (!isOpen) {
-      setIsFullyOpen(false);
-      wasOpenRef.current = false;
-    }
+    if (!isOpen) openButtonRef.current?.focus({ preventScroll: true });
   }, [isOpen]);
 
   const handleDownloadCv = (e: React.MouseEvent) => {
@@ -46,27 +45,28 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
     }, 2500);
   };
 
-  if (isFullyOpen && isOpen) {
+  if (cover.hidden && isOpen) {
     return null;
   }
 
   return (
     <motion.div
-      initial={wasOpenRef.current ? { rotateY: -180 } : false}
+      initial={cover.startOpen && !reducedMotion ? { rotateY: -180 } : false}
       animate={{
         rotateY: isOpen ? -180 : 0,
       }}
       transition={{
-        duration: 0.75,
+        duration: reducedMotion ? 0 : 0.75,
         ease: [0.25, 0.1, 0.25, 1],
       }}
       onAnimationComplete={() => {
         if (isOpen) {
-          setIsFullyOpen(true);
-        } else {
-          wasOpenRef.current = false;
+          setCover((current) => ({ ...current, hidden: true }));
+          document.getElementById("book-spread")?.focus({ preventScroll: true });
         }
       }}
+      inert={isOpen}
+      aria-hidden={isOpen}
       style={{
         transformOrigin: "left center",
         transformStyle: "preserve-3d",
@@ -255,7 +255,10 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
         {/* ============================================================== */}
         {/* INTERACTIVE SHIMMERING BRASS CLASP (Click to open journal)       */}
         {/* ============================================================== */}
-        <div
+        <button
+          ref={openButtonRef}
+          type="button"
+          aria-label={isEs ? "Abrir portfolio" : "Open portfolio"}
           onClick={(e) => {
             e.stopPropagation();
             if (!isOpen) onOpen();
@@ -273,7 +276,7 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
             </span>
             <span className="w-1.5 h-1.5 rounded-full bg-[#c89d45]" />
           </div>
-        </div>
+        </button>
       </div>
 
       {/* ============================================================== */}
@@ -281,6 +284,8 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
       {/* Visible de -90deg a -180deg - El mismo objeto físico! */}
       {/* ============================================================== */}
       <div
+        inert
+        aria-hidden="true"
         style={{ transform: "rotateY(180deg)" }}
         className={`absolute inset-0 backface-hidden preserve-3d ${
           !isOpen ? "pointer-events-none invisible" : ""

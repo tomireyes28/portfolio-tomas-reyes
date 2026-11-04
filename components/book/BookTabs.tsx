@@ -60,14 +60,14 @@ const TABS: TabItem[] = [
 ];
 
 export default function BookTabs() {
-  const { activeSection, goToSection, closeBook } = useBook();
+  const { activeSection, goToSection, closeBook, isTurning } = useBook();
   const { language } = useLanguage();
 
   return (
     <>
       {/* DESKTOP RIGHT-EDGE BOOKMARK TABS */}
       <nav
-        aria-label="Secciones del portfolio"
+        aria-label={language === "es" ? "Secciones del portfolio" : "Portfolio sections"}
         className="hidden md:flex flex-col justify-center gap-2.5 py-6 z-30 -ml-1 select-none shrink-0"
       >
         {/* Cover Tab: Close Book (Desktop) */}
@@ -98,6 +98,8 @@ export default function BookTabs() {
           return (
             <motion.button
               key={tab.id}
+              disabled={isTurning}
+              aria-current={isActive ? "page" : undefined}
               onClick={() => goToSection(tab.id)}
               whileHover={{ x: 5 }}
               whileTap={{ scale: 0.97 }}
@@ -156,7 +158,7 @@ export default function BookTabs() {
 
       {/* MOBILE BOTTOM TABS */}
       <nav
-        aria-label="Secciones del portfolio (móvil)"
+        aria-label={language === "es" ? "Secciones del portfolio (móvil)" : "Portfolio sections (mobile)"}
         className="flex md:hidden items-center justify-around bg-[#2a190f] border-t border-[#8c6d46]/40 px-2 py-1.5 z-40 shrink-0"
       >
         {/* Cover Tab: Close Book (Mobile) */}
@@ -181,6 +183,8 @@ export default function BookTabs() {
           return (
             <button
               key={tab.id}
+              disabled={isTurning}
+              aria-current={isActive ? "page" : undefined}
               onClick={() => goToSection(tab.id)}
               className={`flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-md transition-all ${
                 isActive

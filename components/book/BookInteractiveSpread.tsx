@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useRef, useMemo, useCallback } from "react";
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import React, { useRef, useMemo, useEffect } from "react";
+import { motion, useMotionValue, useTransform, animate, useReducedMotion } from "framer-motion";
 import BookPage from "./BookPage";
 import BookSpine from "./BookSpine";
 import { BOOK_SECTIONS, useBook } from "@/context/BookContext";
@@ -10,7 +10,6 @@ import { AboutLeftPage, AboutRightPage } from "@/components/pages/AboutPage";
 import {
   ProjectsLeftPage,
   ProjectsRightPage,
-  ProjectCategoryFilter,
 } from "@/components/pages/ProjectsPage";
 import { SkillsLeftPage, SkillsRightPage } from "@/components/pages/SkillsPage";
 import {
@@ -22,55 +21,51 @@ import {
   ContactRightPage,
 } from "@/components/pages/ContactPage";
 
-interface BookInteractiveSpreadProps {
-  projectFilter: ProjectCategoryFilter;
-  setProjectFilter: (f: ProjectCategoryFilter) => void;
-  projectSubPage?: number;
-  setProjectSubPage?: React.Dispatch<React.SetStateAction<number>>;
-}
-
-export default function BookInteractiveSpread({
-  projectFilter,
-  setProjectFilter,
-}: BookInteractiveSpreadProps) {
-  const { activeSection, goToSection, isOpen } = useBook();
+export default function BookInteractiveSpread() {
+  const { activeSection, goToSection, isOpen, turn, isTurning, finishTurn, cancelTurn } = useBook();
   const { language } = useLanguage();
   const isEs = language === "es";
-
+  const reducedMotion = useReducedMotion();
   const currentIndex = BOOK_SECTIONS.indexOf(activeSection);
-
-  // "idle" | "turning-next" | "turning-prev"
-  const [turnState, setTurnState] = useState<"idle" | "turning-next" | "turning-prev">("idle");
+  const targetIndex = turn ? BOOK_SECTIONS.indexOf(turn.to) : currentIndex;
+  const turnState = !turn ? "idle" : targetIndex > currentIndex ? "turning-next" : "turning-prev";
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Turn angle motion value: 0 to -180 for next, 0 to 180 for prev
+  const dragDirection = useRef<"next" | "prev" | null>(null);
+  const dragAnimation = useRef<{ stop: () => void } | null>(null);
   const turnAngle = useMotionValue(0);
 
-  // Trigger automated animated page turn
-  const triggerTurn = useCallback(
-    (toIndex: number) => {
-      if (toIndex === currentIndex || turnState !== "idle") return;
-
-      const isNext = toIndex > currentIndex;
-      setTurnState(isNext ? "turning-next" : "turning-prev");
-
-      const endAngle = isNext ? -180 : 180;
+  useEffect(() => {
+    if (!turn) return;
+    let animation: { stop: () => void } | undefined;
+    const desktop = window.matchMedia("(min-width: 768px)");
+    const onResize = () => { if (!desktop.matches) finishTurn(turn.id, false); };
+    desktop.addEventListener("change", onResize);
+    if (turn.mode === "drag" && (reducedMotion || !desktop.matches)) finishTurn(turn.id, false);
+    if (turn.mode === "auto") {
       turnAngle.set(0);
-
-      animate(turnAngle, endAngle, {
-        duration: 0.65,
+      animation = animate(turnAngle, targetIndex > currentIndex ? -180 : 180, {
+        duration: reducedMotion || !desktop.matches ? 0 : 0.65,
         ease: [0.25, 0.1, 0.25, 1],
-        onComplete: () => {
-          goToSection(BOOK_SECTIONS[toIndex]);
-          setTurnState("idle");
-          turnAngle.set(0);
-        },
+        onComplete: () => finishTurn(turn.id, true),
       });
-    },
-    [currentIndex, turnState, turnAngle, goToSection]
-  );
+    }
+    return () => {
+      animation?.stop();
+      dragAnimation.current?.stop();
+      dragAnimation.current = null;
+      dragDirection.current = null;
+      turnAngle.set(0);
+      desktop.removeEventListener("change", onResize);
+    };
+  }, [turn, targetIndex, currentIndex, finishTurn, turnAngle, reducedMotion]);
 
-  // Pre-render all 6 spreads stably so React NEVER flashes or re-mounts
+  // Focus the new spread only when the old control disappeared with the page.
+  useEffect(() => {
+    if (isOpen && (document.activeElement === document.body || document.activeElement?.closest("[inert]"))) {
+      containerRef.current?.focus({ preventScroll: true });
+    }
+  }, [activeSection, isOpen]);
+
   const spreads = useMemo(() => {
     return [
       {
@@ -128,73 +123,44 @@ export default function BookInteractiveSpread({
         rightContent: <ContactRightPage />,
       },
     ];
-  }, [isEs, projectFilter, setProjectFilter, triggerTurn]);
+  }, [isEs]);
 
   // Current, next, and previous spreads
   const currentSpread = spreads[currentIndex] || spreads[0];
-  const nextSpread = spreads[Math.min(spreads.length - 1, currentIndex + 1)];
-  const prevSpread = spreads[Math.max(0, currentIndex - 1)];
+  const nextSpread = spreads[targetIndex];
+  const prevSpread = spreads[targetIndex];
 
-  // Pan / Drag gesture handler
   const handlePan = (
     _event: MouseEvent | TouchEvent | PointerEvent,
     info: { offset: { x: number; y: number } }
   ) => {
-    if (!containerRef.current) return;
+    if (dragAnimation.current || !containerRef.current || !isOpen || reducedMotion || (turn && turn.mode !== "drag")) return;
+    if (!dragDirection.current && !isTurning && Math.abs(info.offset.x) > 15) {
+      const direction = info.offset.x < 0 ? "next" : "prev";
+      const index = currentIndex + (direction === "next" ? 1 : -1);
+      if (!BOOK_SECTIONS[index]) return;
+      dragDirection.current = direction;
+      goToSection(BOOK_SECTIONS[index], "drag");
+    }
     const halfWidth = containerRef.current.clientWidth / 2;
-
-    if (turnState === "idle" && info.offset.x < -15 && currentIndex < BOOK_SECTIONS.length - 1) {
-      setTurnState("turning-next");
-    }
-
-    if (turnState === "idle" && info.offset.x > 15 && currentIndex > 0) {
-      setTurnState("turning-prev");
-    }
-
-    if (turnState === "turning-next") {
-      const progress = Math.max(-180, Math.min(0, (info.offset.x / (halfWidth * 0.82)) * 180));
-      turnAngle.set(progress);
-    } else if (turnState === "turning-prev") {
-      const progress = Math.min(180, Math.max(0, (info.offset.x / (halfWidth * 0.82)) * 180));
-      turnAngle.set(progress);
-    }
+    const angle = (info.offset.x / (halfWidth * 0.82)) * 180;
+    if (dragDirection.current === "next") turnAngle.set(Math.max(-180, Math.min(0, angle)));
+    if (dragDirection.current === "prev") turnAngle.set(Math.min(180, Math.max(0, angle)));
   };
 
   const handlePanEnd = (
     _event: MouseEvent | TouchEvent | PointerEvent,
     info: { offset: { x: number }; velocity: { x: number } }
   ) => {
-    if (turnState === "turning-next") {
-      const current = turnAngle.get();
-      const shouldComplete = current < -45 || info.velocity.x < -150;
-
-      animate(turnAngle, shouldComplete ? -180 : 0, {
-        duration: 0.38,
-        ease: [0.22, 1, 0.36, 1],
-        onComplete: () => {
-          if (shouldComplete) {
-            goToSection(BOOK_SECTIONS[currentIndex + 1]);
-          }
-          setTurnState("idle");
-          turnAngle.set(0);
-        },
-      });
-    } else if (turnState === "turning-prev") {
-      const current = turnAngle.get();
-      const shouldComplete = current > 45 || info.velocity.x > 150;
-
-      animate(turnAngle, shouldComplete ? 180 : 0, {
-        duration: 0.38,
-        ease: [0.22, 1, 0.36, 1],
-        onComplete: () => {
-          if (shouldComplete) {
-            goToSection(BOOK_SECTIONS[currentIndex - 1]);
-          }
-          setTurnState("idle");
-          turnAngle.set(0);
-        },
-      });
-    }
+    if (dragAnimation.current || !dragDirection.current) return;
+    if (!turn || turn.mode !== "drag") { cancelTurn(); dragDirection.current = null; return; }
+    const next = dragDirection.current === "next";
+    const complete = next ? turnAngle.get() < -45 || info.velocity.x < -150 : turnAngle.get() > 45 || info.velocity.x > 150;
+    dragAnimation.current = animate(turnAngle, complete ? (next ? -180 : 180) : 0, {
+      duration: reducedMotion ? 0 : 0.38,
+      ease: [0.22, 1, 0.36, 1],
+      onComplete: () => finishTurn(turn.id, complete),
+    });
   };
 
   // 3D Physical Paper Bending Transforms (Bold & Tactile Flex):
@@ -300,18 +266,26 @@ export default function BookInteractiveSpread({
 
   return (
     <div
+      id="book-spread"
       ref={containerRef}
+      tabIndex={-1}
+      role="region"
+      aria-label={isEs ? "Páginas del portfolio" : "Portfolio pages"}
+      aria-busy={isTurning}
+      inert={!isOpen}
       className={`relative w-full h-full flex perspective-book select-none ${
         !isOpen ? "pointer-events-none" : ""
       }`}
     >
       {/* 2-PAGE SPREAD */}
       <div className="flex w-full h-full relative preserve-3d">
+        <p className="sr-only" role="status" aria-live="polite">{isEs ? "Sección" : "Section"}: {spreads[currentIndex].leftTitle}</p>
         {/* ============================================================== */}
         {/* BASE STATIC LEFT PAGE */}
         {/* WHEN TURNING PREV: Shows prevSpread.leftContent so it NEVER repeats! */}
         {/* ============================================================== */}
         <div
+          inert={isTurning}
           className={`w-1/2 h-full relative transition-opacity duration-300 ${
             isOpen ? "opacity-100 delay-500" : "opacity-0 pointer-events-none"
           }`}
@@ -329,7 +303,7 @@ export default function BookInteractiveSpread({
                 : currentSpread.leftTitle
             }
             onCornerClick={
-              currentIndex > 0 ? () => triggerTurn(currentIndex - 1) : undefined
+              currentIndex > 0 ? () => goToSection(BOOK_SECTIONS[currentIndex - 1]) : undefined
             }
           >
             {turnState === "turning-prev"
@@ -353,7 +327,7 @@ export default function BookInteractiveSpread({
         {/* BASE STATIC RIGHT PAGE */}
         {/* WHEN TURNING NEXT: Shows nextSpread.rightContent underneath! */}
         {/* ============================================================== */}
-        <div className="w-1/2 h-full relative">
+        <div inert={isTurning} className="w-1/2 h-full relative">
           <BookPage
             side="right"
             pageNumber={
@@ -368,7 +342,7 @@ export default function BookInteractiveSpread({
             }
             onCornerClick={
               currentIndex < BOOK_SECTIONS.length - 1
-                ? () => triggerTurn(currentIndex + 1)
+                ? () => goToSection(BOOK_SECTIONS[currentIndex + 1])
                 : undefined
             }
           >
@@ -391,6 +365,8 @@ export default function BookInteractiveSpread({
         {/* ============================================================== */}
         {turnState === "turning-next" && (
           <motion.div
+            inert
+            aria-hidden="true"
             style={{
               rotateY: turnAngle,
               rotateX: sheetRotateX,
@@ -446,6 +422,8 @@ export default function BookInteractiveSpread({
         {/* ============================================================== */}
         {turnState === "turning-prev" && (
           <motion.div
+            inert
+            aria-hidden="true"
             style={{
               rotateY: turnAngle,
               rotateX: sheetRotateX,
@@ -500,16 +478,18 @@ export default function BookInteractiveSpread({
         {/* INTERACTIVE DRAG ZONES OVER THE EDGES (Above the corner curls) */}
         {/* ============================================================== */}
         <motion.div
+          style={{ touchAction: "pan-y" }}
           onPan={handlePan}
           onPanEnd={handlePanEnd}
-          className="absolute top-0 bottom-28 right-0 w-20 z-30 cursor-grab active:cursor-grabbing hover:bg-black/2"
+          className="absolute top-0 bottom-28 right-0 w-5 z-30 cursor-grab active:cursor-grabbing hover:bg-black/2"
           title={isEs ? "Arrastrá la hoja para pasar página" : "Drag page to turn"}
         />
 
         <motion.div
+          style={{ touchAction: "pan-y" }}
           onPan={handlePan}
           onPanEnd={handlePanEnd}
-          className="absolute top-0 bottom-28 left-0 w-20 z-30 cursor-grab active:cursor-grabbing hover:bg-black/2"
+          className="absolute top-0 bottom-28 left-0 w-5 z-30 cursor-grab active:cursor-grabbing hover:bg-black/2"
           title={isEs ? "Arrastrá la hoja para volver" : "Drag page to go back"}
         />
       </div>

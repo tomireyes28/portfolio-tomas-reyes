@@ -1,150 +1,69 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import React, { createContext, useContext, useState, useCallback, useEffect, useReducer } from "react";
 import { Project } from "@/types/Project";
-
-export type BookSectionId =
-  | "about"
-  | "projects"
-  | "projects-2"
-  | "skills"
-  | "story"
-  | "contact";
-
-export const BOOK_SECTIONS: BookSectionId[] = [
-  "about",
-  "projects",
-  "projects-2",
-  "skills",
-  "story",
-  "contact",
-];
+import { BOOK_SECTIONS, BookSectionId, PageTurn, initialNavigation, navigationReducer } from "./bookNavigation";
+export { BOOK_SECTIONS };
+export type { BookSectionId };
 
 interface BookContextType {
   isOpen: boolean;
   activeSection: BookSectionId;
   turnDirection: "next" | "prev";
   isTurning: boolean;
+  turn: PageTurn | null;
   selectedProject: Project | null;
   openBook: () => void;
   closeBook: () => void;
-  goToSection: (section: BookSectionId) => void;
+  goToSection: (section: BookSectionId, mode?: PageTurn["mode"]) => void;
+  cancelTurn: () => void;
+  finishTurn: (id: number, commit: boolean) => void;
   nextPage: () => void;
   prevPage: () => void;
   setSelectedProject: (project: Project | null) => void;
 }
-
 const BookContext = createContext<BookContextType | undefined>(undefined);
 
 export function BookProvider({ children }: { children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState(true);
-  const [activeSection, setActiveSection] = useState<BookSectionId>("about");
-  const [turnDirection, setTurnDirection] = useState<"next" | "prev">("next");
-  const [isTurning, setIsTurning] = useState(false);
+  const [navigation, dispatch] = useReducer(navigationReducer, initialNavigation);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-
-  const openBook = useCallback(() => {
-    setIsOpen(true);
-  }, []);
-
+  const openBook = useCallback(() => dispatch({ type: "open" }), []);
   const closeBook = useCallback(() => {
     setSelectedProject(null);
-    setActiveSection("about");
-    setIsOpen(false);
+    dispatch({ type: "close" });
   }, []);
+  const goToSection = useCallback((to: BookSectionId, mode: PageTurn["mode"] = "auto") => {
+    dispatch({ type: "navigate", to, mode });
+  }, []);
+  const cancelTurn = useCallback(() => dispatch({ type: "cancel" }), []);
+  const finishTurn = useCallback((id: number, commit: boolean) => dispatch({ type: "finish", id, commit }), []);
+  const nextPage = useCallback(() => dispatch({ type: "next" }), []);
+  const prevPage = useCallback(() => dispatch({ type: "prev" }), []);
 
-  const goToSection = useCallback(
-    (targetSection: BookSectionId) => {
-      if (targetSection === activeSection) return;
-      const currentIndex = BOOK_SECTIONS.indexOf(activeSection);
-      const targetIndex = BOOK_SECTIONS.indexOf(targetSection);
-
-      setTurnDirection(targetIndex > currentIndex ? "next" : "prev");
-      setSelectedProject(null);
-      setActiveSection(targetSection);
-    },
-    [activeSection]
-  );
-
-  const nextPage = useCallback(() => {
-    const currentIndex = BOOK_SECTIONS.indexOf(activeSection);
-    if (currentIndex < BOOK_SECTIONS.length - 1) {
-      goToSection(BOOK_SECTIONS[currentIndex + 1]);
-    }
-  }, [activeSection, goToSection]);
-
-  const prevPage = useCallback(() => {
-    const currentIndex = BOOK_SECTIONS.indexOf(activeSection);
-    if (currentIndex > 0) {
-      goToSection(BOOK_SECTIONS[currentIndex - 1]);
-    } else {
-      closeBook();
-    }
-  }, [activeSection, goToSection, closeBook]);
-
-  // Keyboard navigation (ArrowRight / ArrowLeft / Escape)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Do not intercept if typing in an input or textarea
-      if (
-        document.activeElement?.tagName === "INPUT" ||
-        document.activeElement?.tagName === "TEXTAREA"
-      ) {
-        return;
-      }
-
-      if (e.key === "Escape") {
-        if (selectedProject) {
-          setSelectedProject(null);
-        }
-        return;
-      }
-
-      if (!isOpen) {
-        if (e.key === "Enter" || e.key === "ArrowRight") {
-          openBook();
-        }
-        return;
-      }
-
-      if (selectedProject) return;
-
-      if (e.key === "ArrowRight") {
-        nextPage();
-      } else if (e.key === "ArrowLeft") {
-        prevPage();
+      if (e.defaultPrevented || e.repeat || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || selectedProject ||
+        !window.matchMedia("(min-width: 768px)").matches ||
+        (e.target instanceof HTMLElement && e.target.closest('input,textarea,select,[contenteditable]:not([contenteditable="false"]),[role="textbox"]'))) return;
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        if (!navigation.isOpen) { if (e.key === "ArrowRight") openBook(); }
+        else if (e.key === "ArrowRight") nextPage();
+        else prevPage();
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, selectedProject, nextPage, prevPage, openBook]);
+  }, [navigation.isOpen, selectedProject, nextPage, prevPage, openBook]);
 
-  return (
-    <BookContext.Provider
-      value={{
-        isOpen,
-        activeSection,
-        turnDirection,
-        isTurning,
-        selectedProject,
-        openBook,
-        closeBook,
-        goToSection,
-        nextPage,
-        prevPage,
-        setSelectedProject,
-      }}
-    >
-      {children}
-    </BookContext.Provider>
-  );
+  return <BookContext.Provider value={{
+    ...navigation, isTurning: navigation.turn !== null,
+    turnDirection: navigation.turn && BOOK_SECTIONS.indexOf(navigation.turn.to) < BOOK_SECTIONS.indexOf(navigation.turn.from) ? "prev" : "next",
+    selectedProject, openBook, closeBook, goToSection, finishTurn, cancelTurn, nextPage, prevPage, setSelectedProject,
+  }}>{children}</BookContext.Provider>;
 }
-
 export function useBook() {
   const context = useContext(BookContext);
-  if (!context) {
-    throw new Error("useBook must be used within a BookProvider");
-  }
+  if (!context) throw new Error("useBook must be used within a BookProvider");
   return context;
 }

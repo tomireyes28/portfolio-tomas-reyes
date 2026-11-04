@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface BookPageProps {
   side: "left" | "right";
@@ -53,6 +54,8 @@ function InteractivePageCurl({
   side: "left" | "right";
   onClick: () => void;
 }) {
+  const { language } = useLanguage();
+  const reducedMotion = useReducedMotion();
   const isLeft = side === "left";
   const [isHovered, setIsHovered] = useState(false);
 
@@ -76,6 +79,7 @@ function InteractivePageCurl({
     >
       <svg
         viewBox={`0 0 ${box} ${box}`}
+        aria-hidden="true"
         className="w-full h-full overflow-visible pointer-events-none"
       >
         <defs>
@@ -128,7 +132,7 @@ function InteractivePageCurl({
           d={isLeft ? leftShadowPath : rightShadowPath}
           fill={`url(#corner-shadow-${side})`}
           animate={{ d: isLeft ? leftShadowPath : rightShadowPath }}
-          transition={{ type: "spring", stiffness: 240, damping: 22 }}
+          transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 240, damping: 22 }}
         />
 
         {/* 2. Folded Page Flap that peels up */}
@@ -137,7 +141,7 @@ function InteractivePageCurl({
           fill={`url(#corner-flap-${side})`}
           filter={`url(#flap-drop-shadow-${side})`}
           animate={{ d: isLeft ? leftFlapPath : rightFlapPath }}
-          transition={{ type: "spring", stiffness: 240, damping: 22 }}
+          transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 240, damping: 22 }}
         />
 
         {/* 3. Subtle fold crease specular line */}
@@ -154,34 +158,20 @@ function InteractivePageCurl({
             x2: isLeft ? s : box - s,
             y2: box,
           }}
-          transition={{ type: "spring", stiffness: 240, damping: 22 }}
+          transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 240, damping: 22 }}
         />
 
-        {/* 4. PRECISE INTERACTIVE HIT-TARGET: Only the folded corner polygon receives events */}
-        <motion.polygon
-          points={
-            isLeft
-              ? `0,${box} ${s + 6},${box} 0,${box - (s + 6)}`
-              : `${box - (s + 6)},${box} ${box},${box - (s + 6)} ${box},${box}`
-          }
-          animate={{
-            points: isLeft
-              ? `0,${box} ${s + 6},${box} 0,${box - (s + 6)}`
-              : `${box - (s + 6)},${box} ${box},${box - (s + 6)} ${box},${box}`,
-          }}
-          transition={{ type: "spring", stiffness: 240, damping: 22 }}
-          fill="transparent"
-          className="pointer-events-auto cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            onClick();
-          }}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <title>{isLeft ? "Página anterior" : "Página siguiente"}</title>
-        </motion.polygon>
       </svg>
+      <button
+        type="button"
+        onClick={onClick}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onFocus={() => setIsHovered(true)}
+        onBlur={() => setIsHovered(false)}
+        aria-label={language === "es" ? (isLeft ? "Página anterior" : "Página siguiente") : (isLeft ? "Previous page" : "Next page")}
+        className={`absolute bottom-0 ${isLeft ? "left-0" : "right-0"} w-11 h-11 pointer-events-auto cursor-pointer rounded-sm`}
+      />
     </div>
   );
 }

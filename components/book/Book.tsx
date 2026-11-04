@@ -7,15 +7,11 @@ import { useLanguage } from "@/context/LanguageContext";
 import BookCover from "./BookCover";
 import BookTabs from "./BookTabs";
 import BookInteractiveSpread from "./BookInteractiveSpread";
-import { ProjectCategoryFilter } from "@/components/pages/ProjectsPage";
 
 export default function Book() {
   const { isOpen, openBook, closeBook } = useBook();
   const { language } = useLanguage();
 
-  const [projectFilter, setProjectFilter] =
-    useState<ProjectCategoryFilter>("all");
-  const [projectSubPage, setProjectSubPage] = useState<number>(0);
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
@@ -128,12 +124,7 @@ export default function Book() {
 
             {/* 3D DOUBLE-SIDED INTERACTIVE SPREAD ENGINE (Always mounted! Real pages!) */}
             <div className="flex-1 h-full relative">
-              <BookInteractiveSpread
-                projectFilter={projectFilter}
-                setProjectFilter={setProjectFilter}
-                projectSubPage={projectSubPage}
-                setProjectSubPage={setProjectSubPage}
-              />
+              <BookInteractiveSpread />
 
               {/* 3D FRONT COVER FLAP: Exactly matched to inner page dimensions! */}
               <BookCover isOpen={isOpen} onOpen={openBook} />
@@ -151,6 +142,8 @@ export default function Book() {
               pointerEvents: isOpen ? "auto" : "none",
             }}
             transition={{ duration: 0.5, delay: isOpen ? 0.35 : 0 }}
+            inert={!isOpen}
+            aria-hidden={!isOpen}
             className="hidden md:block"
           >
             <BookTabs />
