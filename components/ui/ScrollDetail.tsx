@@ -40,9 +40,14 @@ function ProjectDialog({ project }: { project: Project }) {
     return () => {
       dialog?.close();
       document.body.style.overflow = overflow;
-      if (trigger?.isConnected && !trigger.closest("[inert]")) trigger.focus({ preventScroll: true });
+      const available = (element: HTMLElement) => element.getClientRects().length > 0 && !element.closest("[inert]");
+      const counterpart = Array.from(document.querySelectorAll<HTMLElement>("button[data-project-id]"))
+        .find((element) => element.dataset.projectId === project.id && available(element));
+      const currentChapter = Array.from(document.querySelectorAll<HTMLElement>('[aria-current="page"]')).find(available);
+      const target = trigger?.isConnected && available(trigger) ? trigger : counterpart ?? currentChapter;
+      target?.focus({ preventScroll: true });
     };
-  }, []);
+  }, [project.id]);
 
   return (
         <motion.dialog
