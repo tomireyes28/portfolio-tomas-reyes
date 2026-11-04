@@ -2,6 +2,7 @@
 
 import React, { useRef, useMemo, useEffect } from "react";
 import { motion, useMotionValue, useTransform, animate, useReducedMotion } from "framer-motion";
+import { pageTurnAngle, shouldCompleteTurn, turnSettleDuration, TurnDirection } from "@/lib/pageTurn";
 import { BOOK_VIEWPORT_QUERY } from "@/lib/bookViewport";
 import BookPage from "./BookPage";
 import BookSpine from "./BookSpine";
@@ -45,8 +46,8 @@ export default function BookInteractiveSpread() {
     if (turn.mode === "auto") {
       turnAngle.set(0);
       animation = animate(turnAngle, targetIndex > currentIndex ? -180 : 180, {
-        duration: reducedMotion || !desktop.matches ? 0 : 0.65,
-        ease: [0.25, 0.1, 0.25, 1],
+        duration: reducedMotion || !desktop.matches ? 0 : 0.72,
+        ease: [0.32, 0.02, 0.2, 1],
         onComplete: () => finishTurn(turn.id, true),
       });
     }
@@ -132,138 +133,50 @@ export default function BookInteractiveSpread() {
   const prevSpread = spreads[targetIndex];
 
   const handlePan = (
+    direction: TurnDirection,
     _event: MouseEvent | TouchEvent | PointerEvent,
     info: { offset: { x: number; y: number } }
   ) => {
-    if (dragAnimation.current || !containerRef.current || !isOpen || reducedMotion || (turn && turn.mode !== "drag")) return;
-    if (!dragDirection.current && !isTurning && Math.abs(info.offset.x) > 15) {
-      const direction = info.offset.x < 0 ? "next" : "prev";
+    if (dragAnimation.current || !containerRef.current || !isOpen || reducedMotion ||
+      !window.matchMedia(BOOK_VIEWPORT_QUERY).matches || (turn && turn.mode !== "drag")) return;
+    if (!dragDirection.current) {
+      if (isTurning || Math.abs(info.offset.x) < 15 || Math.abs(info.offset.y) > Math.abs(info.offset.x)) return;
+      if ((direction === "next" && info.offset.x > 0) || (direction === "prev" && info.offset.x < 0)) return;
       const index = currentIndex + (direction === "next" ? 1 : -1);
       if (!BOOK_SECTIONS[index]) return;
       dragDirection.current = direction;
       goToSection(BOOK_SECTIONS[index], "drag");
     }
-    const halfWidth = containerRef.current.clientWidth / 2;
-    const angle = (info.offset.x / (halfWidth * 0.82)) * 180;
-    if (dragDirection.current === "next") turnAngle.set(Math.max(-180, Math.min(0, angle)));
-    if (dragDirection.current === "prev") turnAngle.set(Math.min(180, Math.max(0, angle)));
+    turnAngle.set(pageTurnAngle(info.offset.x, containerRef.current.clientWidth / 2, dragDirection.current));
   };
 
-  const handlePanEnd = (
-    _event: MouseEvent | TouchEvent | PointerEvent,
-    info: { offset: { x: number }; velocity: { x: number } }
-  ) => {
+  const settleDrag = (complete: boolean) => {
     if (dragAnimation.current || !dragDirection.current) return;
     if (!turn || turn.mode !== "drag") { cancelTurn(); dragDirection.current = null; return; }
-    const next = dragDirection.current === "next";
-    const complete = next ? turnAngle.get() < -45 || info.velocity.x < -150 : turnAngle.get() > 45 || info.velocity.x > 150;
-    dragAnimation.current = animate(turnAngle, complete ? (next ? -180 : 180) : 0, {
-      duration: reducedMotion ? 0 : 0.38,
+    const destination = complete ? (dragDirection.current === "next" ? -180 : 180) : 0;
+    dragAnimation.current = animate(turnAngle, destination, {
+      duration: reducedMotion ? 0 : turnSettleDuration(turnAngle.get(), destination),
       ease: [0.22, 1, 0.36, 1],
       onComplete: () => finishTurn(turn.id, complete),
     });
   };
+  const handlePanEnd = (
+    _event: MouseEvent | TouchEvent | PointerEvent,
+    info: { velocity: { x: number } }
+  ) => {
+    if (dragDirection.current) settleDrag(shouldCompleteTurn(turnAngle.get(), info.velocity.x, dragDirection.current));
+  };
 
-  // 3D Physical Paper Bending Transforms (Bold & Tactile Flex):
-  // 1. Z-Elevation: Bold arching lift up towards the user during the turn
-  const zElevation = useTransform(
-    turnAngle,
-    turnState === "turning-next" ? [0, -90, -180] : [0, 90, 180],
-    [0, 92, 0]
-  );
-
-  // 2. Horizontal chord contraction (scaleX): page bows into an arch (up to 16% narrower)
-  const sheetScaleX = useTransform(
-    turnAngle,
-    turnState === "turning-next"
-      ? [0, -45, -90, -135, -180]
-      : [0, 45, 90, 135, 180],
-    [1, 0.89, 0.84, 0.90, 1]
-  );
-
-  // 3. Aerodynamic drag & twist (skewY): trailing edge bows with noticeable slant
-  const sheetSkewY = useTransform(
-    turnAngle,
-    turnState === "turning-next"
-      ? [0, -45, -90, -135, -180]
-      : [0, 45, 90, 135, 180],
-    turnState === "turning-next"
-      ? [0, -7.5, -6.0, 4.0, 0]
-      : [0, 7.5, 6.0, -4.0, 0]
-  );
-
-  // 4. Diagonal corner lift (rotateZ): natural wrist/finger pull angle
-  const sheetRotateZ = useTransform(
-    turnAngle,
-    turnState === "turning-next"
-      ? [0, -60, -120, -180]
-      : [0, 60, 120, 180],
-    turnState === "turning-next"
-      ? [0, 5.0, -3.0, 0]
-      : [0, -5.0, 3.0, 0]
-  );
-
-  // 5. 3D Hand Pitch Tilt (rotateX): bottom corner pulls forward toward camera
-  const sheetRotateX = useTransform(
-    turnAngle,
-    turnState === "turning-next"
-      ? [0, -45, -90, -135, -180]
-      : [0, 45, 90, 135, 180],
-    [0, 7.5, 9.0, 4.0, 0]
-  );
-
-  // 6. Realistic multi-tier drop shadow under the vaulted sheet
-  const sheetDropShadow = useTransform(
-    turnAngle,
-    turnState === "turning-next"
-      ? [0, -45, -90, -135, -180]
-      : [0, 45, 90, 135, 180],
-    [
-      "0 0 10px rgba(0,0,0,0.15)",
-      "-24px 28px 48px rgba(18,8,2,0.58), -8px 12px 22px rgba(18,8,2,0.38)",
-      "-42px 45px 80px rgba(12,5,1,0.75), -16px 20px 35px rgba(12,5,1,0.5)",
-      "24px 28px 48px rgba(18,8,2,0.58), 8px 12px 22px rgba(18,8,2,0.38)",
-      "0 0 10px rgba(0,0,0,0.15)",
-    ]
-  );
-
-  // 7. Cylindrical curvature light wave (front face) - crisp highlight on the bending crest
-  const frontCurvatureLight = useTransform(
-    turnAngle,
-    turnState === "turning-next"
-      ? [0, -30, -75, -120, -165, -180]
-      : [0, 30, 75, 120, 165, 180],
-    [
-      "linear-gradient(90deg, transparent 0%, transparent 100%)",
-      "linear-gradient(90deg, transparent 10%, rgba(255,255,255,0.48) 35%, rgba(45,20,8,0.28) 58%, transparent 88%)",
-      "linear-gradient(90deg, transparent 15%, rgba(255,255,255,0.68) 48%, rgba(45,20,8,0.38) 72%, transparent 95%)",
-      "linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.54) 58%, rgba(45,20,8,0.3) 80%, transparent 98%)",
-      "linear-gradient(90deg, transparent 40%, rgba(255,255,255,0.3) 72%, transparent 100%)",
-      "linear-gradient(90deg, transparent 0%, transparent 100%)",
-    ]
-  );
-
-  // 8. Cylindrical curvature light wave (back face) - crisp highlight on the convex back
-  const backCurvatureLight = useTransform(
-    turnAngle,
-    turnState === "turning-next"
-      ? [0, -75, -115, -150, -180]
-      : [0, 75, 115, 150, 180],
-    [
-      "linear-gradient(90deg, transparent 0%, transparent 100%)",
-      "linear-gradient(90deg, transparent 8%, rgba(45,20,8,0.35) 28%, rgba(255,255,255,0.6) 54%, transparent 85%)",
-      "linear-gradient(90deg, transparent 12%, rgba(45,20,8,0.28) 38%, rgba(255,255,255,0.68) 64%, transparent 90%)",
-      "linear-gradient(90deg, transparent 25%, rgba(45,20,8,0.18) 52%, rgba(255,255,255,0.38) 75%, transparent 95%)",
-      "linear-gradient(90deg, transparent 0%, transparent 100%)",
-    ]
-  );
-
-  // Ambient Crease Shadow over the book
-  const ambientShadow = useTransform(
-    turnAngle,
-    turnState === "turning-next" ? [0, -90, -180] : [0, 90, 180],
-    [0, 0.45, 0]
-  );
+  // The hinge stays fixed. A small chord contraction and moving light suggest flex
+  // without the former global twist, vertical lift, or distortion of the text.
+  const progress = useTransform(turnAngle, (angle) => Math.abs(angle) / 180);
+  const sheetScaleX = useTransform(progress, [0, 0.25, 0.5, 0.8, 1], [1, 0.992, 0.978, 0.992, 1]);
+  const curvatureOpacity = useTransform(progress, [0, 0.2, 0.5, 0.8, 1], [0, 0.15, 0.32, 0.16, 0]);
+  const curvaturePosition = useTransform(progress, [0, 1], ["-35%", "35%"]);
+  const castShadowOpacity = useTransform(progress, [0, 0.15, 0.5, 0.85, 1], [0, 0.14, 0.3, 0.12, 0]);
+  const castShadowWidth = useTransform(progress, [0, 0.5, 1], [0.95, 0.15, 0.95]);
+  const isNext = turnState === "turning-next";
+  const destinationSpread = spreads[targetIndex];
 
   return (
     <div
@@ -274,7 +187,7 @@ export default function BookInteractiveSpread() {
       aria-label={isEs ? "Páginas del portfolio" : "Portfolio pages"}
       aria-busy={isTurning}
       inert={!isOpen}
-      className={`relative w-full h-full flex perspective-book select-none ${
+      className={`book-spread relative w-full h-full flex select-none ${
         !isOpen ? "pointer-events-none" : ""
       }`}
     >
@@ -314,7 +227,7 @@ export default function BookInteractiveSpread() {
         </div>
 
         {/* ============================================================== */}
-        {/* CENTER LEATHER SPINE (Centered over the seam without altering page widths) */}
+        {/* Open binding: a narrow gutter, cloth endbands, and contact shadow. */}
         {/* ============================================================== */}
         <div
           className={`absolute inset-y-0 left-1/2 -translate-x-1/2 z-25 pointer-events-none hidden md:flex transition-opacity duration-500 ${
@@ -353,124 +266,30 @@ export default function BookInteractiveSpread() {
           </BookPage>
         </div>
 
-        {/* ============================================================== */}
-        {/* AMBIENT SHADOW ACROSS THE BOOK BASE */}
-        {/* ============================================================== */}
-        <motion.div
-          style={{ opacity: ambientShadow }}
-          className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-r from-transparent via-black/45 to-transparent"
-        />
+        {/* Shadow falls onto the receiving page, independent of the rotating sheet. */}
+        {isTurning && !reducedMotion && <motion.div aria-hidden="true"
+          style={{ opacity: castShadowOpacity, scaleX: castShadowWidth, transformOrigin: isNext ? "right center" : "left center" }}
+          className={`book-turn-cast-shadow ${isNext ? "book-turn-cast-shadow-left" : "book-turn-cast-shadow-right"}`} />}
 
-        {/* ============================================================== */}
-        {/* 3D DOUBLE-SIDED SHEET TURNING FORWARD (NEXT) WITH PHYSICAL BEND */}
-        {/* ============================================================== */}
-        {turnState === "turning-next" && (
-          <motion.div
-            inert
-            aria-hidden="true"
-            style={{
-              rotateY: turnAngle,
-              rotateX: sheetRotateX,
-              rotateZ: sheetRotateZ,
-              skewY: sheetSkewY,
-              scaleX: sheetScaleX,
-              z: zElevation,
-              boxShadow: sheetDropShadow,
-              transformOrigin: "left center",
-              transformStyle: "preserve-3d",
-            }}
-            className="absolute top-0 bottom-0 right-0 w-1/2 z-35 preserve-3d"
-          >
-            {/* CARA FRONTAL (Right page of current section) */}
-            <div className="absolute inset-0 backface-hidden preserve-3d">
-              <BookPage
-                side="right"
-                pageNumber={currentSpread.rightNum}
-                chapterTitle={currentSpread.rightTitle}
-              >
-                {currentSpread.rightContent}
+        {isTurning && !reducedMotion && (
+          <motion.div inert aria-hidden="true" data-direction={isNext ? "next" : "prev"}
+            style={{ rotateY: turnAngle, scaleX: sheetScaleX, transformOrigin: isNext ? "left center" : "right center" }}
+            className={`book-turning-sheet ${isNext ? "book-turning-sheet-next" : "book-turning-sheet-prev"}`}>
+            <div className="book-sheet-face book-sheet-front">
+              <BookPage side={isNext ? "right" : "left"}
+                pageNumber={isNext ? currentSpread.rightNum : currentSpread.leftNum}
+                chapterTitle={isNext ? currentSpread.rightTitle : currentSpread.leftTitle}>
+                {isNext ? currentSpread.rightContent : currentSpread.leftContent}
               </BookPage>
-              {/* Dynamic Curvature Specular Wave */}
-              <motion.div
-                style={{ background: frontCurvatureLight }}
-                className="pointer-events-none absolute inset-0 z-40 rounded-r-md"
-              />
+              <motion.div className="book-sheet-light" style={{ opacity: curvatureOpacity, x: curvaturePosition }} />
             </div>
-
-            {/* CONTRACARA / DORSO (Left page of next section) */}
-            <div
-              style={{ transform: "rotateY(180deg)" }}
-              className="absolute inset-0 backface-hidden preserve-3d"
-            >
-              <BookPage
-                side="left"
-                pageNumber={nextSpread.leftNum}
-                chapterTitle={nextSpread.leftTitle}
-              >
-                {nextSpread.leftContent}
+            <div className="book-sheet-face book-sheet-back">
+              <BookPage side={isNext ? "left" : "right"}
+                pageNumber={isNext ? destinationSpread.leftNum : destinationSpread.rightNum}
+                chapterTitle={isNext ? destinationSpread.leftTitle : destinationSpread.rightTitle}>
+                {isNext ? destinationSpread.leftContent : destinationSpread.rightContent}
               </BookPage>
-              {/* Dynamic Curvature Specular Wave */}
-              <motion.div
-                style={{ background: backCurvatureLight }}
-                className="pointer-events-none absolute inset-0 z-40 rounded-l-md"
-              />
-            </div>
-          </motion.div>
-        )}
-
-        {/* ============================================================== */}
-        {/* 3D DOUBLE-SIDED SHEET TURNING BACKWARD (PREV) WITH PHYSICAL BEND */}
-        {/* ============================================================== */}
-        {turnState === "turning-prev" && (
-          <motion.div
-            inert
-            aria-hidden="true"
-            style={{
-              rotateY: turnAngle,
-              rotateX: sheetRotateX,
-              rotateZ: sheetRotateZ,
-              skewY: sheetSkewY,
-              scaleX: sheetScaleX,
-              z: zElevation,
-              boxShadow: sheetDropShadow,
-              transformOrigin: "right center",
-              transformStyle: "preserve-3d",
-            }}
-            className="absolute top-0 bottom-0 left-0 w-1/2 z-35 preserve-3d"
-          >
-            {/* CARA FRONTAL (Left page of current section) */}
-            <div className="absolute inset-0 backface-hidden preserve-3d">
-              <BookPage
-                side="left"
-                pageNumber={currentSpread.leftNum}
-                chapterTitle={currentSpread.leftTitle}
-              >
-                {currentSpread.leftContent}
-              </BookPage>
-              {/* Dynamic Curvature Specular Wave */}
-              <motion.div
-                style={{ background: frontCurvatureLight }}
-                className="pointer-events-none absolute inset-0 z-40 rounded-l-md"
-              />
-            </div>
-
-            {/* CONTRACARA / DORSO (Right page of previous section) */}
-            <div
-              style={{ transform: "rotateY(-180deg)" }}
-              className="absolute inset-0 backface-hidden preserve-3d"
-            >
-              <BookPage
-                side="right"
-                pageNumber={prevSpread.rightNum}
-                chapterTitle={prevSpread.rightTitle}
-              >
-                {prevSpread.rightContent}
-              </BookPage>
-              {/* Dynamic Curvature Specular Wave */}
-              <motion.div
-                style={{ background: backCurvatureLight }}
-                className="pointer-events-none absolute inset-0 z-40 rounded-r-md"
-              />
+              <motion.div className="book-sheet-light book-sheet-light-back" style={{ opacity: curvatureOpacity, x: curvaturePosition }} />
             </div>
           </motion.div>
         )}
@@ -478,21 +297,25 @@ export default function BookInteractiveSpread() {
         {/* ============================================================== */}
         {/* INTERACTIVE DRAG ZONES OVER THE EDGES (Above the corner curls) */}
         {/* ============================================================== */}
-        <motion.div
+        {currentIndex < BOOK_SECTIONS.length - 1 && !reducedMotion && <motion.div
           style={{ touchAction: "pan-y" }}
-          onPan={handlePan}
+          onPan={(event, info) => handlePan("next", event, info)}
           onPanEnd={handlePanEnd}
-          className="absolute top-0 bottom-28 right-0 w-5 z-30 cursor-grab active:cursor-grabbing hover:bg-black/2"
+          onPointerCancel={() => settleDrag(false)}
+          aria-hidden="true"
+          className="book-drag-edge absolute top-0 bottom-28 right-0 w-4 z-30 cursor-grab active:cursor-grabbing"
           title={isEs ? "Arrastrá la hoja para pasar página" : "Drag page to turn"}
-        />
+        />}
 
-        <motion.div
+        {currentIndex > 0 && !reducedMotion && <motion.div
           style={{ touchAction: "pan-y" }}
-          onPan={handlePan}
+          onPan={(event, info) => handlePan("prev", event, info)}
           onPanEnd={handlePanEnd}
-          className="absolute top-0 bottom-28 left-0 w-5 z-30 cursor-grab active:cursor-grabbing hover:bg-black/2"
+          onPointerCancel={() => settleDrag(false)}
+          aria-hidden="true"
+          className="book-drag-edge absolute top-0 bottom-28 left-0 w-4 z-30 cursor-grab active:cursor-grabbing"
           title={isEs ? "Arrastrá la hoja para volver" : "Drag page to go back"}
-        />
+        />}
       </div>
     </div>
   );

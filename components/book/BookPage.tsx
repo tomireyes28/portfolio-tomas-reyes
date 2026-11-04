@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -44,8 +44,7 @@ function CompassWatermark({ className = "" }: { className?: string }) {
 
 /**
  * Physical Paper Dog-Ear Corner
- * When hovered, the corner physically folds and peels deeper into the page
- * (fold expands from 30px to 66px with fluid paper spring physics).
+ * A small fold grows on hover or keyboard focus without covering page content.
  */
 function InteractivePageCurl({
   side,
@@ -59,8 +58,8 @@ function InteractivePageCurl({
   const isLeft = side === "left";
   const [isHovered, setIsHovered] = useState(false);
 
-  // Fold extent: 24px at rest, expands to 52px when hovered
-  const s = isHovered ? 52 : 24;
+  const id = useId().replace(/:/g, "");
+  const s = isHovered && !reducedMotion ? 36 : 18;
   const box = 112;
 
   // Paths for right corner (bottom-right origin: x=112, y=112)
@@ -85,7 +84,7 @@ function InteractivePageCurl({
         <defs>
           {/* Shadow underneath the fold where page was lifted */}
           <radialGradient
-            id={`corner-shadow-${side}`}
+            id={`corner-shadow-${id}`}
             cx={isLeft ? "0%" : "100%"}
             cy="100%"
             r="85%"
@@ -97,7 +96,7 @@ function InteractivePageCurl({
 
           {/* Paper texture gradient for the folded flap */}
           <linearGradient
-            id={`corner-flap-${side}`}
+            id={`corner-flap-${id}`}
             x1={isLeft ? "100%" : "0%"}
             y1="0%"
             x2={isLeft ? "0%" : "100%"}
@@ -111,7 +110,7 @@ function InteractivePageCurl({
 
           {/* Drop shadow cast by the folded flap onto the page */}
           <filter
-            id={`flap-drop-shadow-${side}`}
+            id={`flap-drop-shadow-${id}`}
             x="-25%"
             y="-25%"
             width="150%"
@@ -130,7 +129,7 @@ function InteractivePageCurl({
         {/* 1. Underlying Void/Shadow where paper was lifted */}
         <motion.path
           d={isLeft ? leftShadowPath : rightShadowPath}
-          fill={`url(#corner-shadow-${side})`}
+          fill={`url(#corner-shadow-${id})`}
           animate={{ d: isLeft ? leftShadowPath : rightShadowPath }}
           transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 240, damping: 22 }}
         />
@@ -138,8 +137,8 @@ function InteractivePageCurl({
         {/* 2. Folded Page Flap that peels up */}
         <motion.path
           d={isLeft ? leftFlapPath : rightFlapPath}
-          fill={`url(#corner-flap-${side})`}
-          filter={`url(#flap-drop-shadow-${side})`}
+          fill={`url(#corner-flap-${id})`}
+          filter={`url(#flap-drop-shadow-${id})`}
           animate={{ d: isLeft ? leftFlapPath : rightFlapPath }}
           transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 240, damping: 22 }}
         />
