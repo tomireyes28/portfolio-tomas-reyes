@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
-import { useBook } from "@/context/BookContext";
+import { motion, useReducedMotion } from "framer-motion";
+import { BOOK_SECTIONS, useBook } from "@/context/BookContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { BOOK_INDEX_WIDTH } from "@/lib/bookViewport";
 import BookCover from "./BookCover";
@@ -11,10 +11,16 @@ import LanguageSwitch from "@/components/ui/LanguageSwitch";
 import BookInteractiveSpread from "./BookInteractiveSpread";
 
 export default function Book() {
-  const { isOpen, openBook, closeBook } = useBook();
+  const { isOpen, openBook, closeBook, activeSection } = useBook();
   const { language } = useLanguage();
 
   const isEs = language === "es";
+  const reducedMotion = useReducedMotion();
+  const progress = BOOK_SECTIONS.indexOf(activeSection) / (BOOK_SECTIONS.length - 1);
+  const paperDepth = {
+    "--left-stack-depth": `${3 + progress * 7}px`,
+    "--right-stack-depth": `${10 - progress * 7}px`,
+  } as React.CSSProperties;
 
   return (
     <div style={{ "--book-index-width": `${BOOK_INDEX_WIDTH}px` } as React.CSSProperties} className="book-desk expedition-desk select-none">
@@ -40,32 +46,22 @@ export default function Book() {
           animate={{
             // Account for the reserved index and half the paper inset when centering the cover.
             x: isOpen ? "calc(0% + 0px)" : `calc(-25% + ${BOOK_INDEX_WIDTH * 0.75 + 15}px)`,
-            rotateX: isOpen ? 0 : 4,
+            rotateX: isOpen || reducedMotion ? 0 : 2,
           }}
           transition={{
-            duration: 0.7,
+            duration: reducedMotion ? 0 : 0.72,
             ease: [0.25, 0.1, 0.25, 1],
           }}
           style={{ transformStyle: "preserve-3d" }}
           className="book-rig"
         >
-          {/* 1. DEEP REALISTIC DESK CAST SHADOWS */}
-          <div
-            className={`pointer-events-none absolute top-5 rounded-2xl bg-black/85 blur-2xl transition-all duration-700 ${
-              isOpen ? "-inset-3" : "left-1/2 -inset-y-3 -right-3"
-            }`}
-            style={{ transform: "translateZ(-24px)" }}
-          />
-          <div
-            className={`pointer-events-none absolute -bottom-5 h-16 rounded-full bg-black/90 blur-xl transition-all duration-700 ${
-              isOpen ? "inset-x-6" : "left-[55%] right-6"
-            }`}
-            style={{ transform: "translateZ(-20px)" }}
-          />
+          <div aria-hidden="true" className={`book-desk-shadow ${isOpen ? "" : "book-desk-shadow-closed"}`} />
 
           {/* 2. REALISTIC LEATHER HARDCOVER CASE (Fixed dimensions!) */}
           <div
-            className={`relative flex flex-1 min-w-0 h-full rounded-xl p-2.5 sm:p-3.5 md:p-4.5 transition-all duration-700 ${
+            style={paperDepth}
+            data-open={isOpen}
+            className={`book-case relative flex flex-1 min-w-0 h-full rounded-xl p-2.5 sm:p-3.5 md:p-4.5 transition-all duration-700 ${
               isOpen ? "realistic-leather-cover shadow-2xl" : "bg-transparent"
             }`}
           >
@@ -127,7 +123,11 @@ export default function Book() {
             />
 
             {/* 3D DOUBLE-SIDED INTERACTIVE SPREAD ENGINE (Always mounted! Real pages!) */}
-            <div className="flex-1 min-w-0 h-full relative">
+            <div className="book-paper-surface flex-1 min-w-0 h-full relative">
+              <div className="book-paper-block" aria-hidden="true" data-open={isOpen}>
+                <span className="book-bottom-stack book-bottom-stack-left" />
+                <span className="book-bottom-stack book-bottom-stack-right" />
+              </div>
               <BookInteractiveSpread />
 
               {/* 3D FRONT COVER FLAP: Exactly matched to inner page dimensions! */}
@@ -145,7 +145,7 @@ export default function Book() {
               x: isOpen ? 0 : -20,
               pointerEvents: isOpen ? "auto" : "none",
             }}
-            transition={{ duration: 0.5, delay: isOpen ? 0.35 : 0 }}
+            transition={{ duration: reducedMotion ? 0 : 0.32, delay: isOpen && !reducedMotion ? 0.22 : 0 }}
             inert={!isOpen}
             aria-hidden={!isOpen}
             className="book-index"

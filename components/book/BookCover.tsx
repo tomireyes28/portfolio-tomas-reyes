@@ -55,8 +55,8 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
         rotateY: isOpen ? -180 : 0,
       }}
       transition={{
-        duration: reducedMotion ? 0 : 0.75,
-        ease: [0.25, 0.1, 0.25, 1],
+        duration: reducedMotion ? 0 : 0.72,
+        ease: [0.32, 0.02, 0.2, 1],
       }}
       onAnimationComplete={() => {
         if (isOpen) {
@@ -82,10 +82,10 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
       {/* Visible de 0deg a -90deg */}
       {/* ============================================================== */}
       <div
-        className="absolute inset-0 realistic-leather-cover rounded-r-xl rounded-l-md flex flex-col justify-between p-6 md:p-8 backface-hidden preserve-3d"
+        className="book-cover-face absolute inset-0 realistic-leather-cover rounded-r-xl rounded-l-md flex flex-col justify-between p-6 md:p-8 backface-hidden preserve-3d"
         style={{
           boxShadow:
-            "0 12px 32px rgba(0,0,0,0.75), inset 0 2px 6px rgba(255,225,180,0.2), inset 0 -8px 22px rgba(0,0,0,0.8)",
+            "5px 12px 24px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,225,180,0.24), inset -2px -4px 10px rgba(0,0,0,0.5)",
         }}
       >
         {/* Left Leather Spine Strip with 3D ridge */}
@@ -140,22 +140,22 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
         <div className="relative z-10 pl-5 md:pl-6 my-auto flex flex-col items-center text-center">
           {/* Logo Medallion with Golden Shimmer Beam & Sparkle */}
           <div className="relative mb-3 flex items-center justify-center">
-            {/* Ambient Animated Gold Glow Ring */}
-            <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-[#e2be6b]/60 bg-[#1f120b]/90 flex items-center justify-center animate-gold-aura group-hover:scale-105 transition-transform duration-500 overflow-hidden">
+            {/* Brass medallion catches the same fixed light as the cover. */}
+            <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-[#e2be6b]/60 bg-[#1f120b]/90 flex items-center justify-center  group-hover:scale-105 transition-transform duration-500 overflow-hidden">
               {/* Periodic Light Sweep Shimmer across the medallion */}
-              <div className="pointer-events-none absolute -inset-full bg-gradient-to-r from-transparent via-white/20 via-[#f3d37a]/30 to-transparent animate-book-shimmer" />
+              <div className="pointer-events-none absolute -inset-full bg-gradient-to-r from-transparent via-white/20 via-[#f3d37a]/30 to-transparent " />
 
               <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full border border-dashed border-[#c89d45]/60 flex items-center justify-center p-2">
                 <img
                   src="/logo.png"
                   alt="Tomás Reyes Logo"
-                  className="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-[0_0_12px_rgba(56,189,248,0.5)] transition-transform duration-500 group-hover:scale-110"
+                  className="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-sm transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
             </div>
 
             {/* Little Glint Star on the Medallion Rim */}
-            <span className="absolute -top-1 -right-1 text-[#f3d37a] text-sm animate-glint pointer-events-none drop-shadow-[0_0_6px_#f3d37a]">
+            <span className="absolute -top-1 -right-1 text-[#f3d37a] text-sm  pointer-events-none drop-shadow-[0_0_6px_#f3d37a]">
               ✦
             </span>
           </div>
@@ -163,7 +163,7 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
           <h2
             className="font-serif-book text-2xl md:text-3xl lg:text-4xl font-bold tracking-wide text-[#f5e8c7] mb-2"
             style={{
-              textShadow: "0 2px 4px rgba(0,0,0,0.9), 0 0 18px rgba(200,157,69,0.3)",
+              textShadow: "0 1px 1px #000, 0 -1px 0 rgba(255,230,180,0.12)",
             }}
           >
             TOMÁS REYES
@@ -227,7 +227,7 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
               </div>
 
               {downloadingCv ? (
-                <Check className="w-3.5 h-3.5 text-[#a3e635] ml-2 shrink-0 animate-bounce" />
+                <Check className="w-3.5 h-3.5 text-[#a3e635] ml-2 shrink-0 " />
               ) : (
                 <FileDown className="w-3.5 h-3.5 text-[#c89d45] ml-2 shrink-0 group-hover/cv:scale-110 transition-transform" />
               )}
@@ -261,11 +261,11 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
             e.stopPropagation();
             if (!isOpen) onOpen();
           }}
-          className="absolute -right-4 md:-right-5 top-1/2 -translate-y-1/2 z-30 flex items-center py-4 px-2 rounded-r-lg border-y-2 border-r-2 border-[#f3d37a] bg-gradient-to-r from-[#24140b] via-[#3a2012] to-[#4a2b19] shadow-[6px_8px_20px_rgba(0,0,0,0.85)] cursor-pointer group-hover:translate-x-1.5 transition-all duration-300 overflow-hidden animate-gold-aura"
+          className="absolute -right-4 md:-right-5 top-1/2 -translate-y-1/2 z-30 flex items-center py-4 px-2 rounded-r-lg border-y-2 border-r-2 border-[#f3d37a] bg-gradient-to-r from-[#24140b] via-[#3a2012] to-[#4a2b19] shadow-[6px_8px_20px_rgba(0,0,0,0.85)] cursor-pointer group-hover:translate-x-1.5 transition-all duration-300 overflow-hidden "
           title={isEs ? "Abrir diario de portfolio" : "Open portfolio journal"}
         >
           {/* Shimmer sweep over the clasp */}
-          <div className="pointer-events-none absolute -inset-full bg-gradient-to-r from-transparent via-[#f3d37a]/35 to-transparent animate-book-shimmer" />
+          <div className="pointer-events-none absolute -inset-full bg-gradient-to-r from-transparent via-[#f3d37a]/35 to-transparent " />
 
           <div className="relative flex flex-col items-center gap-1.5 text-[#f3d37a]">
             <span className="w-2 h-2 rounded-full bg-[#f3d37a] shadow-[0_0_8px_#f3d37a]" />
