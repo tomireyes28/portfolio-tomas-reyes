@@ -1,3 +1,4 @@
+import { projectImages } from "./projectImages";
 import { Project } from "@/types/Project";
 
 /**
@@ -43,7 +44,7 @@ export const projects: Project[] = [
     category: "fullstack",
     demoUrl: "https://plasticwho.com/",
     repoUrl: "https://github.com/tomireyes28/plastic-who",
-    image: "/projects/plastic-who.png",
+    ...projectImages["plastic-who"],
   },
 
   {
@@ -84,7 +85,7 @@ export const projects: Project[] = [
     category: "fullstack",
     demoUrl: "https://mnagency-app.vercel.app/login",
     repoUrl: "https://github.com/tomireyes28/mnagencyapp-backend",
-    image: "/projects/mn-agency.png",
+    ...projectImages["mn-agency"],
   },
 
   {
@@ -124,7 +125,7 @@ export const projects: Project[] = [
     category: "fullstack",
     demoUrl: "https://psycho-manager.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/psycho-manager",
-    image: "/projects/psychomanager.png",
+    ...projectImages["therapio"],
   },
 
   {
@@ -166,7 +167,7 @@ export const projects: Project[] = [
     category: "fullstack",
     demoUrl: "https://lumi-beta-one.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/lumi",
-    image: "/projects/lumi.png",
+    ...projectImages["lumi"],
   },
 
   {
@@ -205,7 +206,7 @@ export const projects: Project[] = [
     category: "tools",
     demoUrl: "",
     repoUrl: "https://github.com/tomireyes28/ig-x-sync",
-    image: "/projects/ig-x-sync.jpg",
+    ...projectImages["mn-igx-sync"],
   },
 
   {
@@ -246,7 +247,7 @@ export const projects: Project[] = [
     category: "fullstack",
     demoUrl: "https://cine-radar-app.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/cine-radar",
-    image: "/projects/cinemaapp.png",
+    ...projectImages["cinema-agenda"],
   },
 
   {
@@ -285,7 +286,7 @@ export const projects: Project[] = [
     category: "frontend",
     demoUrl: "https://aberturasnyl.com/",
     repoUrl: "https://github.com/tomireyes28/aberturas-nyl",
-    image: "/projects/aberturas-nyl.png",
+    ...projectImages["aberturas-nyl"],
   },
 
   {
@@ -320,7 +321,7 @@ export const projects: Project[] = [
     category: "frontend",
     demoUrl: "https://dea-beta.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/dea",
-    image: "/projects/dea-simulador.png",
+    ...projectImages["dea-simulator"],
   },
 ];
 

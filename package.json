@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test:navigation": "node --test tests/book-navigation.test.mjs",
-    "test:motion": "node --test tests/page-turn.test.mjs"
+    "test:motion": "node --test tests/page-turn.test.mjs",
+    "images:optimize": "node scripts/optimize-project-images.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -16,8 +17,7 @@
     "lucide-react": "^0.555.0",
     "next": "16.4.5",
     "react": "19.2.9",
-    "react-dom": "19.2.9",
-    "sweetalert2": "^11.26.17"
+    "react-dom": "19.2.9"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

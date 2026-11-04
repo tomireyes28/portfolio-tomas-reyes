@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import {
   Compass,
@@ -10,9 +11,6 @@ import {
   Award,
   Github,
   Linkedin,
-  Mail,
-  Copy,
-  Check,
   Briefcase,
   GraduationCap,
   Lightbulb,
@@ -21,16 +19,15 @@ import {
   Code2,
   ChevronUp,
   ArrowUpRight,
-  Send,
 } from "lucide-react";
-import emailjs from "@emailjs/browser";
 import LanguageSwitch from "@/components/ui/LanguageSwitch";
-import FormStatus from "@/components/ui/FormStatus";
+import ContactEmail from "@/components/ui/ContactEmail";
+import ContactForm from "@/components/ui/ContactForm";
 import { useLanguage } from "@/context/LanguageContext";
 import { projects } from "@/src/projects";
 import { skills } from "@/src/skills";
 import Polaroid from "@/components/ui/Polaroid";
-import { ProjectCategoryFilter } from "@/components/pages/ProjectsPage";
+import type { ProjectCategoryFilter } from "@/components/pages/ProjectsPage";
 
 const preferredScrollBehavior = (): ScrollBehavior => window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth";
 
@@ -48,56 +45,11 @@ export default function MobilePortfolio() {
   const { language, t } = useLanguage();
   const isEs = language === "es";
 
-  const [copied, setCopied] = useState(false);
   const [filter, setFilter] = useState<ProjectCategoryFilter>("all");
   const [activeSection, setActiveSection] = useState<string>("sobre-mi");
   const [showBackToTop, setShowBackToTop] = useState(false);
-  const [msgStatus, setMsgStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-  const [msgData, setMsgData] = useState({ name: "", email: "", message: "" });
   const headerRef = useRef<HTMLElement>(null);
   const pageRef = useRef<HTMLDivElement>(null);
-  const msgFormRef = useRef<HTMLFormElement>(null);
-
-  // Send message via EmailJS
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!msgFormRef.current) return;
-    setMsgStatus("sending");
-
-    emailjs
-      .sendForm(
-        "service_qph1s2d",
-        "template_n1yn4sw",
-        msgFormRef.current,
-        {
-          publicKey: "SdG0xE3GxYiYdOXRm",
-        }
-      )
-      .then(() => {
-        setMsgStatus("success");
-        setMsgData({ name: "", email: "", message: "" });
-      })
-      .catch((err) => {
-        console.error("EmailJS mobile error:", err);
-        setMsgStatus("error");
-      });
-  };
-
-  const mailtoFallback = `mailto:tomireyes.tr@gmail.com?subject=${encodeURIComponent(
-    msgData.name ? `Contacto Portfolio - ${msgData.name}` : "Contacto desde Portfolio"
-  )}&body=${encodeURIComponent(
-    msgData.message
-      ? `${msgData.message}\n\nDe: ${msgData.name} (${msgData.email})`
-      : "Hola Tomás, me contacto desde tu portfolio."
-  )}`;
-
-  // Copy email handler with feedback
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText("tomireyes.tr@gmail.com");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
-  };
-
   // Filter projects
   const filteredProjects = projects.filter((p) => {
     if (filter === "all") return true;
@@ -164,8 +116,8 @@ export default function MobilePortfolio() {
             onClick={() => window.scrollTo({ top: 0, behavior: preferredScrollBehavior() })}
             className="flex items-center gap-2 text-[#e2be6b] hover:text-[#fdf5e2] transition-colors cursor-pointer"
           >
-            <img
-              src="/logo.png"
+            <Image
+              src="/logo.png" width={64} height={64}
               alt="Tomás Reyes Logo"
               className="h-5.5 w-auto object-contain drop-shadow-[0_0_8px_rgba(56,189,248,0.25)]"
             />
@@ -230,8 +182,8 @@ export default function MobilePortfolio() {
             {/* Profile Polaroid Card */}
             <div className="polaroid-card p-3 pb-4 rounded-xs border border-[#bfa984] max-w-[240px] mx-auto mt-2 shadow-md transform -rotate-1">
               <div className="w-full aspect-square mx-auto overflow-hidden bg-[#24140b] rounded-xs border border-[#8c6d46]/35 shadow-inner">
-                <img
-                  src="/perfil.jpg"
+                <Image
+                  src="/perfil.jpg" width={600} height={600} sizes="(min-width: 1100px) 250px, 240px" loading="eager" fetchPriority="high"
                   alt="Tomás Reyes"
                   className="w-full h-full object-cover sepia-[0.10] contrast-[1.04]"
                 />
@@ -431,8 +383,8 @@ export default function MobilePortfolio() {
                       className="flex items-center gap-2 p-2 rounded-xs bg-[#fdfbf7]/80 border border-[#8c6d46]/25"
                     >
                       {skill.icon ? (
-                        <img
-                          src={skill.icon}
+                        <Image
+                          src={skill.icon} width={16} height={16}
                           alt={skill.name}
                           className="w-4 h-4 object-contain shrink-0"
                           onError={(e) => {
@@ -692,6 +644,8 @@ export default function MobilePortfolio() {
               </a>
             </div>
 
+            <ContactEmail />
+
             {/* Footer Location & Modality */}
             <div className="pt-2 border-t border-[#8c6d46]/25 flex items-center justify-between text-xs">
               <span className="font-serif-book text-[#6a4f3b] italic">
@@ -721,130 +675,7 @@ export default function MobilePortfolio() {
             </p>
 
             {/* Interactive Form or Success State */}
-            <FormStatus status={msgStatus} language={language} />
-            {msgStatus === "success" ? (
-              <div className="p-4 rounded-xs bg-[#265538]/10 border border-[#265538]/40 text-center space-y-2">
-                <div className="w-9 h-9 rounded-full bg-[#265538]/15 text-[#265538] flex items-center justify-center mx-auto">
-                  <Check className="w-5 h-5 stroke-[2.5]" />
-                </div>
-                <h4 className="font-serif-book text-base font-bold text-[#22140c]">
-                  {isEs ? "¡Mensaje Enviado!" : "Message Sent!"}
-                </h4>
-                <p className="font-serif-book text-xs text-[#452f20] leading-relaxed">
-                  {isEs
-                    ? "Gracias por escribirme. Tu mensaje se envió correctamente."
-                    : "Thank you for reaching out. Your message was sent successfully."}
-                </p>
-                <button
-                  onClick={() => setMsgStatus("idle")}
-                  type="button"
-                  className="mt-2 inline-flex items-center gap-1 font-typewriter text-[10.5px] uppercase font-bold text-[#265538] hover:underline cursor-pointer"
-                >
-                  <span>{isEs ? "Enviar otro mensaje" : "Send another message"}</span>
-                </button>
-              </div>
-            ) : (
-              <form ref={msgFormRef} aria-busy={msgStatus === "sending"} onSubmit={handleSendMessage} className="space-y-2.5">
-                {msgStatus === "error" && (
-                  <div className="p-2.5 rounded-xs bg-[#882b2b]/10 border border-[#882b2b]/35 text-[#882b2b] text-xs font-serif-book flex items-center justify-between gap-2">
-                    <span>
-                      {isEs
-                        ? "Error de conexión al enviar."
-                        : "Connection error while sending."}
-                    </span>
-                    <a
-                      href={mailtoFallback}
-                      className="font-typewriter text-[10px] font-bold underline shrink-0"
-                    >
-                      {isEs ? "Abrir correo" : "Open email"}
-                    </a>
-                  </div>
-                )}
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <div>
-                    <label htmlFor="mobile-contact-name" className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
-                      {isEs ? "Nombre" : "Name"}
-                    </label>
-                    <input
-                      type="text"
-                      id="mobile-contact-name"
-                      name="name"
-                      autoComplete="name"
-                      required
-                      value={msgData.name}
-                      onChange={(e) => setMsgData({ ...msgData, name: e.target.value })}
-                      placeholder={isEs ? "Tu nombre" : "Your name"}
-                      className="w-full px-2.5 py-1.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/40 text-[#22140c] placeholder:text-[#8c6e54]/50 font-serif-book text-xs focus:outline-none focus:border-[#265538] focus:ring-1 focus:ring-[#265538]/30 transition-all shadow-2xs"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="mobile-contact-email" className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
-                      {isEs ? "Correo" : "Email"}
-                    </label>
-                    <input
-                      type="email"
-                      id="mobile-contact-email"
-                      name="email"
-                      autoComplete="email"
-                      required
-                      value={msgData.email}
-                      onChange={(e) => setMsgData({ ...msgData, email: e.target.value })}
-                      placeholder={isEs ? "tu@email.com" : "you@email.com"}
-                      className="w-full px-2.5 py-1.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/40 text-[#22140c] placeholder:text-[#8c6e54]/50 font-serif-book text-xs focus:outline-none focus:border-[#265538] focus:ring-1 focus:ring-[#265538]/30 transition-all shadow-2xs"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="mobile-contact-message" className="font-typewriter text-[9px] uppercase tracking-wider text-[#6a4f3b] font-bold block mb-0.5">
-                    {isEs ? "Mensaje" : "Message"}
-                  </label>
-                  <textarea
-                    id="mobile-contact-message"
-                      name="message"
-                    required
-                    rows={3}
-                    value={msgData.message}
-                    onChange={(e) => setMsgData({ ...msgData, message: e.target.value })}
-                    placeholder={
-                      isEs
-                        ? "Contame sobre tu propuesta, proyecto o vacante..."
-                        : "Tell me about your project, proposal, or open role..."
-                    }
-                    className="w-full px-2.5 py-1.5 rounded-xs bg-[#fdfbf7] border border-[#8c6d46]/40 text-[#22140c] placeholder:text-[#8c6e54]/50 font-serif-book text-xs resize-none focus:outline-none focus:border-[#265538] focus:ring-1 focus:ring-[#265538]/30 transition-all shadow-2xs"
-                  />
-                </div>
-
-                <div className="flex flex-wrap items-center justify-between pt-1 gap-2">
-                  <button
-                    type="submit"
-                    disabled={msgStatus === "sending"}
-                    className="flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xs bg-[#22140c] hover:bg-[#3d2416] text-[#f5ebd6] font-typewriter text-[11px] font-bold uppercase tracking-wider transition-all shadow-xs cursor-pointer disabled:opacity-50"
-                  >
-                    <Send className="w-3.5 h-3.5 text-[#e2be6b]" />
-                    <span>
-                      {msgStatus === "sending"
-                        ? isEs
-                          ? "Enviando..."
-                          : "Sending..."
-                        : isEs
-                        ? "Enviar Mensaje"
-                        : "Send Message"}
-                    </span>
-                  </button>
-
-                  <a
-                    href={mailtoFallback}
-                    className="font-serif-book text-xs text-[#6a4f3b] hover:text-[#22140c] underline flex items-center gap-1 transition-colors"
-                  >
-                    <span>{isEs ? "O vía tu correo" : "Or via email"}</span>
-                    <ArrowUpRight className="w-3 h-3" />
-                  </a>
-                </div>
-              </form>
-            )}
+            <ContactForm />
 
             {/* Signature & Availability Footer */}
             <div className="pt-3 border-t border-[#8c6d46]/25 flex items-center justify-between text-xs">

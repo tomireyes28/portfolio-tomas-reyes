@@ -10,13 +10,6 @@ export type ProjectCategoryFilter = "all" | "fullstack" | "frontend" | "tools";
 
 interface ProjectsSpreadProps {
   spreadIndex?: number;
-  filter?: ProjectCategoryFilter;
-  setFilter?: (f: ProjectCategoryFilter) => void;
-}
-
-export function getFilteredProjects(filter: ProjectCategoryFilter = "all") {
-  if (filter === "all") return projects;
-  return projects.filter((p) => p.category === filter);
 }
 
 export function ProjectsLeftPage({

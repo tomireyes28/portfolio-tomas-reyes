@@ -1,12 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import React from "react";
 import { Compass, MapPin, Terminal, Award, FileDown } from "lucide-react";
 import { useBook } from "@/context/BookContext";
 import { useLanguage } from "@/context/LanguageContext";
 
 export function AboutLeftPage() {
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
   const isEs = language === "es";
 
   return (
@@ -16,8 +17,8 @@ export function AboutLeftPage() {
         {/* Washi tape top */}
         <div className="washi-tape absolute -top-2.5 left-1/2 -translate-x-1/2 w-20 h-4.5 rotate-1" />
         <div className="w-full aspect-square mx-auto overflow-hidden bg-[#24140b] rounded-xs border border-[#8c6d46]/35 shadow-inner">
-          <img
-            src="/perfil.jpg"
+          <Image
+            src="/perfil.jpg" width={600} height={600} sizes="(min-width: 1100px) 250px, 240px" loading="eager" fetchPriority="high"
             alt="Tomás Reyes"
             className="w-full h-full object-cover sepia-[0.10] contrast-[1.04]"
           />

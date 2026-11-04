@@ -100,8 +100,7 @@
 }
 
 /* Realistic Antique Leather Hardcover with tactile grain and rich saddle-tan depth */
-.realistic-leather-cover,
-.leather-cover {
+.realistic-leather-cover {
   background-color: #2e190e;
   background-image: 
     url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='leatherNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23leatherNoise)' opacity='0.09'/%3E%3C/svg%3E"),
@@ -125,54 +124,6 @@
     /* Inner shadow for leather thickness */
     inset 0 2px 8px rgba(255, 225, 180, 0.18),
     inset 0 -12px 30px rgba(0, 0, 0, 0.82);
-}
-
-/* Deckled stacked paper edges (Grosor real de páginas) */
-.book-edge-right {
-  background: 
-    linear-gradient(to bottom, rgba(50, 28, 12, 0.35) 0%, transparent 6%, transparent 94%, rgba(50, 28, 12, 0.4) 100%),
-    repeating-linear-gradient(
-      to left,
-      #fbf7ee 0px,
-      #c4b18c 1px,
-      #dfcdad 2px,
-      #af9974 3px,
-      #f2e6d2 4px,
-      #b9a47f 5px
-    );
-  box-shadow: 
-    inset 2px 0 6px rgba(45, 25, 12, 0.5),
-    2px 0 5px rgba(0, 0, 0, 0.35);
-}
-
-.book-edge-left {
-  background: repeating-linear-gradient(
-    to right,
-    #ebdcc3 0px,
-    #c4b18c 1px,
-    #dfcdad 2px,
-    #af9974 3px,
-    #f2e6d2 4px,
-    #b9a47f 5px
-  );
-  box-shadow: 
-    inset -2px 0 6px rgba(45, 25, 12, 0.45),
-    -2px 0 5px rgba(0, 0, 0, 0.35);
-}
-
-.book-edge-bottom {
-  background: repeating-linear-gradient(
-    to top,
-    #ebdcc3 0px,
-    #c4b18c 1px,
-    #dfcdad 2px,
-    #af9974 3px,
-    #f2e6d2 4px,
-    #b9a47f 5px
-  );
-  box-shadow: 
-    inset 0 -2px 6px rgba(45, 25, 12, 0.45),
-    0 3px 6px rgba(0, 0, 0, 0.4);
 }
 
 /* Aged Parchment / Kraft Page Texture with organic fiber noise and age stains */
@@ -221,99 +172,6 @@
   background: rgba(92, 61, 38, 0.5);
 }
 
-/* Page Curl / Doblez de Esquina */
-.page-curl-corner-right {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, transparent 50%, rgba(139, 105, 65, 0.3) 50%, rgba(245, 235, 215, 0.95) 55%, #dfcdad 100%);
-  border-top-left-radius: 4px;
-  box-shadow: -3px -3px 7px rgba(0, 0, 0, 0.22);
-  transition: all 0.25s ease-out;
-  cursor: pointer;
-  z-index: 25;
-}
-
-.page-curl-corner-right:hover {
-  width: 48px;
-  height: 48px;
-  box-shadow: -6px -6px 14px rgba(0, 0, 0, 0.35);
-  background: linear-gradient(135deg, transparent 50%, rgba(139, 105, 65, 0.4) 50%, rgba(255, 248, 235, 1) 54%, #ebdcc3 100%);
-}
-
-.page-curl-corner-left {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(225deg, transparent 50%, rgba(139, 105, 65, 0.3) 50%, rgba(245, 235, 215, 0.95) 55%, #dfcdad 100%);
-  border-top-right-radius: 4px;
-  box-shadow: 3px -3px 7px rgba(0, 0, 0, 0.22);
-  transition: all 0.25s ease-out;
-  cursor: pointer;
-  z-index: 25;
-}
-
-.page-curl-corner-left:hover {
-  width: 48px;
-  height: 48px;
-  box-shadow: 6px -6px 14px rgba(0, 0, 0, 0.35);
-  background: linear-gradient(225deg, transparent 50%, rgba(139, 105, 65, 0.4) 50%, rgba(255, 248, 235, 1) 54%, #ebdcc3 100%);
-}
-
-/* Wax Seal Button Effect */
-.wax-seal-btn {
-  background: radial-gradient(circle at 35% 35%, #9c2d33 0%, #7e1e25 65%, #561117 100%);
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.5),
-    inset 0 1px 2px rgba(255, 255, 255, 0.3),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.6);
-  border: 2px solid #561117;
-  transition: all 0.2s ease-out;
-}
-
-.wax-seal-btn:hover {
-  transform: scale(1.04);
-  box-shadow: 
-    0 6px 16px rgba(0, 0, 0, 0.6),
-    inset 0 1px 3px rgba(255, 255, 255, 0.4);
-}
-
-.wax-seal-btn:active {
-  transform: scale(0.97);
-}
-
-/* Authentic 3D Red Wax Seal Stamp with Embossed Ring */
-.wax-seal-stamp {
-  background: radial-gradient(circle at 30% 30%, #a8262f 0%, #801820 60%, #4a0d12 100%);
-  border: 1.5px solid #4a0d12;
-  box-shadow: 
-    0 5px 14px rgba(35, 12, 14, 0.45),
-    0 2px 4px rgba(0, 0, 0, 0.3),
-    inset 0 1.5px 2px rgba(255, 255, 255, 0.35),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.65);
-  transition: all 0.2s ease-out;
-}
-
-.wax-seal-stamp:hover {
-  transform: translateY(-1.5px) scale(1.02);
-  box-shadow: 
-    0 8px 20px rgba(45, 12, 14, 0.55),
-    0 3px 6px rgba(0, 0, 0, 0.35),
-    inset 0 2px 3px rgba(255, 255, 255, 0.45),
-    inset 0 -2px 5px rgba(0, 0, 0, 0.7);
-}
-
-.wax-seal-stamp:active {
-  transform: translateY(1px) scale(0.97);
-  box-shadow: 
-    0 2px 6px rgba(35, 12, 14, 0.4),
-    inset 0 2px 5px rgba(0, 0, 0, 0.75);
-}
-
 /* Polaroid & Washi Tape with realistic crepe paper texture */
 .polaroid-card {
   background: #fdfaf2;
@@ -335,54 +193,6 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
   border-left: 2px dashed rgba(255, 255, 255, 0.35);
   border-right: 2px dashed rgba(255, 255, 255, 0.35);
-}
-
-
-/* ============================================================== */
-/* GOLDEN SHIMMER & LIGHT SWEEP ANIMATIONS                        */
-/* ============================================================== */
-
-@keyframes bookShimmer {
-  0% {
-    transform: translateX(-150%) skewX(-20deg);
-  }
-  30%, 100% {
-    transform: translateX(250%) skewX(-20deg);
-  }
-}
-
-.animate-book-shimmer {
-  animation: bookShimmer 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-@keyframes goldPulseAura {
-  0%, 100% {
-    box-shadow: 0 0 16px rgba(200, 157, 69, 0.35), inset 0 0 12px rgba(200, 157, 69, 0.2);
-    border-color: rgba(226, 190, 107, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 32px rgba(200, 157, 69, 0.8), 0 0 45px rgba(56, 189, 248, 0.35), inset 0 0 20px rgba(226, 190, 107, 0.45);
-    border-color: rgba(255, 230, 160, 0.95);
-  }
-}
-
-.animate-gold-aura {
-  animation: goldPulseAura 2.6s ease-in-out infinite;
-}
-
-@keyframes glintTwinkle {
-  0%, 100% {
-    opacity: 0.2;
-    transform: scale(0.8) rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.3) rotate(90deg);
-  }
-}
-
-.animate-glint {
-  animation: glintTwinkle 2.2s ease-in-out infinite;
 }
 
 
@@ -445,8 +255,6 @@ body { min-height: 100dvh; }
 .editorial-portfolio section { scroll-margin-top: calc(var(--portfolio-header-height, 110px) + 16px); }
 .editorial-project-grid { display: grid; gap: 20px; }
 @media (min-width: 700px) { .editorial-project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.no-scrollbar { scrollbar-width: none; }
-.no-scrollbar::-webkit-scrollbar { display: none; }
 
 @media (max-width: 350px) { .editorial-nav-tab { font-size: 10px; letter-spacing: -.02em; padding-inline: 0; } }
 
@@ -455,7 +263,7 @@ body { min-height: 100dvh; }
 .project-polaroid { height:100%; min-height:0; width:100%; max-width:360px; margin-inline:auto; }
 .project-preview { display:block; width:100%; min-height:0; cursor:pointer; }
 .project-polaroid .project-preview { flex:1; min-height:48px; }
-.project-preview-frame { display:block; width:100%; height:100%; overflow:hidden; border:1px solid #8c6d4644; background:#eee8dc; }
+.project-preview-frame { position:relative; display:block; width:100%; height:100%; overflow:hidden; border:1px solid #8c6d4644; background:#eee8dc; }
 .project-thumbnail { display:block; width:100%; height:100%; object-fit:cover; object-position:center 15%; }
 .project-card-caption { position:relative; flex-shrink:0; padding:7px 0 0 28px; }
 .project-card-number { position:absolute; left:0; top:9px; font:10px var(--font-courier),monospace; color:#846348; }
@@ -569,3 +377,20 @@ body { min-height: 100dvh; }
  .book-turning-sheet,.book-turn-cast-shadow { display:none; }
  .book-bottom-stack,.book-edge-left::after,.book-edge-right::after { transition:none; }
 }
+
+@theme inline { --font-sans: var(--font-inter); }
+.book-loading { min-height:100dvh; display:grid; place-items:center; background:#0b1220; }
+.book-loading span { width:min(70vw,700px); height:60vh; border-radius:8px; background:linear-gradient(90deg,#ebdfc8 49.5%,#796348 50%,#f2e7d1 50.5%); box-shadow:0 8px 0 #af9877,0 14px 0 #392619; }
+
+.contact-form:not(.contact-form-compact) input,.contact-form:not(.contact-form-compact) textarea { font-size:16px; padding:10px 12px; }
+.contact-form:not(.contact-form-compact) label { font-size:11px; }
+.contact-form:not(.contact-form-compact) button { min-height:44px; }
+
+.skill-sticker { display:flex; flex-direction:column; align-items:center; min-width:0; gap:8px; padding:3px; }
+.skill-label { font:500 11px/1.3 var(--font-inter),sans-serif; color:#452f20; text-align:center; overflow-wrap:anywhere; }
+.skill-text-mark { width:100%; height:100%; display:grid; place-items:center; background:#fff8e9; border:1px solid #bfa984; border-radius:6px; font:700 20px var(--font-lora),serif; }
+
+.contact-email > div { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.contact-email a { font:500 12px var(--font-inter),sans-serif; color:#654934; text-decoration:underline; overflow-wrap:anywhere; }
+.contact-email button { display:flex; align-items:center; justify-content:center; width:44px; height:44px; flex-shrink:0; border:1px solid #8c6d4644; border-radius:3px; color:#654934; cursor:pointer; }
+.contact-email p { font:11px/1.4 var(--font-inter),sans-serif; color:#265538; }

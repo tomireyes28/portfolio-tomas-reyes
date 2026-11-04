@@ -42,6 +42,13 @@ export function BookProvider({ children }: { children: React.ReactNode }) {
   const prevPage = useCallback(() => dispatch({ type: "prev" }), []);
 
   useEffect(() => {
+    const media = window.matchMedia(BOOK_VIEWPORT_QUERY);
+    const cancelHiddenTurn = () => { if (!media.matches) dispatch({ type: "cancel" }); };
+    media.addEventListener("change", cancelHiddenTurn);
+    return () => media.removeEventListener("change", cancelHiddenTurn);
+  }, []);
+
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.defaultPrevented || e.repeat || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || selectedProject ||
         !window.matchMedia(BOOK_VIEWPORT_QUERY).matches ||

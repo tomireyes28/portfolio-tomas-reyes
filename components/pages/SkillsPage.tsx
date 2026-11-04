@@ -1,121 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { skills } from "@/src/skills";
-import { Skill } from "@/types/Skill";
+import type { Skill } from "@/types/Skill";
 import { useLanguage } from "@/context/LanguageContext";
 
-// Clean vector logos for skills without SVG files in /icons
-function FallbackLogo({ name, className = "" }: { name: string; className?: string }) {
-  if (name.includes("Framer")) {
-    return (
-      <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-        <path d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z" />
-      </svg>
-    );
-  }
-  if (name.includes("Prisma")) {
-    return (
-      <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-        <path d="M12.784 1.258a1.5 1.5 0 0 0-1.745.093l-8.5 6.5A1.5 1.5 0 0 0 2 9.043v10.457a1.5 1.5 0 0 0 1.5 1.5h17a1.5 1.5 0 0 0 1.5-1.5V9.043a1.5 1.5 0 0 0-.539-1.192l-8.677-6.593zm-1.077 2.45L19 9.387V19H5V9.387l7.293-5.58a.5.5 0 0 1 .414-.099z" />
-        <path d="M8 11l4-5 4 5-4 6z" />
-      </svg>
-    );
-  }
-  if (name.includes("Supabase")) {
-    return (
-      <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-        <path d="M21.362 9.354H12V.3a.3.3 0 0 0-.517-.207L.638 12.046a.3.3 0 0 0 .207.518H12v9.054a.3.3 0 0 0 .517.207l10.845-11.953a.3.3 0 0 0-.207-.518z" />
-      </svg>
-    );
-  }
-  if (name.includes("Docker")) {
-    return (
-      <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-        <path d="M13.983 11.078h2.119a.186.186 0 0 0 .186-.185V9.006a.186.186 0 0 0-.186-.186h-2.119a.185.185 0 0 0-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 0 0 .186-.186V3.574a.186.186 0 0 0-.186-.185h-2.118a.185.185 0 0 0-.185.185v1.888c0 .102.082.186.185.186m0 2.716h2.118a.187.187 0 0 0 .186-.186V6.29a.186.186 0 0 0-.186-.185h-2.118a.185.185 0 0 0-.185.185v1.887c0 .102.082.186.185.186m-2.954 0h2.119a.186.186 0 0 0 .185-.186V6.29a.185.185 0 0 0-.185-.185H8.075a.185.185 0 0 0-.185.185v1.887c0 .102.083.186.185.186m-2.955 0h2.119a.186.186 0 0 0 .185-.186V6.29a.185.185 0 0 0-.185-.185H5.12a.185.185 0 0 0-.185.185v1.887c0 .102.083.186.185.186m5.91 2.714h2.118a.186.186 0 0 0 .186-.185V9.006a.186.186 0 0 0-.186-.186h-2.118a.185.185 0 0 0-.185.185v1.888c0 .102.082.185.185.185m-2.956 0h2.119a.186.186 0 0 0 .185-.185V9.006a.185.185 0 0 0-.185-.186H8.075a.185.185 0 0 0-.185.185v1.888c0 .102.083.185.185.185m-2.954 0h2.119a.186.186 0 0 0 .185-.185V9.006a.185.185 0 0 0-.185-.186H5.12a.185.185 0 0 0-.185.185v1.888c0 .102.083.185.185.185m-2.955 0h2.119a.185.185 0 0 0 .185-.185V9.006a.185.185 0 0 0-.185-.186H2.165a.185.185 0 0 0-.185.185v1.888c0 .102.083.185.185.185m21.808 1.482c-.397-.265-1.428-.403-2.316-.098-.18.062-.358.143-.532.24-.266-.867-.887-1.378-1.597-1.378-.458 0-.911.206-1.282.593l-.326.34-.143-.453A3.6 3.6 0 0 0 13.9 8.01H1.979a.98.98 0 0 0-.98.98v4.22c0 2.21 1.05 4.31 2.88 5.76C5.92 20.61 8.87 21.6 12 21.6c6.26 0 11.2-4.14 11.97-10.02.06-.48.06-.97 0-1.46z" />
-      </svg>
-    );
-  }
-  // Shadcn
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={className}>
-      <path d="M4 4l16 16M4 20L20 4" />
-    </svg>
-  );
-}
-
-interface BigLogoProps {
-  skill: Skill;
-  rotation: number;
-}
-
-function BigLogo({ skill, rotation }: BigLogoProps) {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <div className={`relative flex items-center justify-center p-1 ${isHovered ? "z-40" : "z-10"}`}>
-      {/* Permanent adventure sticker tilt (Pure CSS, never resets or reanimates on turn) */}
-      <div
-        style={{ transform: `rotate(${rotation}deg)` }}
-        className="relative"
-      >
-        <motion.div
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onFocus={() => setIsHovered(true)}
-          onBlur={() => setIsHovered(false)}
-          whileHover={{ scale: 1.15, rotate: -rotation }}
-          whileTap={{ scale: 0.95 }}
-          className="relative cursor-pointer select-none"
-        >
-          {/* LOGO STICKER GRANDE Y PROTAGONISTA CON BORDE FINO Y SOMBRA DE RELIEVE */}
-          <div
-            className="skill-logo-size flex items-center justify-center transition-all duration-200"
-            style={{
-              filter: isHovered
-                ? "drop-shadow(0.9px 0.9px 0 #fffdfa) drop-shadow(-0.9px -0.9px 0 #fffdfa) drop-shadow(0.9px -0.9px 0 #fffdfa) drop-shadow(-0.9px 0.9px 0 #fffdfa) drop-shadow(0 10px 18px rgba(35, 20, 10, 0.4)) contrast(1.1)"
-                : "drop-shadow(0.75px 0.75px 0 rgba(255, 253, 248, 0.95)) drop-shadow(-0.75px -0.75px 0 rgba(255, 253, 248, 0.95)) drop-shadow(0.75px -0.75px 0 rgba(255, 253, 248, 0.95)) drop-shadow(-0.75px 0.75px 0 rgba(255, 253, 248, 0.95)) drop-shadow(0 3px 6px rgba(35, 20, 10, 0.25)) contrast(1.05)",
-            }}
-          >
-            {skill.icon ? (
-              <img
-                src={skill.icon}
-                alt={skill.name}
-                className="w-full h-full object-contain pointer-events-none select-none"
-                loading="eager"
-              />
-            ) : (
-              <FallbackLogo
-                name={skill.name}
-                className="w-[85%] h-[85%] text-[#22140c]"
-              />
-            )}
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Cartelito flotante con el nombre exacto al señalar - posicionado arriba del sticker */}
-      <AnimatePresence>
-        {isHovered && (
-          <motion.div
-            initial={{ opacity: 0, y: 4, scale: 0.92 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 2, scale: 0.92 }}
-            transition={{ duration: 0.12, ease: "easeOut" }}
-            className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center"
-          >
-            <div className="bg-[#22140c] text-[#f5ebd6] px-2.5 py-1 rounded-xs shadow-xl border border-[#8c6d46]/70 whitespace-nowrap">
-              <span className="font-typewriter text-xs font-bold tracking-wide">
-                {skill.name}
-              </span>
-            </div>
-            <div className="w-2 h-2 rotate-45 -mt-1 bg-[#22140c]" />
-          </motion.div>
-        )}
-      </AnimatePresence>
+function BigLogo({ skill, rotation }: { skill: Skill; rotation: number }) {
+  return <div className="skill-sticker">
+    <div className="skill-logo-size" style={{ transform: `rotate(${rotation}deg)` }}>
+      {skill.icon ? <Image src={skill.icon} alt="" width={72} height={72} className="w-full h-full object-contain" />
+        : <span className="skill-text-mark" aria-hidden="true">{skill.name.slice(0, 2)}</span>}
     </div>
-  );
+    <span className="skill-label">{skill.name}</span>
+  </div>;
 }
 
 export function SkillsLeftPage() {

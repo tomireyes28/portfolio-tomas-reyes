@@ -14,6 +14,8 @@ export interface Project {
   demoUrl: string;
   repoUrl: string;
   image: string;
+  imageWidth?: number;
+  imageHeight?: number;
   category?: "fullstack" | "frontend" | "tools";
   featured?: boolean;
   demoCredentials?: { user: string; pass: string };

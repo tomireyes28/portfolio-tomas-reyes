@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useLayoutEffect, useRef } from "react";
 import { Project } from "@/types/Project";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
@@ -76,7 +77,7 @@ function ProjectDialog({ project }: { project: Project }) {
         <div className="project-case-body book-scroll">
           <p className="project-case-intro">{localized(project.shortDescription)}</p>
           <figure className="project-case-figure">
-            <img src={project.image} alt={`${t.projects.modal.screenshot} ${title}`} />
+            <Image width={project.imageWidth ?? 1600} height={project.imageHeight ?? 900} sizes="(min-width: 900px) 794px, calc(100vw - 72px)" src={project.image} alt={`${t.projects.modal.screenshot} ${title}`} />
           </figure>
           <div className="project-case-sections">
             {sections.map((section) => <section key={section.title}>

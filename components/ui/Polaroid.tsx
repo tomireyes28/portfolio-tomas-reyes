@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowUpRight, ExternalLink, Github } from "lucide-react";
 import { Project } from "@/types/Project";
@@ -25,7 +26,7 @@ export default function Polaroid({ project, index, layout = "book" }: {
       <button type="button" className="project-preview" onClick={() => setSelectedProject(project)}
         aria-label={`${t.projects.card.details}: ${title}`} data-project-id={project.id} aria-haspopup="dialog">
         <span className="project-preview-frame">
-          <img src={project.image} alt={`${t.projects.modal.screenshot} ${title}`} loading="lazy" className="project-thumbnail" />
+          <Image fill sizes="(min-width: 700px) 360px, calc(100vw - 72px)" src={project.image} alt={`${t.projects.modal.screenshot} ${title}`} loading="lazy" className="project-thumbnail" />
         </span>
       </button>
       <div className="project-card-caption">

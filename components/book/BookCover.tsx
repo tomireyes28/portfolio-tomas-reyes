@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Sparkles, FileDown, Check } from "lucide-react";
@@ -146,8 +147,8 @@ export default function BookCover({ isOpen, onOpen }: BookCoverProps) {
               <div className="pointer-events-none absolute -inset-full bg-gradient-to-r from-transparent via-white/20 via-[#f3d37a]/30 to-transparent " />
 
               <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full border border-dashed border-[#c89d45]/60 flex items-center justify-center p-2">
-                <img
-                  src="/logo.png"
+                <Image
+                  src="/logo.png" width={64} height={64}
                   alt="Tomás Reyes Logo"
                   className="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-sm transition-transform duration-500 group-hover:scale-110"
                 />
