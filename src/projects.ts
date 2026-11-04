@@ -1,20 +1,34 @@
 import { Project } from "@/types/Project";
 
 /**
- * Top 8 Proyectos Seleccionados para el Portfolio Oficial
- * Ordenados por relevancia, impacto de negocio, escala y complejidad técnica.
+ * Selección de aplicaciones, automatizaciones y sitios web.
+ * Las fichas describen el alcance técnico documentado de cada proyecto.
  */
 export const projects: Project[] = [
-  // 1. Plastic Who? — Auditoría Textil & Anti-Greenwashing (Dominio propio, +4.600 productos, NLP/Regex, Jest)
   {
     id: "plastic-who",
-    title: {
-      es: "Plastic Who? — Auditoría Textil y Transparencia en Moda",
-      en: "Plastic Who? — Textile Audit & Sustainable Fashion Transparency",
+    title: "Plastic Who?",
+    subtitle: {
+      es: "Composición textil, a simple vista",
+      en: "Textile composition at a glance"
     },
     shortDescription: {
-      es: "Plataforma Full Stack contra el greenwashing que audita la composición real de prendas en marcas de moda argentinas (+4.600 productos). Implementa un pipeline de web scraping resiliente con evasión de rate-limits y un motor de tokenización NLP/Regex con diccionario canónico que segmenta tela base de forrerías y ribetes para clasificar la pureza textil mediante un semáforo normativo. Frontend de alto rendimiento con Server Components y visualización de trama (WeaveBar).",
-      en: "Full Stack platform countering greenwashing by auditing the actual fiber composition of Argentine fashion brands (4,600+ garments). Features a resilient web scraping pipeline with rate-limit evasion and an NLP/Regex tokenizing engine with a canonical dictionary that isolates base fabrics from linings and trims to classify material purity via a textile traffic-light system. High-performance frontend with Server Components and a custom textile weave visualization (WeaveBar).",
+      es: "Consulta y compara la composición de prendas de marcas argentinas.",
+      en: "Browse and compare the fiber composition of clothing from Argentine brands."
+    },
+    caseStudy: {
+      context: {
+        es: "Cada marca publica la composición de sus prendas de forma distinta. Hace falta un formato común para compararlas.",
+        en: "Each brand publishes garment composition differently. A common format makes comparison possible."
+      },
+      implementation: {
+        es: "Scraping de catálogos, normalización de fibras con NLP/Regex y consulta por marca y material.",
+        en: "Catalog scraping, fiber normalization with NLP/Regex, and browsing by brand and material."
+      },
+      decision: {
+        es: "Separar tela principal, forro y ribetes antes de clasificar cada prenda. Mostrar la composición con un semáforo y una trama visual.",
+        en: "Separate main fabric, lining, and trims before classifying each garment. Display composition through a traffic-light indicator and a weave visualization."
+      }
     },
     techStack: [
       "Next.js",
@@ -27,22 +41,35 @@ export const projects: Project[] = [
       "Jest",
     ],
     category: "fullstack",
-    featured: true,
     demoUrl: "https://plasticwho.com/",
     repoUrl: "https://github.com/tomireyes28/plastic-who",
     image: "/projects/plastic-who.png",
   },
 
-  // 2. MN Agency — ERP / CRM Deportivo B2B
   {
     id: "mn-agency",
-    title: {
-      es: "MN Agency — Sistema de Gestión Deportiva (ERP/CRM)",
-      en: "MN Agency — Sports Management System (ERP/CRM)",
+    title: "MN Agency",
+    subtitle: {
+      es: "Gestión para agencias deportivas",
+      en: "Management for sports agencies"
     },
     shortDescription: {
-      es: "Plataforma Full Stack para agencias de representación. Incluye gestión de contratos con cálculos financieros automáticos, generación de PDFs y firma digital. Cuenta con un módulo 'Matchmaker' inteligente para conectar jugadores con clubes mediante filtros avanzados. Backend robusto en NestJS con TypeORM.",
-      en: "Full Stack platform for representation agencies. Includes contract management with automatic financial calculations, PDF generation, and digital signing. Features an intelligent 'Matchmaker' module to connect players with clubs using advanced filters. Robust NestJS backend with TypeORM.",
+      es: "Jugadores, contratos y búsqueda de clubes en una misma plataforma.",
+      en: "Players, contracts, and club matching in one platform."
+    },
+    caseStudy: {
+      context: {
+        es: "Una agencia de representación necesita reunir información de jugadores y contratos en un solo lugar.",
+        en: "A representation agency needs player and contract information in one place."
+      },
+      implementation: {
+        es: "Gestión de contratos, cálculos financieros, PDFs, firma digital y filtros para vincular jugadores con clubes.",
+        en: "Contract management, financial calculations, PDFs, digital signing, and filters for matching players with clubs."
+      },
+      decision: {
+        es: "Modelar los datos con TypeORM y PostgreSQL y organizar la lógica de gestión en un backend NestJS.",
+        en: "Model data with TypeORM and PostgreSQL and organize management logic in a NestJS backend."
+      }
     },
     techStack: [
       "Next.js",
@@ -55,22 +82,35 @@ export const projects: Project[] = [
       "Docker",
     ],
     category: "fullstack",
-    featured: true,
     demoUrl: "https://mnagency-app.vercel.app/login",
     repoUrl: "https://github.com/tomireyes28/mnagencyapp-backend",
     image: "/projects/mn-agency.png",
   },
 
-  // 3. Therapio — SaaS Clínico & Gestión de Pacientes
   {
     id: "therapio",
-    title: {
-      es: "Therapio — SaaS de Gestión Clínica y Pacientes",
-      en: "Therapio — Clinical & Patient Management SaaS",
+    title: "Therapio",
+    subtitle: {
+      es: "Agenda e historias clínicas",
+      en: "Appointments and patient records"
     },
     shortDescription: {
-      es: "Plataforma SaaS Full Stack para profesionales de la salud mental. Implementa autenticación OAuth 2.0 con Google y manejo de sesiones cross-domain entre Vercel y Render. Incluye Dashboard interactivo, gestión de historias clínicas, agenda de turnos y módulo de finanzas.",
-      en: "Full Stack SaaS platform for mental health professionals. Implements Google OAuth 2.0 authentication and secure cross-domain session handling between Vercel and Render. Includes interactive Dashboard, medical record management, appointment scheduling, and finance module.",
+      es: "Organiza pacientes, turnos y finanzas para profesionales de salud mental.",
+      en: "Organize patients, appointments, and finances for mental health professionals."
+    },
+    caseStudy: {
+      context: {
+        es: "La atención de pacientes requiere consultar historias clínicas, agenda y finanzas sin dispersar la información.",
+        en: "Patient care requires access to records, appointments, and finances without scattering information across tools."
+      },
+      implementation: {
+        es: "Panel de gestión con historias clínicas, turnos, finanzas y acceso con Google OAuth 2.0.",
+        en: "Management dashboard with patient records, appointments, finances, and Google OAuth 2.0 sign-in."
+      },
+      decision: {
+        es: "Resolver el manejo de sesiones entre el frontend en Vercel y el backend en Render.",
+        en: "Handle sessions between the frontend on Vercel and the backend on Render."
+      }
     },
     techStack: [
       "Next.js",
@@ -82,22 +122,35 @@ export const projects: Project[] = [
       "ShadcnUI",
     ],
     category: "fullstack",
-    featured: true,
     demoUrl: "https://psycho-manager.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/psycho-manager",
     image: "/projects/psychomanager.png",
   },
 
-  // 4. Lumi — Finanzas Personales & Analíticas
   {
     id: "lumi",
-    title: {
-      es: "Lumi — Finanzas Claras (Gestión de Finanzas Personales)",
-      en: "Lumi — Clear Finances (Personal Finance Management)",
+    title: "Lumi",
+    subtitle: {
+      es: "Finanzas personales y cuotas",
+      en: "Personal finances and installments"
     },
     shortDescription: {
-      es: "Aplicación Full Stack para el control exhaustivo de finanzas personales. Permite la gestión de ingresos, gastos y tarjetas de crédito con visualización de cuotas. Incluye un simulador de reintegros bancarios para optimizar promociones, autenticación con Google y un dashboard dinámico con analíticas. Backend en NestJS con Prisma y despliegue automatizado.",
-      en: "Full Stack application for comprehensive personal finance tracking. Manage income, expenses, and credit cards with installment visualization. Features a bank refund simulator to optimize promotions, Google authentication, and a dynamic dashboard with analytics. NestJS backend with Prisma and automated deployment.",
+      es: "Reúne ingresos, gastos, tarjetas y reintegros para consultar tus finanzas.",
+      en: "Bring income, expenses, cards, and refunds together to review your finances."
+    },
+    caseStudy: {
+      context: {
+        es: "Los gastos cotidianos y las cuotas de tarjetas necesitan una vista conjunta para entender los compromisos de pago.",
+        en: "Daily expenses and card installments need a shared view to make payment commitments easier to understand."
+      },
+      implementation: {
+        es: "Registro de ingresos y gastos, seguimiento de tarjetas y cuotas, simulador de reintegros y panel con analíticas.",
+        en: "Income and expense tracking, cards and installments, a refund simulator, and an analytics dashboard."
+      },
+      decision: {
+        es: "Persistir los movimientos con NestJS, Prisma y PostgreSQL e integrar el acceso con Google.",
+        en: "Persist transactions with NestJS, Prisma, and PostgreSQL and integrate Google sign-in."
+      }
     },
     techStack: [
       "Next.js",
@@ -111,22 +164,35 @@ export const projects: Project[] = [
       "Vercel",
     ],
     category: "fullstack",
-    featured: true,
     demoUrl: "https://lumi-beta-one.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/lumi",
     image: "/projects/lumi.png",
   },
 
-  // 5. MN Sync — Automatización de Cross-Posting IG ➡️ X (Serverless Cron)
   {
     id: "mn-igx-sync",
-    title: {
-      es: "MN Sync — Automatización de Cross-Posting IG ➡️ X",
-      en: "MN Sync — Automated IG ➡️ X Cross-Posting Bot",
+    title: "MN Sync",
+    subtitle: {
+      es: "De Instagram a X, automáticamente",
+      en: "From Instagram to X, automatically"
     },
     shortDescription: {
-      es: "Automatización serverless de marketing digital para agencia. Sincroniza contenido orgánico de Instagram a X (Twitter). Soluciona problemas complejos de autenticación como tokens de larga duración de Meta, subida de medios binarios a X con OAuth 1.0a, y ejecución programada en la nube usando GitHub Actions como Cron Job.",
-      en: "Serverless digital marketing automation for an agency. Synchronizes organic content from Instagram to X (Twitter). Solves complex authentication issues such as Meta long-lived tokens, binary media upload to X using OAuth 1.0a, and scheduled cloud execution using GitHub Actions as a Cron Job.",
+      es: "Sincroniza publicaciones y archivos multimedia con una ejecución programada.",
+      en: "Sync posts and media through scheduled runs."
+    },
+    caseStudy: {
+      context: {
+        es: "Publicar el mismo contenido en dos redes requiere repetir pasos y gestionar accesos distintos.",
+        en: "Publishing the same content on two networks requires repeated steps and different authentication flows."
+      },
+      implementation: {
+        es: "Integración de Meta Graph API y la API de X para consultar publicaciones, subir medios y republicar contenido.",
+        en: "Integration of Meta Graph API and the X API to fetch posts, upload media, and republish content."
+      },
+      decision: {
+        es: "Combinar tokens de larga duración de Meta, OAuth 1.0a para medios en X y ejecuciones programadas con GitHub Actions.",
+        en: "Combine Meta long-lived tokens, OAuth 1.0a for X media uploads, and scheduled runs with GitHub Actions."
+      }
     },
     techStack: [
       "Node.js",
@@ -137,22 +203,35 @@ export const projects: Project[] = [
       "Axios",
     ],
     category: "tools",
-    featured: true,
-    demoUrl: "https://github.com/tomireyes28/ig-x-sync",
+    demoUrl: "",
     repoUrl: "https://github.com/tomireyes28/ig-x-sync",
     image: "/projects/ig-x-sync.jpg",
   },
 
-  // 6. Cine Radar — Web Scraper Automatizado & REST API
   {
     id: "cinema-agenda",
-    title: {
-      es: "Cine Radar — Scraper Web y API RESTful",
-      en: "Cine Radar — Web Scraper & RESTful API",
+    title: "Cine Radar",
+    subtitle: {
+      es: "Carteleras de cine en un solo lugar",
+      en: "Cinema showtimes in one place"
     },
     shortDescription: {
-      es: "Agregador de carteleras de cine en tiempo real. El backend (NestJS + Puppeteer) realiza scraping automatizado de múltiples cadenas para unificar datos en PostgreSQL/Supabase. El frontend (Next.js) consume una API RESTful segura para visualizar horarios y estrenos.",
-      en: "Real-time cinema showtime aggregator. The backend (NestJS + Puppeteer) performs automated scraping of multiple chains to unify data in PostgreSQL/Supabase. The Next.js frontend consumes a secure RESTful API to visualize schedules and releases.",
+      es: "Consulta horarios y estrenos de distintas cadenas desde una misma interfaz.",
+      en: "Browse showtimes and releases from different cinema chains in one interface."
+    },
+    caseStudy: {
+      context: {
+        es: "Cada cadena publica su propia cartelera; compararlas requiere visitar varios sitios.",
+        en: "Each cinema chain publishes its own showtimes, making comparison a multi-site task."
+      },
+      implementation: {
+        es: "Scraping automatizado con Puppeteer, almacenamiento en PostgreSQL y una API REST consumida por el frontend Next.js.",
+        en: "Automated scraping with Puppeteer, PostgreSQL storage, and a REST API consumed by the Next.js frontend."
+      },
+      decision: {
+        es: "Unificar los datos de distintas cadenas en el backend antes de presentar horarios y estrenos.",
+        en: "Unify data from different chains in the backend before displaying showtimes and releases."
+      }
     },
     techStack: [
       "NestJS",
@@ -165,22 +244,35 @@ export const projects: Project[] = [
       "TailwindCSS",
     ],
     category: "fullstack",
-    featured: true,
     demoUrl: "https://cine-radar-app.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/cine-radar",
     image: "/projects/cinemaapp.png",
   },
 
-  // 7. Aberturas N&L — Cliente Comercial en Producción Real
   {
     id: "aberturas-nyl",
-    title: {
-      es: "Aberturas N&L — Landing Page Comercial",
-      en: "Aberturas N&L — Commercial Landing Page",
+    title: "Aberturas N&L",
+    subtitle: {
+      es: "Productos, obras y consultas",
+      en: "Products, completed work, and inquiries"
     },
     shortDescription: {
-      es: "Sitio web corporativo de alto rendimiento para una empresa de carpintería de aluminio. Destaca por su diseño boutique interactivo para exhibir líneas de productos, galería de obras optimizada en formato estático y un formulario de contacto serverless integrado con Web3Forms. Desarrollada con un enfoque SEO y exportación estática nativa para despliegue en Hostinger.",
-      en: "High-performance corporate website for an aluminum carpentry business. Features an interactive boutique design for product showcases, an optimized static project gallery, and a serverless contact form integrated with Web3Forms. Developed with an SEO focus and native static export for Hostinger deployment.",
+      es: "Sitio comercial para mostrar líneas de aberturas y recibir consultas.",
+      en: "A business website to showcase windows and doors and receive inquiries."
+    },
+    caseStudy: {
+      context: {
+        es: "Una empresa de carpintería de aluminio necesita presentar sus productos y obras y ofrecer una vía de contacto.",
+        en: "An aluminum joinery business needs to present its products and completed work and provide a contact channel."
+      },
+      implementation: {
+        es: "Catálogo de líneas, galería de obras y formulario de contacto integrado con Web3Forms.",
+        en: "Product range showcase, completed-work gallery, and a contact form integrated with Web3Forms."
+      },
+      decision: {
+        es: "Usar la exportación estática de Next.js para alojar el sitio en Hostinger, con atención al SEO y a las imágenes.",
+        en: "Use Next.js static export for Hostinger hosting, with attention to SEO and images."
+      }
     },
     techStack: [
       "Next.js",
@@ -191,26 +283,41 @@ export const projects: Project[] = [
       "Hostinger",
     ],
     category: "frontend",
-    featured: true,
     demoUrl: "https://aberturasnyl.com/",
     repoUrl: "https://github.com/tomireyes28/aberturas-nyl",
     image: "/projects/aberturas-nyl.png",
   },
 
-  // 8. Simulador de DEA — Simulación Médica para la Clínica Adventista Belgrano
   {
     id: "dea-simulator",
     title: {
-      es: "Simulador de DEA — Clínica Adventista Belgrano",
-      en: "AED Simulator — Clínica Adventista Belgrano",
+      es: "Simulador de DEA",
+      en: "AED Simulator"
+    },
+    subtitle: {
+      es: "Secuencias guiadas con audio",
+      en: "Guided sequences with audio"
     },
     shortDescription: {
-      es: "Simulador interactivo de Desfibrilador Externo Automático (DEA). Desarrollado con JavaScript vanilla para entrenamiento médico de alta fidelidad, simulando comportamiento del dispositivo, secuencias guiadas y respuesta de audio.",
-      en: "Interactive Automated External Defibrillator (AED) simulator. Developed with vanilla JavaScript for high-fidelity medical training, simulating device behavior, guided sequences, and real-time audio response.",
+      es: "Simulación interactiva del funcionamiento de un desfibrilador externo automático.",
+      en: "Interactive simulation of an automated external defibrillator."
+    },
+    caseStudy: {
+      context: {
+        es: "El proyecto para la Clínica Adventista Belgrano representa la secuencia de uso de un DEA en una interfaz interactiva.",
+        en: "The project for Clínica Adventista Belgrano represents an AED operating sequence in an interactive interface."
+      },
+      implementation: {
+        es: "Simulación de estados del dispositivo, pasos guiados y respuestas de audio.",
+        en: "Device state simulation, guided steps, and audio responses."
+      },
+      decision: {
+        es: "Implementar la interacción con JavaScript, HTML y CSS, sin un framework de interfaz.",
+        en: "Implement the interaction with JavaScript, HTML, and CSS without a UI framework."
+      }
     },
     techStack: ["JavaScript", "HTML", "CSS"],
     category: "frontend",
-    featured: true,
     demoUrl: "https://dea-beta.vercel.app/",
     repoUrl: "https://github.com/tomireyes28/dea",
     image: "/projects/dea-simulador.png",
