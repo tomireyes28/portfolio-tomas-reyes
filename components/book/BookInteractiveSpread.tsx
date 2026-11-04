@@ -72,7 +72,7 @@ export default function BookInteractiveSpread() {
       {
         id: "about",
         leftTitle: isEs ? "Sobre Mí" : "About Me",
-        rightTitle: isEs ? "Enfoque & Stack" : "Focus & Stack",
+        rightTitle: isEs ? "Presentación" : "Introduction",
         leftNum: "01",
         rightNum: "02",
         leftContent: <AboutLeftPage />,

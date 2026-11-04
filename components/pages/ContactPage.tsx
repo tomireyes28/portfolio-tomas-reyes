@@ -163,8 +163,8 @@ export function ContactRightPage() {
       <div className="font-serif-book text-xs sm:text-[12.5px] text-[#2f1c10] leading-relaxed pl-3 border-l-2 border-[#8c6d46]/35">
         <p>
           {isEs
-            ? "Si te interesó lo que viste, tenés un proyecto en mente o querés charlar sobre alguna oportunidad para sumar a tu equipo, escribime directamente. Suelo responder en el día."
-            : "If you found my work interesting, have a project in mind, or want to discuss an opportunity to join your team, feel free to reach out directly. I usually reply within the day."}
+            ? "Si tenés un proyecto en mente o una oportunidad para sumar a tu equipo, escribime. Contame qué necesitás y lo conversamos."
+            : "Have a project in mind or an opportunity on your team? Send me a message about what you need and we can discuss it."}
         </p>
       </div>
 
@@ -180,8 +180,8 @@ export function ContactRightPage() {
           </h4>
           <p className="font-serif-book text-xs text-[#452f20] leading-relaxed max-w-xs mx-auto">
             {isEs
-              ? "Gracias por escribirme. El mensaje llegó a mi casilla y te responderé pronto."
-              : "Thank you for reaching out. Your message arrived in my inbox and I will reply soon."}
+              ? "Gracias por escribirme. Tu mensaje se envió correctamente."
+              : "Thank you for reaching out. Your message was sent successfully."}
           </p>
           <button
             onClick={() => setStatus("idle")}

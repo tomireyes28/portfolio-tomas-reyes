@@ -2,112 +2,48 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ExternalLink, Github, Sparkles } from "lucide-react";
+import { ArrowUpRight, ExternalLink, Github } from "lucide-react";
 import { Project } from "@/types/Project";
 import { useLanguage } from "@/context/LanguageContext";
 import { useBook } from "@/context/BookContext";
 
-interface PolaroidProps {
-  project: Project;
-  index: number;
-}
-
-export default function Polaroid({ project, index }: PolaroidProps) {
+export default function Polaroid({ project, index, layout = "book" }: {
+  project: Project; index: number; layout?: "book" | "flow";
+}) {
   const { language, t } = useLanguage();
   const { setSelectedProject } = useBook();
-
-  const title =
-    typeof project.title === "string"
-      ? project.title
-      : project.title[language];
-
-  // Alternate slight tilt and pushpin color for authentic explorer journal feel
-  const tiltClass = index % 2 === 0 ? "-rotate-1" : "rotate-1";
-  const pinColor =
-    index % 3 === 0
-      ? "bg-[#b8860b] border-[#5a3e08]" // Brass
-      : index % 3 === 1
-      ? "bg-[#8c2d2d] border-[#4a1515]" // Crimson
-      : "bg-[#2b583c] border-[#163320]"; // Forest
-
+  const title = typeof project.title === "string" ? project.title : project.title[language];
+  const subtitle = typeof project.subtitle === "string" ? project.subtitle : project.subtitle?.[language];
+  const description = typeof project.shortDescription === "string" ? project.shortDescription : project.shortDescription[language];
   return (
-    <motion.div
-      whileHover={{ scale: 1.02, rotate: 0, y: -2 }}
-      transition={{ type: "spring", stiffness: 320, damping: 22 }}
-      className={`project-polaroid group relative polaroid-card p-2.5 pb-2.5 rounded-xs border border-[#bfa984] cursor-pointer flex flex-col justify-between w-full max-w-[340px] mx-auto shadow-md ${tiltClass}`}
+    <motion.article
+      whileHover={{ y: -2 }}
+      transition={{ duration: 0.2 }}
+      data-project={project.id}
+      className={`project-card polaroid-card ${layout === "book" ? "project-polaroid" : "project-card-flow"}`}
     >
-      {/* Top Pushpin */}
-      <div
-        className={`w-3.5 h-3.5 rounded-full ${pinColor} border mx-auto -mt-4 mb-1.5 shadow-xs relative z-20`}
-      >
-        <div className="w-0.5 h-0.5 rounded-full bg-white/70 ml-0.5 mt-0.5" />
-      </div>
-
-      {/* Screenshot Frame */}
-      <button
-        type="button"
-        aria-label={`${language === "es" ? "Ver proyecto" : "View project"}: ${title}`}
-        data-project-id={project.id}
-        aria-haspopup="dialog"
-        onClick={() => setSelectedProject(project)}
-        className="project-preview block w-full text-left cursor-pointer"
-      >
-        <div className="project-preview-frame relative aspect-[16/9] w-full overflow-hidden bg-[#25160e] rounded-xs border border-[#8c6d46]/40 shadow-inner">
-          <img
-            src={project.image}
-            alt={title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-
-          {/* Featured Stamp Badge */}
-          {project.featured && (
-            <span className="absolute top-1.5 left-1.5 inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-xs bg-[#25160e]/85 text-[#e2be6b] border border-[#c89d45]/50 font-typewriter text-[8.5px] uppercase tracking-wider">
-              <Sparkles className="w-2.5 h-2.5" />
-              ★
-            </span>
-          )}
-
-        </div>
-
+      <button type="button" className="project-preview" onClick={() => setSelectedProject(project)}
+        aria-label={`${t.projects.card.details}: ${title}`} data-project-id={project.id} aria-haspopup="dialog">
+        <span className="project-preview-frame">
+          <img src={project.image} alt={`${t.projects.modal.screenshot} ${title}`} loading="lazy" className="project-thumbnail" />
+        </span>
       </button>
-
-      {/* Caption Title - Clean handwritten label */}
-      <h3 className="font-handwriting text-[17px] sm:text-xl font-bold text-[#25160e] mt-2 leading-snug group-hover:text-[#8c2d2d] transition-colors line-clamp-1">
-        {title}
-      </h3>
-
-      {/* Action Links */}
-      <div className="mt-2 pt-1.5 border-t border-[#8c6d46]/25 flex items-center justify-between gap-1">
-        <div
-          className="flex items-center gap-1.5"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {project.demoUrl && (
-            <a
-              href={project.demoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={t.projects.card.demo}
-              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-xs bg-[#265538]/10 hover:bg-[#265538] text-[#265538] hover:text-[#f5ebd6] border border-[#265538]/30 font-typewriter text-[9.5px] font-bold tracking-wider transition-colors"
-            >
-              <ExternalLink className="w-2.5 h-2.5" />
-              <span>Demo</span>
-            </a>
-          )}
-          {project.repoUrl && (
-            <a
-              href={project.repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={t.projects.card.code}
-              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-xs bg-[#452f20]/10 hover:bg-[#452f20] text-[#452f20] hover:text-[#f5ebd6] border border-[#452f20]/30 font-typewriter text-[9.5px] font-bold tracking-wider transition-colors"
-            >
-              <Github className="w-2.5 h-2.5" />
-              <span>{t.projects.card.code}</span>
-            </a>
-          )}
+      <div className="project-card-caption">
+        <p className="project-card-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</p>
+        <h3 className="font-serif-book">{title}</h3>
+        {subtitle && <p className="project-card-subtitle">{subtitle}</p>}
+        {layout === "flow" && <p className="project-card-description">{description}</p>}
+      </div>
+      <div className="project-card-actions">
+        <button type="button" onClick={() => setSelectedProject(project)} aria-haspopup="dialog"
+          data-project-id={project.id} aria-label={`${t.projects.card.details}: ${title}`} className="project-case-link">
+          {t.projects.card.details}<ArrowUpRight size={13} aria-hidden="true" />
+        </button>
+        <div className="project-external-links">
+          {project.demoUrl && <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" aria-label={`${t.projects.card.demo}: ${title}`}><ExternalLink size={12} aria-hidden="true" />Demo</a>}
+          {project.repoUrl && <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" aria-label={`${t.projects.card.code}: ${title}`}><Github size={12} aria-hidden="true" />{t.projects.card.code}</a>}
         </div>
       </div>
-    </motion.div>
+    </motion.article>
   );
 }

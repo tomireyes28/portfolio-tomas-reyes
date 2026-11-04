@@ -37,13 +37,13 @@ export function ProjectsLeftPage({
       {/* Editorial Header */}
       {spreadIndex === 0 ? (
         <div className="border-b border-[#8c6d46]/25 pb-2">
-          <h2 className="font-serif-book text-xl lg:text-2xl font-bold text-[#25160e]">
+          <h2 className="font-serif-book text-xl font-bold text-[#25160e]">
             {t.projects.title}
           </h2>
         </div>
       ) : (
         <div className="border-b border-[#8c6d46]/25 pb-2">
-          <h2 className="font-serif-book text-xl lg:text-2xl font-bold text-[#25160e]">
+          <h2 className="font-serif-book text-xl font-bold text-[#25160e]">
             {isEs ? "Proyectos Seleccionados" : "Selected Projects"}
           </h2>
         </div>
@@ -79,7 +79,7 @@ export function ProjectsRightPage({
   return (
     <div className="projects-page flex flex-col h-full min-h-0">
       <div className="shrink-0 border-b border-[#8c6d46]/25 pb-2 mb-2">
-        <h2 className="font-serif-book text-xl lg:text-2xl font-bold text-[#25160e]">
+        <h2 className="font-serif-book text-xl font-bold text-[#25160e]">
           {isEs ? "Selección" : "Selection"} {spreadIndex + 1} / 2
         </h2>
       </div>

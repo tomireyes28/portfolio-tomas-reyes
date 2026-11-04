@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Compass, MapPin, Terminal, Award, FileDown } from "lucide-react";
+import { useBook } from "@/context/BookContext";
 import { useLanguage } from "@/context/LanguageContext";
 
 export function AboutLeftPage() {
@@ -25,7 +26,7 @@ export function AboutLeftPage() {
           Tomás Reyes
         </p>
         <span className="font-typewriter text-[10px] text-[#6a4f3b] uppercase tracking-widest block mt-1">
-          Full Stack & Automation Dev
+          Full Stack Developer
         </span>
       </div>
 
@@ -57,7 +58,7 @@ export function AboutLeftPage() {
             <span>{isEs ? "Especialidad" : "Specialty"}</span>
           </div>
           <p className="font-serif-book text-xs font-bold mt-0.5 text-[#22140c]">
-            {isEs ? "Full Stack & Auto." : "Full Stack & Auto."}
+            {isEs ? "Web y automatización" : "Web & automation"}
           </p>
         </div>
 
@@ -88,17 +89,6 @@ export function AboutLeftPage() {
 
           <div>
             <span className="font-typewriter text-[9.5px] uppercase text-[#6a4f3b] block mb-0.5">
-              {isEs ? "Rol principal" : "Core Focus"}
-            </span>
-            <p className="font-serif-book font-semibold text-[#22140c] text-xs">
-              {isEs
-                ? "Full Stack Developer & Automatización de Procesos"
-                : "Full Stack Developer & Workflow Automation"}
-            </p>
-          </div>
-
-          <div>
-            <span className="font-typewriter text-[9.5px] uppercase text-[#6a4f3b] block mb-0.5">
               {isEs ? "Modalidad" : "Work Mode"}
             </span>
             <p className="font-serif-book font-semibold text-[#22140c] text-xs">
@@ -114,26 +104,31 @@ export function AboutLeftPage() {
 }
 
 export function AboutRightPage() {
-  const { language, t } = useLanguage();
-  const isEs = language === "es";
+  const { t } = useLanguage();
+  const { goToSection } = useBook();
 
   return (
-    <div className="flex flex-col justify-between h-full py-2 space-y-4">
+    <div className="flex flex-col justify-between h-full py-1 gap-2">
       {/* Title & Role */}
       <div className="border-b border-[#8c6d46]/25 pb-2.5">
         <h2 className="font-serif-book text-2xl lg:text-3xl font-bold text-[#22140c] leading-tight">
           {t.about.title}
         </h2>
-        <p className="font-handwriting text-xl text-[#6a4f3b] leading-snug mt-0.5">
+        <p className="font-serif-book text-base text-[#6a4f3b] leading-snug mt-0.5">
           {t.about.role}
         </p>
       </div>
 
       {/* Narrative Bio - Generous reading layout */}
-      <div className="space-y-3 font-serif-book text-xs sm:text-[13px] md:text-[13.5px] text-[#2f1c10] leading-relaxed pl-3.5 border-l-2 border-[#8c6d46]/40 flex-1 flex flex-col justify-center">
+      <div className="space-y-2 font-serif-book text-[15px] text-[#2f1c10] leading-[1.55] pl-3.5 border-l-2 border-[#8c6d46]/40 flex-1 flex flex-col justify-center">
         <p>{t.about.p1}</p>
         <p>{t.about.p2}</p>
         <p>{t.about.p3}</p>
+      </div>
+
+      <div className="profile-actions">
+        <button type="button" onClick={() => goToSection("projects")} className="profile-primary">{t.hero.btnPrimary}</button>
+        <button type="button" onClick={() => goToSection("contact")}>{t.nav.contact}</button>
       </div>
 
       {/* Bottom: Natural CV Text Link + Right Handwritten Signature */}

@@ -8,14 +8,11 @@ import {
   MapPin,
   Terminal,
   Award,
-  ExternalLink,
   Github,
   Linkedin,
   Mail,
   Copy,
   Check,
-  Sparkles,
-  Layers,
   Briefcase,
   GraduationCap,
   Lightbulb,
@@ -30,10 +27,9 @@ import emailjs from "@emailjs/browser";
 import LanguageSwitch from "@/components/ui/LanguageSwitch";
 import FormStatus from "@/components/ui/FormStatus";
 import { useLanguage } from "@/context/LanguageContext";
-import { useBook } from "@/context/BookContext";
 import { projects } from "@/src/projects";
 import { skills } from "@/src/skills";
-import { Project } from "@/types/Project";
+import Polaroid from "@/components/ui/Polaroid";
 import { ProjectCategoryFilter } from "@/components/pages/ProjectsPage";
 
 const preferredScrollBehavior = (): ScrollBehavior => window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth";
@@ -50,7 +46,6 @@ const principleIcons: Record<
 
 export default function MobilePortfolio() {
   const { language, t } = useLanguage();
-  const { setSelectedProject } = useBook();
   const isEs = language === "es";
 
   const [copied, setCopied] = useState(false);
@@ -277,7 +272,7 @@ export default function MobilePortfolio() {
                   <span>{isEs ? "Especialidad" : "Specialty"}</span>
                 </div>
                 <p className="font-serif-book text-[11px] font-bold mt-0.5 text-[#22140c]">
-                  Full Stack & Auto.
+                  {isEs ? "Web y automatización" : "Web & automation"}
                 </p>
               </div>
 
@@ -287,7 +282,7 @@ export default function MobilePortfolio() {
                   <span>{isEs ? "Formación" : "Education"}</span>
                 </div>
                 <p className="font-serif-book text-[11px] font-bold mt-0.5 text-[#22140c]">
-                  {isEs ? "Programación & Period." : "Coding & Journalism"}
+                  {isEs ? "Programación y periodismo" : "Coding & Journalism"}
                 </p>
               </div>
             </div>
@@ -297,11 +292,16 @@ export default function MobilePortfolio() {
               <h2 className="font-serif-book text-xl font-bold text-[#22140c] leading-tight mb-2">
                 {t.about.title}
               </h2>
-              <div className="space-y-2.5 font-serif-book text-[13px] text-[#2f1c10] leading-relaxed pl-3 border-l-2 border-[#8c6d46]/40">
+              <div className="space-y-2.5 font-serif-book text-[15px] text-[#2f1c10] leading-relaxed pl-3 border-l-2 border-[#8c6d46]/40">
                 <p>{t.about.p1}</p>
                 <p>{t.about.p2}</p>
                 <p>{t.about.p3}</p>
               </div>
+            </div>
+
+            <div className="profile-actions mt-4">
+              <button type="button" onClick={() => scrollTo("proyectos")} className="profile-primary">{t.hero.btnPrimary}</button>
+              <button type="button" onClick={() => scrollTo("contacto")}>{t.nav.contact}</button>
             </div>
 
             {/* Status & Availability + CV Link */}
@@ -375,126 +375,9 @@ export default function MobilePortfolio() {
 
           {/* Project Cards (Full list, styled as tactile Polaroids) */}
           <div className="editorial-project-grid">
-            {filteredProjects.map((project, idx) => {
-              const projectTitle =
-                typeof project.title === "string"
-                  ? project.title
-                  : project.title[language];
-              const projectDesc =
-                typeof project.shortDescription === "string"
-                  ? project.shortDescription
-                  : project.shortDescription[language];
-
-              const pinColor =
-                idx % 3 === 0
-                  ? "bg-[#b8860b] border-[#5a3e08]"
-                  : idx % 3 === 1
-                  ? "bg-[#8c2d2d] border-[#4a1515]"
-                  : "bg-[#2b583c] border-[#163320]";
-
-              return (
-                <div
-                  key={project.id}
-                  className="polaroid-card p-3.5 rounded-xs border border-[#bfa984] shadow-lg relative flex flex-col justify-between"
-                >
-                  {/* Pushpin top */}
-                  <div
-                    className={`w-3.5 h-3.5 rounded-full ${pinColor} border mx-auto -mt-5 mb-2 shadow-xs`}
-                  >
-                    <div className="w-0.5 h-0.5 rounded-full bg-white/70 ml-0.5 mt-0.5" />
-                  </div>
-
-                  {/* Screenshot */}
-                  <div
-                    onClick={() => setSelectedProject(project)}
-                    className="cursor-pointer group relative aspect-[16/9] w-full overflow-hidden bg-[#25160e] rounded-xs border border-[#8c6d46]/40 shadow-inner"
-                  >
-                    <img
-                      src={project.image}
-                      alt={projectTitle}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-102"
-                    />
-
-                    {project.featured && (
-                      <span className="absolute top-2 left-2 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-xs bg-[#25160e]/90 text-[#e2be6b] border border-[#c89d45]/60 font-typewriter text-[9px] uppercase tracking-wider shadow-xs">
-                        <Sparkles className="w-2.5 h-2.5 text-[#e2be6b]" />
-                        <span>Destacado</span>
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Title & Description */}
-                  <div className="mt-2.5">
-                    <h3
-                      onClick={() => setSelectedProject(project)}
-                      className="font-handwriting text-2xl font-bold text-[#22140c] hover:text-[#882b2b] transition-colors cursor-pointer leading-tight"
-                    >
-                      {projectTitle}
-                    </h3>
-                    <p className="font-serif-book text-xs text-[#452f20] leading-snug mt-1 line-clamp-3">
-                      {projectDesc}
-                    </p>
-                  </div>
-
-                  {/* Tech stack badges */}
-                  <div className="flex flex-wrap gap-1 mt-2.5">
-                    {project.techStack.slice(0, 5).map((tech, tIdx) => (
-                      <span
-                        key={tIdx}
-                        className="px-2 py-0.5 rounded-xs bg-[#8c6d46]/15 border border-[#8c6d46]/30 text-[#452f20] font-typewriter text-[9.5px] font-bold"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.techStack.length > 5 && (
-                      <span className="px-1.5 py-0.5 rounded-xs bg-[#8c6d46]/10 text-[#6a4f3b] font-typewriter text-[9px]">
-                        +{project.techStack.length - 5}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="mt-3 pt-2 border-t border-[#8c6d46]/25 flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      {project.demoUrl && (
-                        <a
-                          href={project.demoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xs bg-[#265538] hover:bg-[#1f452d] text-[#f5ebd6] font-typewriter text-[10.5px] font-bold tracking-wider shadow-xs transition-colors"
-                        >
-                          <ExternalLink className="w-3 h-3" />
-                          <span>Demo</span>
-                        </a>
-                      )}
-                      {project.repoUrl && (
-                        <a
-                          href={project.repoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xs bg-[#3a2012] hover:bg-[#4d2c19] text-[#f5ebd6] font-typewriter text-[10.5px] font-bold tracking-wider shadow-xs transition-colors"
-                        >
-                          <Github className="w-3 h-3" />
-                          <span>Código</span>
-                        </a>
-                      )}
-                    </div>
-
-                    <button
-                      onClick={() => setSelectedProject(project)}
-                      data-project-id={project.id}
-                      aria-haspopup="dialog"
-                      aria-label={`${isEs ? "Ver proyecto" : "View project"}: ${projectTitle}`}
-                      type="button"
-                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xs bg-[#f4ebd9] hover:bg-[#ebdcc3] text-[#452f20] border border-[#8c6d46]/40 font-typewriter text-[10.5px] font-bold tracking-wider transition-colors cursor-pointer"
-                    >
-                      <Layers className="w-3 h-3 text-[#882b2b]" />
-                      <span>{isEs ? "Detalles" : "Details"}</span>
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+            {filteredProjects.map((project) => (
+              <Polaroid key={project.id} project={project} index={projects.indexOf(project)} layout="flow" />
+            ))}
           </div>
         </section>
 
@@ -833,8 +716,8 @@ export default function MobilePortfolio() {
 
             <p className="font-serif-book text-[12.5px] text-[#3d2719] leading-relaxed pl-3 border-l-2 border-[#8c6d46]/40">
               {isEs
-                ? "Si te interesó lo que viste, tenés un proyecto en mente o querés charlar sobre alguna oportunidad para sumar a tu equipo, escribime directamente. Suelo responder en el día."
-                : "If you found my work interesting, have a project in mind, or want to discuss an opportunity to join your team, feel free to reach out directly. I usually reply within the day."}
+                ? "Si tenés un proyecto en mente o una oportunidad para sumar a tu equipo, escribime. Contame qué necesitás y lo conversamos."
+                : "Have a project in mind or an opportunity on your team? Send me a message about what you need and we can discuss it."}
             </p>
 
             {/* Interactive Form or Success State */}
@@ -849,8 +732,8 @@ export default function MobilePortfolio() {
                 </h4>
                 <p className="font-serif-book text-xs text-[#452f20] leading-relaxed">
                   {isEs
-                    ? "Gracias por escribirme. El mensaje llegó a mi casilla y te responderé pronto."
-                    : "Thank you for reaching out. Your message arrived in my inbox and I will reply soon."}
+                    ? "Gracias por escribirme. Tu mensaje se envió correctamente."
+                    : "Thank you for reaching out. Your message was sent successfully."}
                 </p>
                 <button
                   onClick={() => setMsgStatus("idle")}
